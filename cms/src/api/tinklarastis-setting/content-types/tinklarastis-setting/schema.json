@@ -1,0 +1,40 @@
+{
+  "kind": "singleType",
+  "collectionName": "tinklarastis_settings",
+  "info": {
+    "singularName": "tinklarastis-setting",
+    "pluralName": "tinklarastis-settings",
+    "displayName": "Tinklaraštis (puslapis)",
+    "description": "Tinklaraščio antraštė, filtrai ir socialiniai mygtukai"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "badge": { "type": "string" },
+    "title": { "type": "string" },
+    "intro": { "type": "text" },
+    "linkedinLabel": { "type": "string" },
+    "linkedinUrl": { "type": "string" },
+    "instagramLabel": { "type": "string" },
+    "instagramUrl": { "type": "string" },
+    "analysisCta": { "type": "string" },
+    "featuredBadge": { "type": "string" },
+    "readArticleCta": { "type": "string" },
+    "readCta": { "type": "string" },
+    "searchPlaceholder": { "type": "string" },
+    "emptyTitle": { "type": "string" },
+    "emptyIntro": { "type": "text" },
+    "emptyCta": { "type": "string" },
+    "followTitle": { "type": "string" },
+    "followIntro": { "type": "text" },
+    "followCta": { "type": "string" },
+    "backgroundUrl": { "type": "text" },
+    "categories": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.filter"
+    }
+  }
+}

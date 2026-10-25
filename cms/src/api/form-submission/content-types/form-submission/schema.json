@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "form_submissions",
+  "info": {
+    "singularName": "form-submission",
+    "pluralName": "form-submissions",
+    "displayName": "Formos užklausos",
+    "description": "Pateiktos kontaktų formos. Matoma tik administracijoje."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "content-manager": { "visible": false },
+    "content-type-builder": { "visible": false }
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "targetEmail": {
+      "type": "email"
+    },
+    "attachment": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images", "files"]
+    },
+    "attachmentName": {
+      "type": "string"
+    }
+  }
+}

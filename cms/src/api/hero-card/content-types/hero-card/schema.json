@@ -1,0 +1,60 @@
+{
+  "kind": "collectionType",
+  "collectionName": "hero_cards",
+  "info": {
+    "singularName": "hero-card",
+    "pluralName": "hero-cards",
+    "displayName": "Hero kortelės",
+    "description": "Hero bloko žalios kortelės. Galima išjungti arba pridėti naujų."
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "enabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "ctaLabel": {
+      "type": "string"
+    },
+    "action": {
+      "type": "enumeration",
+      "enum": ["analysis", "roi", "view"],
+      "default": "view"
+    },
+    "targetSlug": {
+      "type": "string"
+    },
+    "iconKey": {
+      "type": "enumeration",
+      "enum": ["konsultacija", "projektavimas", "gamyba", "montavimas", "custom"]
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "iconUrl": {
+      "type": "text"
+    },
+    "sortOrder": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

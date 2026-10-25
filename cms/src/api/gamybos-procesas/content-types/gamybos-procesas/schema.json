@@ -1,0 +1,60 @@
+{
+  "kind": "singleType",
+  "collectionName": "gamybos_procesai",
+  "info": {
+    "singularName": "gamybos-procesas",
+    "pluralName": "gamybos-procesai",
+    "displayName": "Gamybos procesas",
+    "description": "Gamybos proceso blokas: įjungimas, tekstai ir vaizdo įrašas"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "enabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "badge": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "intro": {
+      "type": "text"
+    },
+    "tagline": {
+      "type": "string"
+    },
+    "videoCaption": {
+      "type": "text"
+    },
+    "videoUrl": {
+      "type": "string"
+    },
+    "poster": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "posterUrl": {
+      "type": "text"
+    },
+    "certificatesCtaLabel": {
+      "type": "string"
+    },
+    "certificatesFile": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["files"],
+      "description": "PDF su visais CE / ISO sertifikatais. Jei failas neįkeltas, mygtukas svetainėje rodo „Netrukus“."
+    },
+    "certificates": {
+      "type": "text"
+    }
+  }
+}

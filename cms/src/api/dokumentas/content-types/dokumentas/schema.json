@@ -1,0 +1,73 @@
+{
+  "kind": "collectionType",
+  "collectionName": "dokumentai",
+  "info": {
+    "singularName": "dokumentas",
+    "pluralName": "dokumentai",
+    "displayName": "Dokumentai",
+    "description": "Montavimo vadovai ir CAD / BIM mazgai"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": ["manual", "mazgas"],
+      "required": true
+    },
+    "subcategory": {
+      "type": "string"
+    },
+    "acronym": {
+      "type": "string"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "imageUrl": {
+      "type": "text"
+    },
+    "fileSize": {
+      "type": "string"
+    },
+    "dwg": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["files"]
+    },
+    "svg": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["files", "images"]
+    },
+    "pdf": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["files"]
+    },
+    "pdfUrl": {
+      "type": "text"
+    },
+    "sortOrder": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

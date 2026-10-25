@@ -1,0 +1,35 @@
+{
+  "kind": "singleType",
+  "collectionName": "inzinerine_pagalbos",
+  "info": {
+    "singularName": "inzinerine-pagalba",
+    "pluralName": "inzinerine-pagalbos",
+    "displayName": "Inžinerinė pagalba",
+    "description": "Karuselės apačios juosta: įjungimas ir tekstai"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "enabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "ctaLabel": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "phoneLabel": {
+      "type": "string"
+    }
+  }
+}

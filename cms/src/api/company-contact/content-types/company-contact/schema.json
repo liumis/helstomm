@@ -1,0 +1,46 @@
+{
+  "kind": "collectionType",
+  "collectionName": "company_contacts",
+  "info": {
+    "singularName": "company-contact",
+    "pluralName": "company-contacts",
+    "displayName": "Komandos kontaktai",
+    "description": "Įmonės žmonių kontaktai poraštėje (rūšiuojama)"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "content-manager": { "visible": false },
+    "content-type-builder": { "visible": false }
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "position": {
+      "type": "string",
+      "required": true
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "photo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "photoUrl": {
+      "type": "text"
+    },
+    "sortOrder": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

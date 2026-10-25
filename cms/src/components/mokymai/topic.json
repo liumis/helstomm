@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_mokymai_topics",
+  "info": {
+    "displayName": "Mokymų tema",
+    "description": "Mokymų temos punktas",
+    "icon": "book"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    }
+  }
+}

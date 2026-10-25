@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "vystytojai",
+  "info": {
+    "singularName": "vystytojas",
+    "pluralName": "vystytojai",
+    "displayName": "Vystytojams",
+    "description": "Pagrindinio puslapio Vystytojams naudos kortelės"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "stat": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "iconUrl": {
+      "type": "text"
+    },
+    "sortOrder": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

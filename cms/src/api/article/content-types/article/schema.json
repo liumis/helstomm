@@ -1,0 +1,89 @@
+{
+  "kind": "collectionType",
+  "collectionName": "articles",
+  "info": {
+    "singularName": "article",
+    "pluralName": "articles",
+    "displayName": "Tinklaraštis",
+    "description": "HELSTOMM GROUP tinklaraščio straipsniai"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "category": {
+      "type": "string",
+      "required": true
+    },
+    "categorySlug": {
+      "type": "enumeration",
+      "enum": ["apdovanojimai", "projektai", "gamyba", "bim", "tvarumas"],
+      "required": true
+    },
+    "dateLabel": {
+      "type": "string",
+      "required": true
+    },
+    "publishedOn": {
+      "type": "date",
+      "required": true
+    },
+    "readTime": {
+      "type": "string",
+      "required": true
+    },
+    "author": {
+      "type": "string",
+      "required": true
+    },
+    "authorRole": {
+      "type": "string"
+    },
+    "excerpt": {
+      "type": "text",
+      "required": true
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "linkedinUrl": {
+      "type": "string"
+    },
+    "imageUrl": {
+      "type": "text"
+    },
+    "cover": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "intro": {
+      "type": "text",
+      "required": true
+    },
+    "keyPoints": {
+      "type": "json"
+    },
+    "paragraphs": {
+      "type": "json"
+    },
+    "quoteText": {
+      "type": "text"
+    },
+    "quoteAuthor": {
+      "type": "string"
+    }
+  }
+}

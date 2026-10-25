@@ -1,0 +1,126 @@
+{
+  "kind": "collectionType",
+  "collectionName": "projektavimai",
+  "info": {
+    "singularName": "projektavimas",
+    "pluralName": "projektavimai",
+    "displayName": "Projektavimas",
+    "description": "Pastatų ir statinių kategorijos: meniu, puslapiai, interaktyvūs mazgai"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "menuTitle": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "menuIconName": {
+      "type": "string"
+    },
+    "badge": {
+      "type": "string"
+    },
+    "pageTitle": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "pageIntro": {
+      "type": "text"
+    },
+    "diagramTitle": {
+      "type": "string"
+    },
+    "diagramSubtitle": {
+      "type": "string"
+    },
+    "diagramImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "diagramImageUrl": {
+      "type": "text"
+    },
+    "assemblyTitle": {
+      "type": "string"
+    },
+    "assemblyCaption": {
+      "type": "text"
+    },
+    "assemblyBackgroundUrl": {
+      "type": "text"
+    },
+    "ctaLabel": {
+      "type": "string"
+    },
+    "showInMenu": {
+      "type": "boolean",
+      "default": true
+    },
+    "showOnHome": {
+      "type": "boolean",
+      "default": false
+    },
+    "cardBadge": {
+      "type": "string"
+    },
+    "cardTitle": {
+      "type": "string"
+    },
+    "cardDescription": {
+      "type": "text"
+    },
+    "cardImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "cardImageUrl": {
+      "type": "text"
+    },
+    "cardBadgeIcon": {
+      "type": "enumeration",
+      "enum": ["Building", "Shield", "Leaf"],
+      "default": "Building"
+    },
+    "cardTheme": {
+      "type": "enumeration",
+      "enum": ["standard", "eco"],
+      "default": "standard"
+    },
+    "cardTargetSlug": {
+      "type": "string"
+    },
+    "cardCtaLabel": {
+      "type": "string"
+    },
+    "cardIconKey": {
+      "type": "enumeration",
+      "enum": ["pastatai", "inzineriniai", "tvarus"],
+      "default": "pastatai"
+    },
+    "sortOrder": {
+      "type": "integer",
+      "default": 0
+    },
+    "hotspots": {
+      "type": "component",
+      "repeatable": true,
+      "component": "design.hotspot"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_shared_filters",
+  "info": {
+    "displayName": "Filtras",
+    "description": "Kategorijos filtras (slug ir etiketė)",
+    "icon": "filter"
+  },
+  "options": {},
+  "attributes": {
+    "slug": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

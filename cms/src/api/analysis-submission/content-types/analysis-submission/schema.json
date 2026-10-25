@@ -1,0 +1,55 @@
+{
+  "kind": "collectionType",
+  "collectionName": "analysis_submissions",
+  "info": {
+    "singularName": "analysis-submission",
+    "pluralName": "analysis-submissions",
+    "displayName": "Analizės užklausos",
+    "description": "Projektų analizės formos pateikimai"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "phone": {
+      "type": "string"
+    },
+    "company": {
+      "type": "string"
+    },
+    "details": {
+      "type": "text"
+    },
+    "notifyEmails": {
+      "type": "text"
+    },
+    "attachment": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": ["images", "files"]
+    },
+    "ipAddress": {
+      "type": "string"
+    },
+    "userAgent": {
+      "type": "text"
+    },
+    "deviceType": {
+      "type": "enumeration",
+      "enum": ["desktop", "mobile"]
+    },
+    "submittedAt": {
+      "type": "datetime"
+    }
+  }
+}

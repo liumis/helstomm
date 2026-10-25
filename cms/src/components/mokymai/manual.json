@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_mokymai_manuals",
+  "info": {
+    "displayName": "Mokymų instrukcija",
+    "description": "Atsisiunčiama instrukcija",
+    "icon": "file"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "url": {
+      "type": "text"
+    },
+    "file": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["files", "images"],
+      "description": "Mokymų PDF. Jei failas neįkeltas, galima naudoti URL lauką. Be abiejų rodoma „Netrukus“."
+    },
+    "fileSize": {
+      "type": "string"
+    }
+  }
+}

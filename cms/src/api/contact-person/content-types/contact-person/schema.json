@@ -1,0 +1,45 @@
+{
+  "kind": "collectionType",
+  "collectionName": "contact_persons",
+  "info": {
+    "singularName": "contact-person",
+    "pluralName": "contact-persons",
+    "displayName": "Įmonės kontaktai",
+    "description": "Kontaktiniai asmenys (nuotrauka, vardas, pareigos, tel., el. paštas)"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "position": {
+      "type": "string",
+      "required": true
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "photo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "photoUrl": {
+      "type": "string"
+    },
+    "sortOrder": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

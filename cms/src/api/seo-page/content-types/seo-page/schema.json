@@ -1,0 +1,54 @@
+{
+  "kind": "collectionType",
+  "collectionName": "seo_pages",
+  "info": {
+    "singularName": "seo-page",
+    "pluralName": "seo-pages",
+    "displayName": "SEO puslapiai",
+    "description": "Kiekvieno svetainės puslapio URL, title, description ir Open Graph laukai."
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "slug": {
+      "type": "uid",
+      "required": true
+    },
+    "path": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "ogTitle": {
+      "type": "string"
+    },
+    "ogDescription": {
+      "type": "text"
+    },
+    "ogImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "ogImageUrl": {
+      "type": "text"
+    },
+    "indexable": {
+      "type": "boolean",
+      "default": true
+    },
+    "sortOrder": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

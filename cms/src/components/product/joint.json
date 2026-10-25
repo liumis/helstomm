@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_product_joints",
+  "info": {
+    "displayName": "Mazgas / jungtis",
+    "description": "CAD mazgas su akronimu ir peržiūra",
+    "icon": "link"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "acronym": {
+      "type": "string"
+    },
+    "imageUrl": {
+      "type": "text"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "file": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["files", "images"],
+      "description": "Mazgo DWG / PDF atsisiuntimui. Be failo kortelėje rodoma „Netrukus“."
+    }
+  }
+}

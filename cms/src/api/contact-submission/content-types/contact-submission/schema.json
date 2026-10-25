@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "contact_submissions",
+  "info": {
+    "singularName": "contact-submission",
+    "pluralName": "contact-submissions",
+    "displayName": "Kontaktų užklausos",
+    "description": "Footer kontaktų formos pateikimai"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "targetEmail": {
+      "type": "email"
+    },
+    "notifyEmails": {
+      "type": "text"
+    },
+    "attachment": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images", "files"]
+    },
+    "ipAddress": {
+      "type": "string"
+    },
+    "userAgent": {
+      "type": "text"
+    },
+    "deviceType": {
+      "type": "enumeration",
+      "enum": ["desktop", "mobile"]
+    },
+    "submittedAt": {
+      "type": "datetime"
+    }
+  }
+}

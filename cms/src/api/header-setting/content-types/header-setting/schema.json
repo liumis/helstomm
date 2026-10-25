@@ -1,0 +1,50 @@
+{
+  "kind": "singleType",
+  "collectionName": "header_settings",
+  "info": {
+    "singularName": "header-setting",
+    "pluralName": "header-settings",
+    "displayName": "Antraštė",
+    "description": "Viršutinės juostos ir meniu tekstai"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "companyLine": { "type": "string" },
+    "phone": { "type": "string" },
+    "email": { "type": "email" },
+    "pillMokymai": { "type": "string" },
+    "pillEko": { "type": "string" },
+    "pillAnalysis": { "type": "string" },
+    "menuProjektavimas": { "type": "string" },
+    "menuProduktai": { "type": "string" },
+    "menuGamyba": { "type": "string" },
+    "menuProjektai": { "type": "string" },
+    "menuDokumentai": { "type": "string" },
+    "menuTinklarastis": { "type": "string" },
+    "designDropdownLabel": { "type": "string" },
+    "designDropdownFooter": { "type": "string" },
+    "productsDropdownLabel": { "type": "string" },
+    "productsDropdownFooter": { "type": "string" },
+    "roiCtaLabel": { "type": "string" },
+    "mobileNavLabel": { "type": "string" },
+    "mobileHome": { "type": "string" },
+    "mobilePastatai": { "type": "string" },
+    "mobileDokumentai": { "type": "string" },
+    "mobileTinklarastis": { "type": "string" },
+    "mobileMokymaiCta": { "type": "string" },
+    "mobileAnalysisCta": { "type": "string" },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "logoUrl": { "type": "text" },
+    "brandName": { "type": "string" },
+    "brandHighlight": { "type": "string" },
+    "brandTagline": { "type": "string" }
+  }
+}

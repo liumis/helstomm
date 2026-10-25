@@ -1,0 +1,434 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Helstomm V3 perdangų kaina</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* HELSTOMM skaičiuoklių šablonas: šviesus techninis lapas.
+   1 Pradiniai duomenys | 2 Rezultatai (užrakinti iki registracijos) · veiksmų juosta · spaudas */
+:root{
+  --paper:#FFFFFF; --sheet:#F6F7F9; --ink:#262B33; --muted:#6B7280; --rule:#C9CED6; --rule-2:#E4E7EC;
+  --lime:#B7CC34; --lime-soft:#FBFCF5; --lime-ink:#5F6F0E; --ok:#2E7D32; --warn:#9A5B12;
+  --mono-1:#6B7280; --mono-2:#9CA3AF; --mono-3:#C3C8D0; --mono-4:#DADDE2; --mono-5:#8A919C;
+  --fil-1:#7E8F1E; --fil-2:#B7CC34; --fil-3:#D3E07A; --fil-4:#E7EEB8; --fil-5:#A3B52B; --fil-6:#5F6F0E;
+  --f:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --m:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--sheet);font-family:var(--f);color:var(--ink);font-size:15px;line-height:1.5}
+.w{max-width:1320px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{margin:0;text-wrap:balance}
+.num{font-family:var(--m);font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--lime-ink);outline-offset:2px}
+
+/* Antraštė */
+.tstrip{border-bottom:1px solid var(--rule-2);padding-block:22px 24px}
+.crumb{font-size:13px;color:var(--muted)}
+.crumb b{color:var(--ink);font-weight:600}
+.trow{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-top:12px;flex-wrap:wrap}
+.code{font-family:var(--m);font-size:12.5px;color:var(--muted);letter-spacing:.04em}
+.code b{color:var(--ink);background:#fff;border:1px solid var(--rule);border-radius:4px;padding:2px 7px;margin-right:8px;font-weight:600}
+.tstrip h1{font-size:30px;font-weight:700;line-height:1.2;margin-top:8px}
+.tstrip p{margin:6px 0 0;color:var(--muted);max-width:760px;font-size:14.5px}
+.norm{font-family:var(--m);font-size:12.5px;border:1px solid var(--rule);background:#fff;border-radius:6px;padding:8px 12px}
+
+/* Lapas */
+.sheetwrap{padding-block:20px 40px}
+.sheet{background:var(--paper);border:1px solid var(--rule);border-radius:4px}
+.cols{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr)}
+.col{padding:22px 24px;min-width:0}
+.col+.col{border-left:1px solid var(--rule)}
+.sh{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding-bottom:10px;border-bottom:2px solid var(--ink);margin-bottom:6px}
+.sh .n{font-family:var(--m);width:22px;height:22px;border:1.5px solid var(--ink);border-radius:3px;display:grid;place-items:center;font-size:12px;letter-spacing:0}
+.sh small{margin-left:auto;font-weight:500;letter-spacing:0;text-transform:none;color:var(--muted);font-size:12.5px}
+.sub{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:20px 0 4px}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+table.t th{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 6px;border-bottom:1px solid var(--rule);white-space:nowrap}
+table.t td{padding:7px 6px;border-bottom:1px solid var(--rule-2);vertical-align:middle}
+table.t td.sym{font-family:var(--m);font-size:13px;color:var(--muted);width:48px}
+table.t td.u{font-family:var(--m);font-size:12.5px;color:var(--muted);width:56px}
+table.t th.v,table.t td.v{text-align:right;font-family:var(--m);font-variant-numeric:tabular-nums;white-space:nowrap}
+table.t tr.total td{border-top:2px solid var(--ink);border-bottom:0;font-weight:600}
+table.t tr.grp td{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:14px}
+td.pos{color:var(--ok)} td.neg{color:var(--warn)}
+.in{width:130px;border:1px solid var(--rule);border-radius:3px;padding:6px 9px;font-family:var(--m);font-size:14px;text-align:right;background:#fff;color:var(--ink)}
+select.in{text-align:left}
+.in.bad{border-color:var(--warn)}
+.err{font-size:12px;color:var(--warn);margin-top:6px}
+details.adv{margin-top:14px;border:1px solid var(--rule-2);border-radius:4px}
+details.adv summary{cursor:pointer;padding:10px 12px;font-size:13px;font-weight:600;list-style:none;display:flex;justify-content:space-between}
+details.adv summary::after{content:"+";font-family:var(--m)}
+details.adv[open] summary::after{content:"−"}
+details.adv .body{padding:0 12px 10px}
+.fixed{font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6}
+.fixed b{color:var(--ink);font-weight:600}
+
+/* Rezultatai */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--rule);margin:14px 0 6px}
+.kpis>div{padding:12px 14px;min-width:0}
+.kpis>div+div{border-left:1px solid var(--rule)}
+.kpis .k{font-size:12.5px;font-weight:600;color:var(--muted)}
+.kpis .v{font-family:var(--m);font-size:22px;font-weight:600;line-height:1.25;margin-top:2px;white-space:nowrap}
+.kpis .s{font-size:12.5px;color:var(--muted)}
+.kpis .main{border-left:4px solid var(--lime)!important;background:var(--lime-soft)}
+.ppl{border:1px solid var(--rule);border-left:4px solid var(--lime);margin-top:22px;padding:12px 14px 4px}
+.ph{font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+#ppl td.v{font-size:17px;font-weight:600}
+#ppl td.vf{color:var(--lime-ink)}
+#ppl td.pc{font-family:var(--m);font-weight:700;color:var(--ok);text-align:right;white-space:nowrap}
+.pnote{background:var(--lime-soft);padding:10px 12px;font-size:13.5px;line-height:1.55;margin:10px 0 10px}
+.charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}
+.ch{margin:0;border:1px solid var(--rule-2);padding:10px 10px 4px;min-width:0}
+.ch figcaption{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ch svg{width:100%;height:auto;display:block}
+.sg{display:flex;gap:18px;justify-content:center;font-size:12.5px;color:var(--muted);margin-top:8px}
+.sg i{display:inline-block;width:11px;height:11px;margin-right:6px;vertical-align:-1px}
+.sg i.m{background:#8A929D}.sg i.f{background:#B7CC34}
+@media (max-width:560px){.charts{grid-template-columns:1fr}.ppl{padding:10px 8px 4px}#ppl th:nth-child(4),#ppl td:nth-child(4){display:none}#ppl td.v{font-size:15px}}
+.bars{display:grid;gap:8px;margin-top:8px}
+.bar{display:grid;grid-template-columns:96px minmax(0,1fr) 110px;gap:10px;align-items:center;font-size:13.5px}
+.bar .tr{height:18px;background:var(--sheet);border:1px solid var(--rule-2);display:flex;overflow:hidden}
+.bar .tr span{display:block;height:100%}
+.bar b{font-family:var(--m);font-weight:500;text-align:right}
+.lg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted);margin-top:6px}
+.lg i{display:inline-block;width:10px;height:10px;margin-right:5px;vertical-align:-1px;border:1px solid rgba(0,0,0,.08)}
+.figs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
+.fig{border:1px solid var(--rule-2);padding:8px 10px 6px}
+.fig h4{margin:0;font-size:12.5px;font-weight:700}
+.fig svg{width:100%;height:auto;display:block}
+.fig p{margin:0;font-size:12px;color:var(--muted)}
+.link{color:var(--ink);text-decoration:none;display:flex;justify-content:space-between;align-items:center;gap:12px;border:1px dashed var(--rule);padding:10px 14px;margin-top:16px;font-size:14px}
+.link b{font-weight:600}
+.link span{font-family:var(--m);font-size:13px;color:var(--lime-ink);font-weight:600;white-space:nowrap}
+.small{font-size:12px;color:var(--muted)}
+
+/* Užrakinta */
+.lockwrap{position:relative}
+.lockwrap.locked .res{filter:blur(6px);opacity:.5;user-select:none;pointer-events:none;max-height:640px;overflow:hidden}
+.gate{position:absolute;inset:110px 6px auto 6px;background:#fff;border:1px solid var(--ink);border-radius:4px;box-shadow:0 12px 32px rgba(38,43,51,.14);padding:22px}
+.gate h3{font-size:18px;font-weight:700;display:flex;gap:10px;align-items:center}
+.gate h3 svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:2}
+.gate p{margin:4px 0 14px;color:var(--muted);font-size:13.5px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+.g2 .full{grid-column:1/-1}
+.fl label{display:block;font-size:12px;font-weight:600;margin-bottom:4px}
+.fl input{width:100%;border:1px solid var(--rule);border-radius:3px;padding:8px 10px;font-size:14px;font-family:var(--f);color:var(--ink)}
+.gate .row{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:14px;flex-wrap:wrap}
+.cb{display:inline-flex;gap:8px;align-items:center;font-size:12.5px;color:var(--muted)}
+.cb input{accent-color:var(--ink)}
+.btn{border:0;border-radius:4px;padding:11px 18px;font-weight:600;font-size:14.5px;display:inline-flex;gap:8px;align-items:center;cursor:pointer;font-family:var(--f)}
+.btn.dark{background:var(--ink);color:#fff}
+
+/* Veiksmai ir spaudas */
+.actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--rule)}
+.actions a{display:flex;gap:12px;align-items:center;padding:16px 22px;color:var(--ink);text-decoration:none}
+.actions a+a{border-left:1px solid var(--rule)}
+.actions .ic{width:40px;height:40px;border:1.5px solid var(--ink);border-radius:4px;display:grid;place-items:center;flex:none}
+.actions .ic svg{width:20px;height:20px;fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.actions a.pri .ic{background:var(--lime);border-color:var(--lime)}
+.actions b{display:block;font-size:14px;text-transform:uppercase;letter-spacing:.04em}
+.actions small{color:var(--muted);font-size:12.5px}
+.stamp{display:grid;grid-template-columns:2.2fr 1.6fr 1fr 1fr 1.2fr 1.4fr;border-top:2px solid var(--ink);font-size:12px}
+.stamp>div{padding:8px 12px;border-right:1px solid var(--rule);min-width:0}
+.stamp>div:last-child{border-right:0;display:flex;align-items:center;justify-content:center;font-weight:700;letter-spacing:.06em}
+.stamp>div:last-child i{color:var(--lime-ink);font-style:normal;margin-left:4px}
+.stamp span{display:block;font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.stamp b{font-family:var(--m);font-weight:500;font-size:13px;overflow-wrap:anywhere}
+.disc{font-size:12.5px;color:var(--muted);margin-top:12px;max-width:1000px}
+details.how{margin-top:14px;border-top:1px solid var(--rule-2);padding-top:10px}
+details.how summary{cursor:pointer;font-weight:600;font-size:14px}
+details.how .body{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.7}
+details.how code{font-family:var(--m);font-size:12.5px;color:var(--ink);background:var(--sheet);padding:1px 5px}
+
+@media (max-width:980px){
+  .cols{grid-template-columns:minmax(0,1fr)}
+  .col+.col{border-left:0;border-top:1px solid var(--rule)}
+  .kpis{grid-template-columns:1fr 1fr}
+  .kpis>div:nth-child(3){border-left:0}
+  .kpis>div:nth-child(n+3){border-top:1px solid var(--rule)}
+  .actions{grid-template-columns:1fr}
+  .actions a+a{border-left:0;border-top:1px solid var(--rule)}
+  .stamp{grid-template-columns:1fr 1fr}
+  .stamp>div{border-bottom:1px solid var(--rule)}
+}
+@media (max-width:560px){
+  .col{padding:16px 14px}
+  .tstrip h1{font-size:23px}
+  .figs{grid-template-columns:1fr}
+  .g2{grid-template-columns:1fr}
+  .gate{position:relative;inset:auto;margin-top:-420px}
+  .lockwrap.locked .res{max-height:520px}
+  .bar{grid-template-columns:70px minmax(0,1fr) 90px;font-size:12.5px}
+  .kpis .v{font-size:18px}
+  .in{width:110px}
+  .scroll{overflow-x:auto}
+}
+@media print{
+  body{background:#fff}
+  .tstrip .norm,.actions,.adv summary,.gate,.link{display:none!important}
+  .sheet{border:0}
+  .lockwrap.locked .res{filter:none;opacity:1;max-height:none}
+}
+.hi{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;border:1px solid #9AAA3A;color:#5F6F0E;font:600 10px/1 var(--m);margin-left:6px;cursor:help;position:relative;vertical-align:1px;background:#fff}
+.hi:hover::after,.hi:focus::after{content:attr(data-h);position:absolute;left:-40px;top:21px;z-index:30;width:min(280px,72vw);background:#fff;border:1px solid #D9DCE1;border-left:3px solid #8DA62A;box-shadow:0 4px 14px rgba(38,43,51,.14);padding:8px 10px;font:400 12px/1.45 Poppins,sans-serif;color:#262B33;text-align:left;white-space:normal}
+.hi:focus{outline:2px solid #B7CC34;outline-offset:1px}
+details.guide{border:1px solid #D9E4A8;background:#F8FAEC;margin:0 0 14px;padding:0}
+details.guide>summary{cursor:pointer;padding:11px 16px;font-weight:700;font-size:13.5px;color:#4D5A0C;list-style:none;display:flex;align-items:center;gap:10px}
+details.guide>summary::-webkit-details-marker{display:none}
+details.guide>summary::before{content:'+';display:inline-flex;width:18px;height:18px;align-items:center;justify-content:center;border:1px solid #8DA62A;font:600 13px/1 var(--m)}
+details.guide[open]>summary::before{content:'−'}
+details.guide>summary small{font-weight:400;color:#6B7280;font-size:12px}
+.gbody{padding:2px 18px 16px;font-size:13px;line-height:1.55;color:#262B33;display:grid;grid-template-columns:1fr 1fr;gap:6px 28px}
+.gbody h5{margin:12px 0 4px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#5F6F0E}
+.gbody ol,.gbody ul{margin:0;padding-left:20px}.gbody li{margin:3px 0}
+.gbody .use{grid-column:1/3;margin:6px 0 0}.gbody .gn{grid-column:1/3;font-size:11.5px;color:#6B7280;margin-top:8px}
+.gbody dl{margin:0}.gbody dt{font-weight:600;margin-top:6px}.gbody dd{margin:0 0 0 0;color:#374151}.gbody dd i{color:#6B7280;font-style:normal;font-size:12px}
+.gbody .lg span{display:inline-block;width:14px;height:12px;border:1px solid #9AAA3A;vertical-align:-1px;margin-right:6px}
+@media(max-width:760px){.gbody{grid-template-columns:1fr}.gbody .use,.gbody .gn{grid-column:1}}
+</style>
+
+<header class="tstrip">
+  <div class="w">
+    <div class="crumb">Skaičiuoklės / Vystytojams / <b>Perdangų kaina</b></div>
+    <div class="trow"><div><div class="code"><b>V3</b>VYSTYTOJAMS · v1.0</div><h1>Perdangų kaina: Filigran ir monolitas</h1>
+      <p>Statybvietės savikaina, darbų trukmė ir žmonių poreikis, kai perdanga betonuojama ant klojinių ir kai montuojamos Filigran (HalfSlab) perdangos plokštės.</p></div>
+      <div class="norm">Orientaciniai įkainiai · 2026 IV ketv.</div></div>
+  </div>
+</header>
+
+<main class="sheetwrap w">
+ <details class="guide"><summary>Kaip naudotis šia skaičiuokle <small>– žingsniai, ką įvesti, ką skaičiuoja</small></summary><div class="gbody"><p class="use">Kada naudoti: palyginti, kiek kainuoja ir kiek užtrunka perdangos monolitiniu būdu ir iš Filigran (HalfSlab) plokščių.</p><div><h5>Žingsniai</h5><ol><li>Pasirinkite perdangos storį ir įveskite perdangų plotą.</li><li>Įveskite savo įkainius: darbo valanda, betonas, armatūra, klojiniai.</li><li>Jei reikia – patikslinkite darbo imlumą, brigadas ir krano kainą.</li><li>Žiūrėkite abiejų variantų kainą €/m², darbo dienas ir žmonių poreikį.</li></ol><h5>Ženklai</h5><ul class="lg" style="list-style:none;padding:0"><li><span style="background:#EAF1C4"></span><b>Įvesties laukelis</b> – įveskite reikšmę arba pasirinkite iš sąrašo; ženkliukas <b>i</b> šalia pavadinimo – paaiškinimas, iš kur paimti reikšmę.</li></ul></div><div><h5>Ką skaičiuoja</h5><dl><dt>Monolitas</dt><dd>Kaina = betonas + armatūra + klojiniai ir išramstymas + darbas; trukmė – pagal brigadą.</dd><dt>Filigran</dt><dd>Kaina = plokštės + monolitinė dalis + montavimas + ramstymas + kranas; trukmė – pagal montavimo brigadą.</dd></dl><h5>Jei rezultatas netenkina</h5><ul><li>Rezultatai skiriasi nuo jūsų patirties – patikslinkite įkainius ir darbo imlumą.</li></ul></div><p class="gn">Rezultatai rodomi užpildžius registracijos laukus (vieną kartą). Kitose Helstomm skaičiuoklėse pakanka nurodyti projekto pavadinimą. Skaičiavimas orientacinis: rezultatai priklauso nuo jūsų įvestų įkainių ir darbo normų. Tikslų pasiūlymą jūsų projektui parengs Helstomm.</p></div></details>
+<div class="sheet">
+  <div class="cols">
+   <section class="col" aria-labelledby="in-h">
+    <div class="sh" id="in-h"><span class="n">1</span>Pradiniai duomenys<small>įvedimas laisvas</small></div>
+    <table class="t">
+      <thead><tr><th>Simb.</th><th>Parametras</th><th class="v">Reikšmė</th><th>Vnt.</th></tr></thead>
+      <tbody>
+       <tr><td class="sym">t</td><td><label for="i-t">Perdangos storis</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Perdangos storis. Abiejų variantų kaina skaičiuojama tam pačiam storiui.">i</span></td><td class="v"><select class="in" id="i-t"></select></td><td class="u">mm</td></tr>
+       <tr><td class="sym">A</td><td><label for="i-A">Perdangų plotas</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Visas projekto perdangų plotas.">i</span></td><td class="v"><input class="in" id="i-A" type="number" inputmode="decimal" min="10" max="100000" step="10" value="1000"></td><td class="u">m²</td></tr>
+       <tr><td class="sym">c<sub>h</sub></td><td><label for="i-ch">Darbo valandos įkainis</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Vienos darbo valandos kaina su mokesčiais statybvietėje.">i</span></td><td class="v"><input class="in" id="i-ch" type="number" inputmode="decimal" min="5" max="100" step="0.5" value="25"></td><td class="u">€/h</td></tr>
+       <tr><td class="sym">c<sub>b</sub></td><td><label for="i-cb">Betono kaina su tiekimu ir pumpavimu</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Betono kaina už m³ su pristatymu ir siurbliu. Iš tiekėjo pasiūlymo.">i</span></td><td class="v"><input class="in" id="i-cb" type="number" inputmode="decimal" min="50" max="300" step="1" value="120"></td><td class="u">€/m³</td></tr>
+       <tr><td class="sym">c<sub>s</sub></td><td><label for="i-cs">Armatūros kaina</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Armatūros kaina už kg (su pjovimu ir lenkimu).">i</span></td><td class="v"><input class="in" id="i-cs" type="number" inputmode="decimal" min="0.5" max="3" step="0.05" value="0.8"></td><td class="u">€/kg</td></tr>
+       <tr><td class="sym">c<sub>k</sub></td><td><label for="i-ck">Klojinių nuoma ir eksploatacija</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Klojinių ir išramstymo nuomos kaina vienam perdangos m² (monolito variantui).">i</span></td><td class="v"><input class="in" id="i-ck" type="number" inputmode="decimal" min="0" max="60" step="0.5" value="9"></td><td class="u">€/m²</td></tr>
+      </tbody>
+    </table>
+    <div class="err" id="err" hidden></div>
+    <details class="adv" id="adv">
+      <summary>Išplėstiniai parametrai</summary>
+      <div class="body"><table class="t"><tbody>
+       <tr><td class="sym">H<sub>m</sub></td><td><label for="i-Hm">Monolito darbo imlumas</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Kiek darbo valandų reikia 1 m³ monolitinės perdangos. Tipiškai 7–12 h/m³.">i</span></td><td class="v"><input class="in" id="i-Hm" type="number" min="3" max="30" step="0.5" value="9"></td><td class="u">h/m³</td></tr>
+       <tr><td class="sym">ρ<sub>m</sub></td><td><label for="i-rm">Armatūros norma monolite</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Kiek kg armatūros tenka 1 m³ monolitinės perdangos. Tipiškai 90–140 kg/m³.">i</span></td><td class="v"><input class="in" id="i-rm" type="number" min="40" max="250" step="5" value="115"></td><td class="u">kg/m³</td></tr>
+       <tr><td class="sym">n<sub>m</sub></td><td><label for="i-nm">Monolito brigada</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Kiek žmonių dirba monolito brigadoje.">i</span></td><td class="v"><input class="in" id="i-nm" type="number" min="1" max="30" step="1" value="6"></td><td class="u">žm.</td></tr>
+       <tr><td class="sym">n<sub>f</sub></td><td><label for="i-nf">Filigran montavimo brigada</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Kiek žmonių dirba Filigran montavimo brigadoje.">i</span></td><td class="v"><input class="in" id="i-nf" type="number" min="1" max="20" step="1" value="5"></td><td class="u">žm.</td></tr>
+       <tr><td class="sym">h<sub>p</sub></td><td><label for="i-sh">Pamainos trukmė</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Darbo pamainos trukmė valandomis.">i</span></td><td class="v"><input class="in" id="i-sh" type="number" min="4" max="12" step="0.5" value="8"></td><td class="u">h</td></tr>
+       <tr><td class="sym">c<sub>kr</sub></td><td><label for="i-ckr">Krano nuoma su operatoriumi</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Krano nuomos su operatoriumi kaina per mėnesį.">i</span></td><td class="v"><input class="in" id="i-ckr" type="number" min="0" max="30000" step="100" value="8000"></td><td class="u">€/mėn.</td></tr>
+      </tbody></table></div>
+    </details>
+    <p class="fixed" id="fixed"></p>
+    <div class="sub">Pjūviai</div>
+    <div class="figs">
+      <div class="fig"><h4>Monolitinė perdanga</h4><svg id="svg-m" viewBox="0 0 300 228" role="img" aria-label="Monolitinės perdangos pjūvis"></svg><p>Visas storis betonuojamas aikštelėje ant klojinių, kurie stovi iki betono sustiprėjimo.</p></div>
+      <div class="fig"><h4>Filigran (HalfSlab) perdanga</h4><svg id="svg-f" viewBox="0 0 300 228" role="img" aria-label="Filigran perdangos pjūvis"></svg><p>Gamyklinė plokštė su apatine armatūra ir girderiais – klojinys; aikštelėje betonuojamas tik antbetonis.</p></div>
+    </div>
+   </section>
+
+   <section class="col" aria-labelledby="out-h">
+    <div class="sh" id="out-h"><span class="n">2</span>Rezultatai<small id="proj">rodomi po registracijos</small></div>
+    <div class="lockwrap locked" id="lockwrap">
+     <div class="res" id="res">
+      <div class="kpis num-wrap">
+        <div><div class="k">Monolitas, objektui</div><div class="v" id="k-mt"></div><div class="s" id="k-ms"></div></div>
+        <div><div class="k">Filigran, objektui</div><div class="v" id="k-ft"></div><div class="s" id="k-fs"></div></div>
+        <div class="main"><div class="k">Sutaupoma</div><div class="v" id="k-sv"></div><div class="s" id="k-svs"></div></div>
+        <div><div class="k">Darbų trukmė (Filigran)</div><div class="v" id="k-d"></div><div class="s" id="k-ds"></div></div>
+      </div>
+      <div class="scroll"><table class="t" id="tbl"></table></div>
+      <section class="ppl" aria-labelledby="ppl-h">
+       <div class="ph" id="ppl-h">Darbuotojai ir darbų trukmė</div>
+       <div class="scroll"><table class="t" id="ppl"></table></div>
+       <p class="pnote" id="pnote"></p>
+      </section>
+      <div class="charts">
+       <figure class="ch"><figcaption>Kainos palyginimas, € objektui</figcaption><svg id="ch-k" viewBox="0 0 360 230" role="img" aria-label="Kainos palyginimo stulpelinė diagrama"></svg></figure>
+       <figure class="ch"><figcaption>Darbuotojai ir darbų trukmė</figcaption><svg id="ch-z" viewBox="0 0 360 230" role="img" aria-label="Darbuotojų ir trukmės stulpelinė diagrama"></svg></figure>
+      </div>
+      <div class="sg"><span><i class="m"></i>Monolitas</span><span><i class="f"></i>Filigran</span></div>
+      <div class="sub">Kiekiai statybvietėje</div>
+      <div class="scroll"><table class="t" id="qty"></table></div>
+      <a class="link" href="#v2"><b id="lnk">Kiek vertos sutaupytos darbo dienos?</b><span>V2 Laiko vertė →</span></a>
+     </div>
+     <form class="gate" id="gate" novalidate>
+      <h3><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="1"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Gaukite rezultatus nemokamai</h3>
+      <p>Užpildykite vieną kartą. Kitose skaičiuoklėse užteks nurodyti projekto pavadinimą.</p>
+      <div class="g2">
+        <div class="fl"><label for="r-fn">Vardas *</label><input id="r-fn" required autocomplete="given-name"></div>
+        <div class="fl"><label for="r-ln">Pavardė *</label><input id="r-ln" required autocomplete="family-name"></div>
+        <div class="fl"><label for="r-co">Įmonė *</label><input id="r-co" required autocomplete="organization"></div>
+        <div class="fl"><label for="r-em">El. paštas *</label><input id="r-em" type="email" required autocomplete="email"></div>
+        <div class="fl full"><label for="r-pr">Projekto pavadinimas *</label><input id="r-pr" required></div>
+      </div>
+      <div class="err" id="gerr" hidden>Užpildykite visus laukus ir pažymėkite sutikimą.</div>
+      <div class="row"><label class="cb"><input type="checkbox" id="r-ok"> Sutinku su privatumo politika ir duomenų tvarkymu</label><button class="btn dark" type="submit">Rodyti rezultatus →</button></div>
+     </form>
+    </div>
+   </section>
+  </div>
+
+  <nav class="actions" aria-label="Veiksmai">
+   <a class="pri" href="#pdf" id="a-pdf"><span class="ic"><svg viewBox="0 0 24 24"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4M12 11v6M9 14l3 3 3-3"/></svg></span><span><b>Gauti PDF ataskaitą</b><small>Skaičiavimas su spaudu</small></span></a>
+   <a href="#analize"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-7h6v7"/></svg></span><span><b>Gauti projekto analizę</b><small>Tikslus pasiūlymas nemokamai</small></span></a>
+   <a href="#klausti"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg></span><span><b>Klausti specialisto</b><small>+370 686 15499</small></span></a>
+  </nav>
+  <div class="stamp">
+   <div><span>Projektas</span><b id="s-pr">–</b></div>
+   <div><span>Įmonė / parengė</span><b id="s-co">–</b></div>
+   <div><span>Data</span><b id="s-dt"></b></div>
+   <div><span>Skaičiuoklė</span><b>V3 · v1.0</b></div>
+   <div><span>Kainos</span><b>orientacinės</b></div>
+   <div>HELSTOMM<i>GROUP</i></div>
+  </div>
+ </div>
+ <p class="disc">Skaičiavimas orientacinis: statybvietės savikaina (darbai, medžiagos, gaminys, kranas). Neįskaičiuota: gaminių transportas, statybvietės bendrosios išlaidos, technologinės pertraukos. Tikslų pasiūlymą nemokamai parengs Helstomm projektavimo skyrius.</p>
+</main>
+
+<script>
+/* ===== KONFIGŪRACIJA (keičia tik Helstomm; IT: laikyti serveryje) ===== */
+const CFG = {
+  thicknesses:[200,220,250,280,300],      // leidžiami perdangos storiai, mm (min 200)
+  monoSplit:[0.30,0.50,0.13,0.07],        // klojiniai, armavimas, betonavimas, nuėmimas (PALYGINIMAS!B22:B25)
+  filPrice:35,      // Filigran plokštės kaina, €/m² (B46)
+  shell:55,         // gamyklinės plokštės storis, mm (B47)
+  filRebar:75,      // antbetonio armatūra, kg/m³ (B49)
+  shoring:5,        // laikinųjų atramų nuoma, €/m² (B50)
+  filH:[0.25,0.35,0.15,0.10], // montavimas ir atramos, viršutinė armatūra, antbetonis, atramų nuėmimas, h/m² (B29:B32)
+  elemArea:17,      // vidutinis plokštės plotas, m² (B10)
+  daysPerMonth:21   // darbo dienų per mėnesį krano nuomai (B44)
+};
+
+/* ===== SKAIČIAVIMAS (gryna funkcija; IT: perkelti į serverį) ===== */
+function calc(i,c=CFG){
+  const d=i.t/1000, dc=(i.t-c.shell)/1000, A=i.A;
+  // Monolitas, vienam m² perdangos
+  const mH = c.monoSplit.map(s=>i.Hm*s*d);              // h/m² pagal etapus
+  const mHt = mH.reduce((a,b)=>a+b,0);
+  const mLab = mHt*i.ch;
+  const mDays = A*mHt/(i.nm*i.sh);
+  const mCrane = mDays/c.daysPerMonth*i.ckr/A;          // €/m²
+  const mMat = {kloj:i.ck, bet:d*i.cb, arm:d*i.rm*i.cs, kr:mCrane};
+  // Filigran, vienam m² perdangos
+  const fH = c.filH.slice(); const fHt = fH.reduce((a,b)=>a+b,0);
+  const fLab = fHt*i.ch;
+  const fDays = A*fHt/(i.nf*i.sh);
+  const fCrane = fDays/c.daysPerMonth*i.ckr/A;
+  const fMat = {gam:c.filPrice, ram:c.shoring, bet:dc*i.cb, arm:dc*c.filRebar*i.cs, kr:fCrane};
+  const sum=o=>Object.values(o).reduce((a,b)=>a+b,0);
+  const mTot = mLab+sum(mMat), fTot = fLab+sum(fMat);
+  return {d,dc,A,
+    mono:{H:mH,Ht:mHt,lab:mLab,mat:mMat,matSum:sum(mMat),tot:mTot,days:mDays,crew:i.nm,
+          qBet:A*d, qArm:A*d*i.rm/1000, qKloj:A},
+    fil:{H:fH,Ht:fHt,lab:fLab,mat:fMat,matSum:sum(fMat),tot:fTot,days:fDays,crew:i.nf,
+          qBet:A*dc, qArm:A*dc*c.filRebar/1000, qKloj:0, qElem:Math.ceil(A/c.elemArea)},
+    save:mTot-fTot, savePct:(mTot-fTot)/mTot};
+}
+
+/* ===== VAIZDAS ===== */
+const $=s=>document.querySelector(s);
+const f0=n=>n.toLocaleString('lt-LT',{maximumFractionDigits:0});
+const f1=n=>n.toLocaleString('lt-LT',{minimumFractionDigits:1,maximumFractionDigits:1});
+const f2=n=>n.toLocaleString('lt-LT',{minimumFractionDigits:2,maximumFractionDigits:2});
+const eur=n=>f0(Math.round(n))+' €';
+const ids=['t','A','ch','cb','cs','ck','Hm','rm','nm','nf','sh','ckr'];
+$('#i-t').innerHTML=CFG.thicknesses.map(t=>`<option ${t===200?'selected':''}>${t}</option>`).join('');
+$('#fixed').innerHTML=`Helstomm duomenys: Filigran plokštė <b>${CFG.filPrice} €/m²</b>, storis <b>${CFG.shell} mm</b>, montavimas <b>${f2(CFG.filH.reduce((a,b)=>a+b))} h/m²</b>, laikinosios atramos <b>${CFG.shoring} €/m²</b>.`;
+$('#s-dt').textContent=new Date().toISOString().slice(0,10);
+
+function read(){const i={};let ok=true;
+  ids.forEach(k=>{const el=$('#i-'+k);const v=parseFloat(el.value);
+    const bad=!(v>=parseFloat(el.min||-1e9)&&v<=parseFloat(el.max||1e9));el.classList.toggle('bad',bad);if(bad)ok=false;i[k]=v;});
+  return ok?i:null;}
+
+function svgSlab(el,t,fil){
+  const k=0.36, h=t*k, x0=24, x1=256, y0=32, yb=y0+h, ff='font-family="IBM Plex Mono,monospace"';
+  let s=`<defs><pattern id="hs${fil?'f':'m'}" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#9CA3AF" stroke-width="1"/></pattern></defs>`;
+  const dim=(a,b,x,lab)=>`<line x1="${x}" x2="${x}" y1="${a}" y2="${b}" stroke="#262B33"/><line x1="${x-5}" x2="${x+5}" y1="${a}" y2="${a}" stroke="#262B33"/><line x1="${x-5}" x2="${x+5}" y1="${b}" y2="${b}" stroke="#262B33"/><text x="${x+7}" y="${(a+b)/2+4}" font-size="10" fill="#262B33" ${ff}>${lab}</text>`;
+  if(!fil){
+    s+=`<rect x="${x0}" y="${y0}" width="${x1-x0}" height="${h}" fill="#F1F2F4" stroke="#262B33" stroke-width="1.5"/>`;
+    for(let x=x0+12;x<x1;x+=18){s+=`<circle cx="${x}" cy="${y0+8}" r="2.6" fill="#262B33"/><circle cx="${x}" cy="${yb-8}" r="2.6" fill="#262B33"/>`;}
+    // klojinys: fanera, sijos, statramsčiai
+    s+=`<rect x="${x0-6}" y="${yb}" width="${x1-x0+12}" height="6" fill="#E4E7EC" stroke="#6B7280"/>`;
+    for(let x=x0+6;x<x1;x+=28) s+=`<rect x="${x}" y="${yb+6}" width="16" height="9" fill="#D7DBE1" stroke="#6B7280"/>`;
+    s+=`<rect x="${x0-6}" y="${yb+15}" width="${x1-x0+12}" height="7" fill="#C9CED6" stroke="#6B7280"/>`;
+    for(let x=x0+16;x<x1;x+=42) s+=`<line x1="${x}" x2="${x}" y1="${yb+22}" y2="${yb+78}" stroke="#6B7280" stroke-width="3"/><line x1="${x-7}" x2="${x+7}" y1="${yb+78}" y2="${yb+78}" stroke="#6B7280" stroke-width="2"/>`;
+    s+=`<text x="140" y="${yb+94}" font-size="10" fill="#6B7280" text-anchor="middle" ${ff}>klojinys: fanera, sijos, statramsčiai</text>`;
+    s+=dim(y0,yb,x1+6,t);
+  } else {
+    const sh=CFG.shell*k, yp=yb-sh;
+    s+=`<rect x="${x0}" y="${y0}" width="${x1-x0}" height="${yp-y0}" fill="#EEF3CF" stroke="#7E8F1E" stroke-dasharray="4 3"/>`;
+    s+=`<rect x="${x0}" y="${yp}" width="${x1-x0}" height="${sh}" fill="url(#hsf)" stroke="#262B33" stroke-width="1.5"/>`;
+    let p=`M${x0+10} ${yp+sh*0.5}`; for(let x=x0+10,j=0;x<x1-14;x+=18,j++) p+=` L${x+18} ${j%2?yp+sh*0.5:y0+10}`;
+    s+=`<path d="${p}" fill="none" stroke="#5F6F0E" stroke-width="1.4"/>`;
+    for(let x=x0+12;x<x1;x+=18){s+=`<circle cx="${x}" cy="${y0+8}" r="2.6" fill="#262B33"/><circle cx="${x}" cy="${yb-sh*0.45}" r="2.3" fill="#262B33"/>`;}
+    for(let x=x0+40;x<x1;x+=150) s+=`<rect x="${x-8}" y="${yb}" width="16" height="7" fill="#D7DBE1" stroke="#6B7280"/><line x1="${x}" x2="${x}" y1="${yb+7}" y2="${yb+78}" stroke="#6B7280" stroke-width="3"/><line x1="${x-7}" x2="${x+7}" y1="${yb+78}" y2="${yb+78}" stroke="#6B7280" stroke-width="2"/>`;
+    s+=`<text x="${x0+2}" y="${y0-8}" font-size="10" fill="#5F6F0E" ${ff}>antbetonis aikštelėje</text>`;
+    s+=`<text x="140" y="${yb+94}" font-size="10" fill="#6B7280" text-anchor="middle" ${ff}>gamyklinė plokštė · retos laikinosios atramos</text>`;
+    s+=dim(y0,yp,x1+6,t-CFG.shell)+dim(yp,yb,x1+6,CFG.shell);
+  }
+  el.innerHTML=s;
+}
+
+function colChart(el,cats,m,f,fmt){
+  const X0=8,X1=352,Y0=22,Y1=178,mx=Math.max(...m,...f)*1.12||1,gw=(X1-X0)/cats.length,bw=Math.min(46,gw*0.3);
+  let s=`<line x1="${X0}" x2="${X1}" y1="${Y1}" y2="${Y1}" stroke="#262B33" stroke-width="1"/>`;
+  for(let k=1;k<=3;k++){const y=Y1-(Y1-Y0)*k/3;s+=`<line x1="${X0}" x2="${X1}" y1="${y}" y2="${y}" stroke="#E5E7EB" stroke-dasharray="3 3"/>`;}
+  cats.forEach((c,j)=>{const cx=X0+gw*(j+.5);
+    [[m[j],'#8A929D',-1],[f[j],'#B7CC34',1]].forEach(([v,col,sd])=>{const h=(Y1-Y0)*v/mx,x=cx+(sd<0?-bw-3:3),y=Y1-h;
+      s+=`<rect x="${x}" y="${y}" width="${bw}" height="${h}" fill="${col}"/><text x="${x+bw/2}" y="${y-5}" font-size="10.5" text-anchor="middle" fill="#262B33" font-family="IBM Plex Mono,monospace">${fmt(v,j)}</text>`;});
+    s+=`<text x="${cx}" y="${Y1+17}" font-size="11" text-anchor="middle" fill="#4B5563" font-family="Poppins,sans-serif">${c[0]}</text><text x="${cx}" y="${Y1+31}" font-size="11" text-anchor="middle" fill="#4B5563" font-family="Poppins,sans-serif">${c[1]}</text>`;});
+  el.innerHTML=s;
+}
+const MCOL=['var(--mono-1)','var(--mono-5)','var(--mono-2)','var(--mono-3)','var(--mono-4)'];
+const FCOL=['var(--fil-6)','var(--fil-1)','var(--fil-5)','var(--fil-2)','var(--fil-3)','var(--fil-4)'];
+function render(){
+  const i=read(); const err=$('#err');
+  if(!i){err.hidden=false;err.textContent='Patikrinkite pažymėtas reikšmes: jos už leidžiamų ribų.';return;}
+  err.hidden=true;
+  const r=calc(i), M=r.mono, F=r.fil, d=r.d;
+  svgSlab($('#svg-m'),i.t,false); svgSlab($('#svg-f'),i.t,true);
+  $('#k-mt').textContent=eur(M.tot*r.A); $('#k-ms').textContent=`${f2(M.tot)} €/m²`;
+  $('#k-ft').textContent=eur(F.tot*r.A); $('#k-fs').textContent=`${f2(F.tot)} €/m²`;
+  $('#k-sv').textContent=eur(r.save*r.A); $('#k-svs').textContent=`${f1(r.savePct*100)} % · ${f2(r.save)} €/m²`;
+  $('#k-d').textContent=`${f1(F.days)} d.`; $('#k-ds').textContent=`monolitas ${f1(M.days)} d. · −${f1(M.days-F.days)} d.`;
+  const row=(lab,m,f,fmt,unit,cls='')=>{const df=m-f;return `<tr class="${cls}"><td>${lab}</td><td class="v">${fmt(m)}</td><td class="v">${fmt(f)}</td><td class="v ${df>=0?'pos':'neg'}">${df>=0?'':'−'}${fmt(Math.abs(df))}</td><td class="u">${unit}</td></tr>`};
+  const g=t=>`<tr class="grp"><td colspan="5">${t}</td></tr>`;
+  $('#tbl').innerHTML=`<thead><tr><th>Rodiklis</th><th class="v">Monolitas</th><th class="v">Filigran</th><th class="v">Skirtumas</th><th>Vnt.</th></tr></thead><tbody>`+
+   g('Vienam m² perdangos')+row('Darbo sąnaudos',M.lab,F.lab,f2,'€/m²')+row('Gaminys, medžiagos, kranas',M.matSum,F.matSum,f2,'€/m²')+row('Bendra savikaina',M.tot,F.tot,f2,'€/m²','total')+
+   g('Vienam m³ perdangos')+row('Bendra savikaina',M.tot/d,F.tot/d,f0,'€/m³','total')+
+   g('Visam objektui')+row('Darbo sąnaudos',M.lab*r.A,F.lab*r.A,f0,'€')+row('Gaminys, medžiagos, kranas',M.matSum*r.A,F.matSum*r.A,f0,'€')+row('Bendra savikaina',M.tot*r.A,F.tot*r.A,f0,'€','total')+
+`</tbody>`;
+  const pr=(lab,m,f,fmt)=>`<tr><td>${lab}</td><td class="v">${fmt(m)}</td><td class="v vf">${fmt(f)}</td><td class="v pos">${fmt(m-f)}</td><td class="pc">−${f0(m?(m-f)/m*100:0)} %</td></tr>`;
+  $('#ppl').innerHTML=`<thead><tr><th>Rodiklis</th><th class="v">Monolitas</th><th class="v">Filigran</th><th class="v">Skirtumas</th><th class="v">Mažiau</th></tr></thead><tbody>`+
+   pr('Darbuotojų objekte, žm.',M.crew,F.crew,f0)+pr('Darbų trukmė, darbo d.',M.days,F.days,f1)+pr('Darbų trukmė, savaitės',M.days/5,F.days/5,f1)+pr('Darbo laikas, žm. val.',M.Ht*r.A,F.Ht*r.A,f0)+`</tbody>`;
+  $('#pnote').textContent=`Su Filigran objekte dirba ${f0(M.crew-F.crew)} žm. mažiau, darbai baigiami ${f0(M.days-F.days)} darbo d. greičiau, o darbo valandų reikia ${f0((M.Ht-F.Ht)/M.Ht*100)} % mažiau. Mažiau žmonių objekte – mažesnė priklausomybė nuo darbo jėgos trūkumo ir mažesnės sąnaudos.`;
+  colChart($('#ch-k'),[['Darbo','sąnaudos'],['Gaminys, medž.,','kranas'],['Bendra','savikaina']],[M.lab*r.A,M.matSum*r.A,M.tot*r.A],[F.lab*r.A,F.matSum*r.A,F.tot*r.A],v=>f0(Math.round(v)));
+  colChart($('#ch-z'),[['Darbuotojai,','žm.'],['Trukmė,','darbo d.']],[M.crew,M.days],[F.crew,F.days],(v,j)=>j?f1(v):f0(v));
+  $('#qty').innerHTML=`<thead><tr><th>Kiekis</th><th class="v">Monolitas</th><th class="v">Filigran</th><th class="v">Skirtumas</th><th>Vnt.</th></tr></thead><tbody>`+
+   row('Betonuojama aikštelėje',M.qBet,F.qBet,f1,'m³')+row('Armatūra aikštelėje',M.qArm,F.qArm,f1,'t')+row('Klojinių (stalų) plotas',M.qKloj,F.qKloj,f0,'m²')+
+   `<tr><td>Filigran plokščių (≈${CFG.elemArea} m²)</td><td class="v">–</td><td class="v">${f0(F.qElem)}</td><td class="v"></td><td class="u">vnt.</td></tr></tbody>`;
+  document.querySelector('a.link').href=`HELSTOMM_V2_Laiko_verte_v1.html?d=${Math.round(M.days-F.days)}&s=${Math.round(r.save*r.A)}`;
+  $('#lnk').textContent=`Kiek vertos sutaupytos ${f0(M.days-F.days)} darbo dienos?`;
+}
+ids.forEach(k=>$('#i-'+k).addEventListener('input',render));
+$('#gate').addEventListener('submit',e=>{e.preventDefault();
+  const req=['r-fn','r-ln','r-co','r-em','r-pr'].map(id=>$('#'+id));
+  const ok=req.every(x=>x.value.trim())&&/\S+@\S+\.\S+/.test($('#r-em').value)&&$('#r-ok').checked;
+  $('#gerr').hidden=ok; if(!ok)return;
+  unlock($('#r-pr').value.trim(),`${$('#r-co').value.trim()} · ${$('#r-fn').value.trim()[0]}. ${$('#r-ln').value.trim()}`);
+});
+function unlock(pr,co){$('#lockwrap').classList.remove('locked');$('#gate').hidden=true;
+  $('#proj').textContent='Projektas: '+pr;$('#s-pr').textContent=pr;$('#s-co').textContent=co;}
+$('#a-pdf').addEventListener('click',e=>{if(!$('#lockwrap').classList.contains('locked')){e.preventDefault();window.print();}});
+render();
+if(location.hash==='#atrakinta'){unlock('Daugiabutis, Žirmūnų g. 12, Vilnius','UAB Statyba · J. Jonaitis');$('#adv').open=true;}
+</script>

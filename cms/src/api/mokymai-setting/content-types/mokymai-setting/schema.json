@@ -1,0 +1,66 @@
+{
+  "kind": "singleType",
+  "collectionName": "mokymai_settings",
+  "info": {
+    "singularName": "mokymai-setting",
+    "pluralName": "mokymai-settings",
+    "displayName": "Mokymai",
+    "description": "Mokymų puslapio tekstai, registracijos temos ir instrukcijos"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "enabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "badge": { "type": "string" },
+    "title": { "type": "string" },
+    "intro": { "type": "text" },
+    "trainerLabel": { "type": "string" },
+    "trainerName": { "type": "string" },
+    "trainerRole": { "type": "string" },
+    "trainerPhoto": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "trainerPhotoUrl": { "type": "text" },
+    "heading": { "type": "string" },
+    "topicsIntro": { "type": "text" },
+    "topics": {
+      "type": "component",
+      "repeatable": true,
+      "component": "mokymai.topic"
+    },
+    "formTopics": {
+      "type": "component",
+      "repeatable": true,
+      "component": "mokymai.form-topic"
+    },
+    "certificateNote": { "type": "text" },
+    "manualsHeading": { "type": "string" },
+    "manuals": {
+      "type": "component",
+      "repeatable": true,
+      "component": "mokymai.manual"
+    },
+    "registerCta": { "type": "string" },
+    "videoTitle": { "type": "string" },
+    "videoTagline": { "type": "string" },
+    "videoCaption": { "type": "text" },
+    "videoPosterUrl": { "type": "text" },
+    "videoBrand": { "type": "string" },
+    "videoBrandHighlight": { "type": "string" },
+    "downloadLabel": { "type": "string" },
+    "calendarNote": { "type": "text" },
+    "calendarEvents": {
+      "type": "component",
+      "repeatable": true,
+      "component": "mokymai.calendar-event"
+    }
+  }
+}

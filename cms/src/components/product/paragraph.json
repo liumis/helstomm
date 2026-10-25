@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_product_paragraphs",
+  "info": {
+    "displayName": "Schemos pastraipa",
+    "description": "Konstrukcinės schemos teksto pastraipa",
+    "icon": "write"
+  },
+  "options": {},
+  "attributes": {
+    "highlight": {
+      "type": "string"
+    },
+    "text": {
+      "type": "text",
+      "required": true
+    }
+  }
+}

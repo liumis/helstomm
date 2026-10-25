@@ -1,0 +1,85 @@
+{
+  "kind": "collectionType",
+  "collectionName": "slides",
+  "info": {
+    "singularName": "slide",
+    "pluralName": "slides",
+    "displayName": "Carousel",
+    "description": "Pagrindinio puslapio karuselės skaidrės"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "tabSubtitle": {
+      "type": "string"
+    },
+    "badge": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "imageUrl": {
+      "type": "text"
+    },
+    "targetSlug": {
+      "type": "string"
+    },
+    "ctaLabel": {
+      "type": "string"
+    },
+    "ctaAction": {
+      "type": "enumeration",
+      "enum": ["view", "analysis"],
+      "default": "view"
+    },
+    "analysisCtaLabel": {
+      "type": "string"
+    },
+    "calculatorLabel": {
+      "type": "string"
+    },
+    "highlights": {
+      "type": "text"
+    },
+    "downloadsTitle": {
+      "type": "string"
+    },
+    "publishedInCarousel": {
+      "type": "boolean",
+      "default": true
+    },
+    "sortOrder": {
+      "type": "integer",
+      "default": 0
+    },
+    "downloads": {
+      "type": "component",
+      "repeatable": true,
+      "component": "carousel.download-link"
+    }
+  }
+}

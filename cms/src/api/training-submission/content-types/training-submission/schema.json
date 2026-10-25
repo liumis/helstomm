@@ -1,0 +1,53 @@
+{
+  "kind": "collectionType",
+  "collectionName": "training_submissions",
+  "info": {
+    "singularName": "training-submission",
+    "pluralName": "training-submissions",
+    "displayName": "Mokymų registracijos",
+    "description": "Mokymų formos pateikimai"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "company": {
+      "type": "string"
+    },
+    "participantsCount": {
+      "type": "string"
+    },
+    "topic": {
+      "type": "string"
+    },
+    "notifyEmails": {
+      "type": "text"
+    },
+    "ipAddress": {
+      "type": "string"
+    },
+    "userAgent": {
+      "type": "text"
+    },
+    "deviceType": {
+      "type": "enumeration",
+      "enum": ["desktop", "mobile"]
+    },
+    "submittedAt": {
+      "type": "datetime"
+    }
+  }
+}

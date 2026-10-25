@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "social_links",
+  "info": {
+    "singularName": "social-link",
+    "pluralName": "social-links",
+    "displayName": "Socialiniai tinklai",
+    "description": "Facebook, Instagram, LinkedIn ir kiti socialiniai adresai"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "platform": {
+      "type": "enumeration",
+      "enum": ["facebook", "instagram", "linkedin", "youtube", "other"],
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "url": {
+      "type": "string",
+      "required": true
+    },
+    "sortOrder": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "kind": "singleType",
+  "collectionName": "form_mail_settings",
+  "info": {
+    "singularName": "form-mail-setting",
+    "pluralName": "form-mail-settings",
+    "displayName": "Formų el. paštas",
+    "description": "Kam siunčiami pranešimai apie pateiktas formas"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "fromName": {
+      "type": "string",
+      "default": "Helstomm Group"
+    },
+    "fromEmail": {
+      "type": "email"
+    },
+    "contactNotifyEmails": {
+      "type": "text"
+    },
+    "analysisNotifyEmails": {
+      "type": "text"
+    },
+    "trainingNotifyEmails": {
+      "type": "text"
+    },
+    "calculatorNotifyEmails": {
+      "type": "text"
+    }
+  }
+}

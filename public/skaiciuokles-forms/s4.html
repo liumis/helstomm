@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Helstomm S4 Betonavimo greitis</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* HELSTOMM skaičiuoklių šablonas: šviesus techninis lapas.
+   1 Pradiniai duomenys | 2 Rezultatai (užrakinti iki registracijos) · veiksmų juosta · spaudas */
+:root{
+  --paper:#FFFFFF; --sheet:#F6F7F9; --ink:#262B33; --muted:#6B7280; --rule:#C9CED6; --rule-2:#E4E7EC;
+  --lime:#B7CC34; --lime-soft:#FBFCF5; --lime-ink:#5F6F0E; --ok:#2E7D32; --warn:#9A5B12;
+  --mono-1:#6B7280; --mono-2:#9CA3AF; --mono-3:#C3C8D0; --mono-4:#DADDE2; --mono-5:#8A919C;
+  --fil-1:#7E8F1E; --fil-2:#B7CC34; --fil-3:#D3E07A; --fil-4:#E7EEB8; --fil-5:#A3B52B; --fil-6:#5F6F0E;
+  --f:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --m:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--sheet);font-family:var(--f);color:var(--ink);font-size:15px;line-height:1.5}
+.w{max-width:1320px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{margin:0;text-wrap:balance}
+.num{font-family:var(--m);font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--lime-ink);outline-offset:2px}
+
+/* Antraštė */
+.tstrip{border-bottom:1px solid var(--rule-2);padding-block:22px 24px}
+.crumb{font-size:13px;color:var(--muted)}
+.crumb b{color:var(--ink);font-weight:600}
+.trow{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-top:12px;flex-wrap:wrap}
+.code{font-family:var(--m);font-size:12.5px;color:var(--muted);letter-spacing:.04em}
+.code b{color:var(--ink);background:#fff;border:1px solid var(--rule);border-radius:4px;padding:2px 7px;margin-right:8px;font-weight:600}
+.tstrip h1{font-size:30px;font-weight:700;line-height:1.2;margin-top:8px}
+.tstrip p{margin:6px 0 0;color:var(--muted);max-width:760px;font-size:14.5px}
+.norm{font-family:var(--m);font-size:12.5px;border:1px solid var(--rule);background:#fff;border-radius:6px;padding:8px 12px}
+
+/* Lapas */
+.sheetwrap{padding-block:20px 40px}
+.sheet{background:var(--paper);border:1px solid var(--rule);border-radius:4px}
+.cols{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr)}
+.col{padding:22px 24px;min-width:0}
+.col+.col{border-left:1px solid var(--rule)}
+.sh{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding-bottom:10px;border-bottom:2px solid var(--ink);margin-bottom:6px}
+.sh .n{font-family:var(--m);width:22px;height:22px;border:1.5px solid var(--ink);border-radius:3px;display:grid;place-items:center;font-size:12px;letter-spacing:0}
+.sh small{margin-left:auto;font-weight:500;letter-spacing:0;text-transform:none;color:var(--muted);font-size:12.5px}
+.sub{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:20px 0 4px}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+table.t th{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 6px;border-bottom:1px solid var(--rule);white-space:nowrap}
+table.t td{padding:7px 6px;border-bottom:1px solid var(--rule-2);vertical-align:middle}
+table.t td.sym{font-family:var(--m);font-size:13px;color:var(--muted);width:48px}
+table.t td.u{font-family:var(--m);font-size:12.5px;color:var(--muted);width:56px}
+table.t th.v,table.t td.v{text-align:right;font-family:var(--m);font-variant-numeric:tabular-nums;white-space:nowrap}
+table.t tr.total td{border-top:2px solid var(--ink);border-bottom:0;font-weight:600}
+table.t tr.grp td{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:14px}
+td.pos{color:var(--ok)} td.neg{color:var(--warn)}
+.in{width:130px;border:1px solid var(--rule);border-radius:3px;padding:6px 9px;font-family:var(--m);font-size:14px;text-align:right;background:#fff;color:var(--ink)}
+select.in{text-align:left}
+.in.bad{border-color:var(--warn)}
+.err{font-size:12px;color:var(--warn);margin-top:6px}
+details.adv{margin-top:14px;border:1px solid var(--rule-2);border-radius:4px}
+details.adv summary{cursor:pointer;padding:10px 12px;font-size:13px;font-weight:600;list-style:none;display:flex;justify-content:space-between}
+details.adv summary::after{content:"+";font-family:var(--m)}
+details.adv[open] summary::after{content:"−"}
+details.adv .body{padding:0 12px 10px}
+.fixed{font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6}
+.fixed b{color:var(--ink);font-weight:600}
+
+/* Rezultatai */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--rule);margin:14px 0 6px}
+.kpis>div{padding:12px 14px;min-width:0}
+.kpis>div+div{border-left:1px solid var(--rule)}
+.kpis .k{font-size:12.5px;font-weight:600;color:var(--muted)}
+.kpis .v{font-family:var(--m);font-size:22px;font-weight:600;line-height:1.25;margin-top:2px;white-space:nowrap}
+.kpis .s{font-size:12.5px;color:var(--muted)}
+.kpis .main{border-left:4px solid var(--lime)!important;background:var(--lime-soft)}
+.ppl{border:1px solid var(--rule);border-left:4px solid var(--lime);margin-top:22px;padding:12px 14px 4px}
+.ph{font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+#ppl td.v{font-size:17px;font-weight:600}
+#ppl td.vf{color:var(--lime-ink)}
+#ppl td.pc{font-family:var(--m);font-weight:700;color:var(--ok);text-align:right;white-space:nowrap}
+.pnote{background:var(--lime-soft);padding:10px 12px;font-size:13.5px;line-height:1.55;margin:10px 0 10px}
+.charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}
+.ch{margin:0;border:1px solid var(--rule-2);padding:10px 10px 4px;min-width:0}
+.ch figcaption{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ch svg{width:100%;height:auto;display:block}
+.sg{display:flex;gap:18px;justify-content:center;font-size:12.5px;color:var(--muted);margin-top:8px}
+.sg i{display:inline-block;width:11px;height:11px;margin-right:6px;vertical-align:-1px}
+.sg i.m{background:#8A929D}.sg i.f{background:#B7CC34}
+@media (max-width:560px){.charts{grid-template-columns:1fr}.ppl{padding:10px 8px 4px}#ppl th:nth-child(4),#ppl td:nth-child(4){display:none}#ppl td.v{font-size:15px}}
+.bars{display:grid;gap:8px;margin-top:8px}
+.bar{display:grid;grid-template-columns:96px minmax(0,1fr) 110px;gap:10px;align-items:center;font-size:13.5px}
+.bar .tr{height:18px;background:var(--sheet);border:1px solid var(--rule-2);display:flex;overflow:hidden}
+.bar .tr span{display:block;height:100%}
+.bar b{font-family:var(--m);font-weight:500;text-align:right}
+.lg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted);margin-top:6px}
+.lg i{display:inline-block;width:10px;height:10px;margin-right:5px;vertical-align:-1px;border:1px solid rgba(0,0,0,.08)}
+.figs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
+.fig{border:1px solid var(--rule-2);padding:8px 10px 6px}
+.fig h4{margin:0;font-size:12.5px;font-weight:700}
+.fig svg{width:100%;height:auto;display:block}
+.fig p{margin:0;font-size:12px;color:var(--muted)}
+.link{color:var(--ink);text-decoration:none;display:flex;justify-content:space-between;align-items:center;gap:12px;border:1px dashed var(--rule);padding:10px 14px;margin-top:16px;font-size:14px}
+.link b{font-weight:600}
+.link span{font-family:var(--m);font-size:13px;color:var(--lime-ink);font-weight:600;white-space:nowrap}
+.small{font-size:12px;color:var(--muted)}
+
+/* Užrakinta */
+.lockwrap{position:relative}
+.lockwrap.locked .res{filter:blur(6px);opacity:.5;user-select:none;pointer-events:none;max-height:640px;overflow:hidden}
+.gate{position:absolute;inset:110px 6px auto 6px;background:#fff;border:1px solid var(--ink);border-radius:4px;box-shadow:0 12px 32px rgba(38,43,51,.14);padding:22px}
+.gate h3{font-size:18px;font-weight:700;display:flex;gap:10px;align-items:center}
+.gate h3 svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:2}
+.gate p{margin:4px 0 14px;color:var(--muted);font-size:13.5px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+.g2 .full{grid-column:1/-1}
+.fl label{display:block;font-size:12px;font-weight:600;margin-bottom:4px}
+.fl input{width:100%;border:1px solid var(--rule);border-radius:3px;padding:8px 10px;font-size:14px;font-family:var(--f);color:var(--ink)}
+.gate .row{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:14px;flex-wrap:wrap}
+.cb{display:inline-flex;gap:8px;align-items:center;font-size:12.5px;color:var(--muted)}
+.cb input{accent-color:var(--ink)}
+.btn{border:0;border-radius:4px;padding:11px 18px;font-weight:600;font-size:14.5px;display:inline-flex;gap:8px;align-items:center;cursor:pointer;font-family:var(--f)}
+.btn.dark{background:var(--ink);color:#fff}
+
+/* Veiksmai ir spaudas */
+.actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--rule)}
+.actions a{display:flex;gap:12px;align-items:center;padding:16px 22px;color:var(--ink);text-decoration:none}
+.actions a+a{border-left:1px solid var(--rule)}
+.actions .ic{width:40px;height:40px;border:1.5px solid var(--ink);border-radius:4px;display:grid;place-items:center;flex:none}
+.actions .ic svg{width:20px;height:20px;fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.actions a.pri .ic{background:var(--lime);border-color:var(--lime)}
+.actions b{display:block;font-size:14px;text-transform:uppercase;letter-spacing:.04em}
+.actions small{color:var(--muted);font-size:12.5px}
+.stamp{display:grid;grid-template-columns:2.2fr 1.6fr 1fr 1fr 1.2fr 1.4fr;border-top:2px solid var(--ink);font-size:12px}
+.stamp>div{padding:8px 12px;border-right:1px solid var(--rule);min-width:0}
+.stamp>div:last-child{border-right:0;display:flex;align-items:center;justify-content:center;font-weight:700;letter-spacing:.06em}
+.stamp>div:last-child i{color:var(--lime-ink);font-style:normal;margin-left:4px}
+.stamp span{display:block;font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.stamp b{font-family:var(--m);font-weight:500;font-size:13px;overflow-wrap:anywhere}
+.disc{font-size:12.5px;color:var(--muted);margin-top:12px;max-width:1000px}
+details.how{margin-top:14px;border-top:1px solid var(--rule-2);padding-top:10px}
+details.how summary{cursor:pointer;font-weight:600;font-size:14px}
+details.how .body{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.7}
+details.how code{font-family:var(--m);font-size:12.5px;color:var(--ink);background:var(--sheet);padding:1px 5px}
+
+@media (max-width:980px){
+  .cols{grid-template-columns:minmax(0,1fr)}
+  .col+.col{border-left:0;border-top:1px solid var(--rule)}
+  .kpis{grid-template-columns:1fr 1fr}
+  .kpis>div:nth-child(3){border-left:0}
+  .kpis>div:nth-child(n+3){border-top:1px solid var(--rule)}
+  .actions{grid-template-columns:1fr}
+  .actions a+a{border-left:0;border-top:1px solid var(--rule)}
+  .stamp{grid-template-columns:1fr 1fr}
+  .stamp>div{border-bottom:1px solid var(--rule)}
+}
+@media (max-width:560px){
+  .col{padding:16px 14px}
+  .tstrip h1{font-size:23px}
+  .figs{grid-template-columns:1fr}
+  .g2{grid-template-columns:1fr}
+  .gate{position:relative;inset:auto;margin-top:-420px}
+  .lockwrap.locked .res{max-height:520px}
+  .bar{grid-template-columns:70px minmax(0,1fr) 90px;font-size:12.5px}
+  .kpis .v{font-size:18px}
+  .in{width:110px}
+  .scroll{overflow-x:auto}
+}
+@media print{
+  body{background:#fff}
+  .tstrip .norm,.actions,.adv summary,.gate,.link{display:none!important}
+  .sheet{border:0}
+  .lockwrap.locked .res{filter:none;opacity:1;max-height:none}
+}
+
+.kp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--rule);margin:14px 0 6px}
+.kp>div{padding:12px 14px;min-width:0}.kp>div+div{border-left:1px solid var(--rule)}
+.kp .k{font-size:12.5px;font-weight:600;color:var(--muted)}
+.kp .v{font-family:var(--m);font-size:21px;font-weight:600;line-height:1.25;margin-top:2px;overflow-wrap:anywhere}
+.kp .s{font-size:12.5px;color:var(--muted)}
+.kp .st{background:var(--lime-soft);border-left:4px solid var(--lime)!important}
+.kp .st.bad{background:#FFF7ED;border-left-color:#C2410C!important}.kp .st.bad .v{color:#9A3412}
+.okb{font-family:var(--m);font-weight:700;color:var(--ok)}.nok{font-family:var(--m);font-weight:700;color:#B45309}
+table.t td.src{font-size:12px;color:var(--muted);white-space:nowrap}
+table.t tr.key td{font-weight:600;border-top:2px solid var(--ink)}
+.note{font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:10px}
+.fig2{border:1px solid var(--rule-2);padding:8px 10px 6px;margin-top:10px}
+.fig2 h4{margin:0;font-size:12.5px;font-weight:700}.fig2 svg{width:100%;height:auto;display:block}
+.fig2 p{margin:2px 0 0;font-size:12px;color:var(--muted)}
+td.hit{background:var(--lime-soft)}
+@media (max-width:980px){.kp{grid-template-columns:1fr 1fr}.kp>div:nth-child(3){border-left:0}.kp>div:nth-child(n+3){border-top:1px solid var(--rule)}}
+@media (max-width:560px){.kp .v{font-size:17px}table.t td.src{white-space:normal}}
+
+.printonly{display:none}
+@media print{.printonly{display:block}}
+.pc{display:inline-flex;align-items:center;gap:6px;justify-content:flex-end;min-width:92px}
+.pc i{display:inline-block;width:44px;height:6px;background:#E5E7EB;position:relative;overflow:hidden}
+.pc i b{position:absolute;left:0;top:0;bottom:0;background:#65A30D}
+.pc.o i b{background:#D97706}.pc.r i b{background:#B91C1C}
+.pc span{font-family:var(--m);font-weight:600;font-size:12.5px}
+.pc.r span{color:#991B1B}.pc.o span{color:#92400E}
+.st-ok{color:var(--ok);font-weight:600}.st-no{color:#9A3412;font-weight:600}.st-na{color:var(--muted)}
+table.t td.adv{font-size:12px;color:#9A3412}
+table.t.chk td:first-child{min-width:150px}
+table.t td.num{font-family:var(--m);text-align:right;white-space:nowrap}
+tr.hide{display:none}
+.legend{font-size:12px;color:var(--muted);margin-top:6px}
+.legend .pc{min-width:0}
+.advbox{border:1px solid #F3C9A8;background:#FFF7ED;padding:10px 14px;margin:12px 0 4px}
+.advh{font-weight:700;font-size:13px;color:#9A3412;margin-bottom:4px}
+.advbox ul{margin:0;padding-left:18px;font-size:12.5px;line-height:1.55}.advbox li{margin:3px 0}
+.advx{color:#6B7280}.advx2{font-size:12.5px;margin-top:6px;font-weight:600;color:#262B33}
+table.t td .st-ok{white-space:nowrap}
+.res .fig2{margin-top:14px}
+.scroll{overflow-x:auto;max-width:100%}
+.dense .pc i{display:none}.dense .pc{min-width:0}.dense td,.dense th{padding-left:5px;padding-right:5px}
+@media (max-width:560px){select.in{max-width:30vw}.col table.t td.u{font-size:10.5px;padding-left:2px}.col table.t td.sym{padding-right:2px}}
+
+.hi{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;border:1px solid #9AAA3A;color:#5F6F0E;font:600 10px/1 var(--m);margin-left:6px;cursor:help;position:relative;vertical-align:1px;background:#fff}
+.hi:hover::after,.hi:focus::after{content:attr(data-h);position:absolute;left:-40px;top:21px;z-index:30;width:min(280px,72vw);background:#fff;border:1px solid #D9DCE1;border-left:3px solid #8DA62A;box-shadow:0 4px 14px rgba(38,43,51,.14);padding:8px 10px;font:400 12px/1.45 Poppins,sans-serif;color:#262B33;text-align:left;white-space:normal}
+.hi:focus{outline:2px solid #B7CC34;outline-offset:1px}
+details.guide{border:1px solid #D9E4A8;background:#F8FAEC;margin:0 0 14px;padding:0}
+details.guide>summary{cursor:pointer;padding:11px 16px;font-weight:700;font-size:13.5px;color:#4D5A0C;list-style:none;display:flex;align-items:center;gap:10px}
+details.guide>summary::-webkit-details-marker{display:none}
+details.guide>summary::before{content:'+';display:inline-flex;width:18px;height:18px;align-items:center;justify-content:center;border:1px solid #8DA62A;font:600 13px/1 var(--m)}
+details.guide[open]>summary::before{content:'−'}
+details.guide>summary small{font-weight:400;color:#6B7280;font-size:12px}
+.gbody{padding:2px 18px 16px;font-size:13px;line-height:1.55;color:#262B33;display:grid;grid-template-columns:1fr 1fr;gap:6px 28px}
+.gbody h5{margin:12px 0 4px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#5F6F0E}
+.gbody ol,.gbody ul{margin:0;padding-left:20px}.gbody li{margin:3px 0}
+.gbody .use{grid-column:1/3;margin:6px 0 0}.gbody .gn{grid-column:1/3;font-size:11.5px;color:#6B7280;margin-top:8px}
+.gbody dl{margin:0}.gbody dt{font-weight:600;margin-top:6px}.gbody dd{margin:0 0 0 0;color:#374151}.gbody dd i{color:#6B7280;font-style:normal;font-size:12px}
+.gbody .lg span{display:inline-block;width:14px;height:12px;border:1px solid #9AAA3A;vertical-align:-1px;margin-right:6px}
+@media(max-width:760px){.gbody{grid-template-columns:1fr}.gbody .use,.gbody .gn{grid-column:1}}
+table.t.steps td{font-size:12px;vertical-align:top}
+table.t.req td{font-size:12.5px;vertical-align:top;line-height:1.45;padding:7px 8px}
+table.t.req td.src{font-size:11px;color:#6B7280;white-space:normal;width:150px}
+@media(max-width:640px){table.t.req td.src{width:90px}}
+table.t.steps td.f{font-family:var(--m);font-size:11px;color:#374151}
+table.t.steps td.src{font-size:11px;color:#6B7280}
+table.t.chk tr.g td{font-size:11px;font-weight:700;color:#4D5A0C;padding:8px 10px;background:#EEF3D2;border-left:4px solid #8DA62A;border-bottom:1px solid #D9E4A8}table.t.chk tr.g .gz{letter-spacing:.08em;text-transform:uppercase;margin-right:10px}table.t.chk tr.g .gd{font-weight:400;font-size:11.5px;color:#5F6F0E}
+.fig2 svg{width:100%;height:auto}
+table.t.chk td{font-size:12.5px}
+table.t.chk td.num{white-space:normal;max-width:200px;font-size:11.5px}
+table.t.chk td:last-child{min-width:110px}
+table.t.chk td:nth-child(3){white-space:nowrap}
+@media(max-width:640px){table.t.chk thead{display:none}table.t.chk,table.t.chk tbody{display:block}
+table.t.chk tr{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:8px 0;border-bottom:1px solid #E5E7EB}
+table.t.chk tr.g{display:block;border:0}table.t.chk td{border:0!important;padding:0!important}
+table.t.chk td:first-child{grid-column:1/3;font-weight:600}table.t.chk td.num{text-align:left;max-width:none}
+table.t.chk td:last-child{grid-column:1/3;min-width:0}}
+.crumb a{color:inherit;text-decoration:none;border-bottom:1px solid #C9CED6}
+.crumb a:hover{color:#262B33}
+</style>
+
+</head>
+<body>
+<header class="tstrip">
+  <div class="w">
+    <div class="crumb"><a href="/skaiciuokles" target="_top">Skaičiuoklės</a> / Statybininkams / <b>Betonavimo greitis</b></div>
+    <div class="trow"><div><div class="code"><b>S4</b>STATYBININKAMS · v1.0</div><h1>Dvigubų sienų betonavimas</h1>
+      <p>Leistinas šviežio betono kilimo greitis dviguboje sienoje pagal girderių žingsnį, sienutės storį, konsistenciją ir temperatūrą; betonavimo laikas ir reikalingas girderių žingsnis.</p></div>
+      <div class="norm">DIN 18218 · LST EN 14992 B</div></div>
+  </div>
+</header>
+<main class="sheetwrap w">
+ <details class="guide"><summary>Kaip naudotis šia skaičiuokle <small>– žingsniai, ką įvesti, ką skaičiuoja</small></summary><div class="gbody"><p class="use">Kada naudoti: prieš betonuojant dvigubas sienas – kad parinktumėte leistiną betono kilimo greitį ir patikrintumėte, ar girderiai atlaikys šviežio betono slėgį.</p><div><h5>Žingsniai</h5><ol><li>Įveskite sienos aukštį, storį ir plonesnės sienutės storį (iš gamintojo brėžinio).</li><li>Pasirinkite betono konsistenciją ir tikėtiną temperatūrą betonuojant.</li><li>Įveskite girderių žingsnį ir planuojamą betonavimo greitį.</li><li>Žiūrėkite LEISTINAS GREITIS ir BETONAVIMO LAIKAS. Jei planuojamas greitis per didelis – mažinkite jį arba prašykite tankesnių girderių.</li></ol><h5>Ženklai</h5><ul class="lg" style="list-style:none;padding:0"><li><span style="background:#EAF1C4"></span><b>Įvesties laukelis</b> – įveskite reikšmę arba pasirinkite iš sąrašo; ženkliukas <b>i</b> šalia pavadinimo – paaiškinimas, iš kur paimti reikšmę.</li><li><b>✔</b> tenkinama · <b>✘</b> netenkina (šalia – ką keisti) · <b>ℹ</b> informacinis pranešimas.</li><li><b>Išnaudojimas</b>: iki 85 % – atsargos pakanka; 85–100 % – artėja prie ribos; virš 100 % – netenkina.</li></ul></div><div><h5>Ką skaičiuoja</h5><dl><dt>Girderiai</dt><dd>Iš girderio laikomosios galios (pagal sienutės storį ir dangą) ir žingsnio apskaičiuojama, kokį slėgį gali atlaikyti sienutės. <i>Zona: girderių laikomoji galia betonuojant.</i></dd><dt>Betonavimas</dt><dd>Šviežio betono slėgis apskaičiuojamas pagal DIN 18218 (greitis, konsistencija, temperatūra) ir palyginamas su girderių galia. Iš to – leistinas greitis ir laikas. <i>Zona: šviežio betono slėgis visame sienos aukštyje.</i></dd></dl><h5>Jei rezultatas raudonas (✘)</h5><ul><li>Mažinkite betonavimo greitį (pilkite sluoksniais per kelis apėjimus).</li><li>Rinkitės standesnį betoną (S3 vietoje S4/S5) arba betonuokite šiltesniu oru.</li><li>Užsakykite tankesnius girderius (mažesnį žingsnį) arba storesnę sienutę.</li></ul></div><p class="gn">Rezultatai rodomi užpildžius registracijos laukus (vieną kartą). Kitose Helstomm skaičiuoklėse pakanka nurodyti projekto pavadinimą. Skaičiuoklė skirta preliminariam projektavimui ir sprendimų patikrinimui. Galutinius sprendimus tvirtina konstrukcijų projekto rengėjas. Išsamios formulės – lape „…_formulės“ ir dokumente „Skaičiavimo algoritmai“.</p></div></details>
+<div class="sheet">
+  <div class="cols">
+   <section class="col" aria-labelledby="in-h">
+    <div class="sh" id="in-h"><span class="n">1</span>Pradiniai duomenys<small>įvedimas laisvas</small></div>
+    <table class="t"><thead><tr><th>Simb.</th><th>Parametras</th><th class="v">Reikšmė</th><th>Vnt.</th></tr></thead><tbody>
+<tr class="grp"><td colspan="4">Siena</td></tr>
+<tr><td class="sym">H</td><td><label for="i-f0">Betonuojamos sienos aukštis</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Vieno betonavimo etapo aukštis (paprastai – sienos elemento aukštis). Iš brėžinio. Tipiškai 2,7–3,3 m.">i</span></td><td class="v"><input class="in" id="i-f0" type="number" inputmode="decimal" min="0.5" max="6.0" step="0.05" value="3.0"></td><td class="u">m</td></tr>
+<tr><td class="sym">h</td><td><label for="i-f1">Sienos storis</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Visas sienos storis su abiem sienutėmis. Iš brėžinio. Tipiškai 200–300 mm.">i</span></td><td class="v"><input class="in" id="i-f1" type="number" inputmode="decimal" min="160" max="450" step="1" value="250"></td><td class="u">mm</td></tr>
+<tr><td class="sym">b<sub>p</sub></td><td><label for="i-f2">Sienutės storis (plonesnės)</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Plonesnės gamyklinės sienutės storis – būtent ji lemia, kiek girderis atlaiko. Iš gamintojo brėžinio. Tipiškai 50–60 mm.">i</span></td><td class="v"><select class="in" id="i-f2"><option value="40">40</option><option value="45">45</option><option value="50">50</option><option value="55">55</option><option value="60" selected>60</option><option value="65">65</option><option value="70">70</option></select></td><td class="u">mm</td></tr>
+<tr><td class="sym">c<sub>g</sub></td><td><label for="i-f3">Girderio juostos danga į šerdies pusę</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Atstumas nuo girderio apatinės juostos iki sienutės vidinio paviršiaus (danga į šerdies pusę). Iš gamintojo. Tipiškai 15–17 mm.">i</span></td><td class="v"><select class="in" id="i-f3"><option value="12">12</option><option value="15">15</option><option value="17" selected>17</option><option value="20">20</option></select></td><td class="u">mm</td></tr>
+<tr><td class="sym">f<sub>ck</sub></td><td><label for="i-f4">Sienučių betono klasė</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Gamyklinių sienučių betono klasė. Iš gamintojo specifikacijos. Helstomm standartas – C30/37.">i</span></td><td class="v"><select class="in" id="i-f4"><option value="C30/37" selected>C30/37</option><option value="C35/45">C35/45</option><option value="C40/50">C40/50</option><option value="C45/55">C45/55</option><option value="C50/60">C50/60</option></select></td><td class="u"></td></tr>
+<tr class="grp"><td colspan="4">Betonavimas</td></tr>
+<tr><td class="sym">S</td><td><label for="i-f5">Betono konsistencija (LST EN 206)</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Šerdies betono slankumo klasė iš betono užsakymo. S3 – standieji, S4/S5 – takesni (didesnis slėgis), SCC – savaime sutankėjantis.">i</span></td><td class="v"><select class="in" id="i-f5"><option value="S3" selected>S3</option><option value="S4">S4</option><option value="S5">S5</option><option value="SCC">SCC</option></select></td><td class="u"></td></tr>
+<tr><td class="sym">T</td><td><label for="i-f6">Oro / betono temperatūra</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Tikėtina oro ir betono temperatūra betonuojant. Kuo šalčiau, tuo lėčiau betonas kietėja ir tuo didesnis slėgis sienutėms.">i</span></td><td class="v"><select class="in" id="i-f6"><option value="≥ 15 °C (tE = 5 h)" selected>≥ 15 °C (tE = 5 h)</option><option value="10–15 °C (tE = 7 h)">10–15 °C (tE = 7 h)</option><option value="5–10 °C (tE = 10 h)">5–10 °C (tE = 10 h)</option><option value="< 5 °C (tE = 20 h)">< 5 °C (tE = 20 h)</option></select></td><td class="u"></td></tr>
+<tr><td class="sym">s<sub>G</sub></td><td><label for="i-f7">Girderių žingsnis</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Atstumas tarp girderių sienos elemente. Iš gamintojo brėžinio. Standartas – 450 mm, didžiausias – 625 mm.">i</span></td><td class="v"><input class="in" id="i-f7" type="number" inputmode="decimal" min="150" max="625" step="1" value="450"></td><td class="u">mm</td></tr>
+<tr><td class="sym">v</td><td><label for="i-f8">Planuojamas betonavimo greitis</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Kaip greitai planuojate kelti betono lygį sienoje. Tipiškai 0,5–1,0 m/h. Skaičiuoklė parodys, ar toks greitis leistinas.">i</span></td><td class="v"><input class="in" id="i-f8" type="number" inputmode="decimal" min="0.1" max="10" step="0.05" value="1.0"></td><td class="u">m/h</td></tr>
+    </tbody></table>
+    <div class="err" id="err" hidden></div>
+    <p class="fixed">Prielaidos: γF = 1,15 (liudijimas); betono tankis 25 kN/m³; vibruojama giluminiais vibratoriais; betonas tiekiamas iš viršaus; forma vertikali (±5°). Sienutės betono stipris betonuojant ≥ 20 MPa. Girderio laikomoji galia R pagal Betonkalender 46 lent. (C20/25).</p>
+    <div class="sub">Schemos ir mazgai</div>
+<div class="fig2"><h4>Šviežio betono slėgis ir girderių išdėstymas</h4><svg id="svg1" viewBox="0 0 360 260" role="img" aria-label="Šviežio betono slėgis ir girderių išdėstymas"></svg></div>
+   </section>
+   <section class="col" aria-labelledby="out-h">
+    <div class="sh" id="out-h"><span class="n">2</span>Rezultatai<small id="proj">rodomi po registracijos</small></div>
+    <div class="lockwrap locked" id="lockwrap">
+     <div class="res" id="res">
+      <div class="kp" id="kp"></div>
+      <div class="sub">Pagrindinės patikros · išnaudojimas · ką keisti</div><div class="scroll"><table class="t chk" id="t1"></table></div>
+      <div id="adv"></div><div id="leg"></div>
+      <div class="sub">Papildomi reikalavimai (konstrukciniai ir vykdymo)</div><table class="t req"><tbody><tr><td>Betonuoti ratu: horizontaliais ~0,5 m sluoksniais, paeiliui per visas sienas, kad kiekvienoje sienoje lygis kiltų ne greičiau už leistiną greitį. Siurblio našumas valdomas pertraukomis, o ne skaičiuojamas.</td><td class="src">Betonkalender §5.2; DIN 18218</td></tr><tr><td>Laisvas betono kritimas ≤ 0,5 m; kai betonavimo aukštis &gt; 1,5 m – betonavimo žarna arba vamzdis (Ø ≤ 100 mm). Betonavimo taškai – ne rečiau kaip kas ~3,8 m.</td><td class="src">Betonkalender §5.2</td></tr><tr><td>Prieš betonuojant sienučių vidinius paviršius sudrėkinti; paviršius &gt; 0 °C, darbo siūlė ant pamato – matiškai drėgna, be stovinčio vandens.</td><td class="src">Betonkalender §5.2; CPT 3690</td></tr><tr><td>Konsistencija pagal LST EN 206: S3 ≈ F3, S4 ≈ F4, S5 ≈ F5 (DIN 18218). Kuo takesnis betonas (S5, SCC), tuo didesnis slėgis ir mažesnis leistinas greitis.</td><td class="src">LST EN 206; DIN 18218</td></tr><tr><td>Vibruoti giluminiais vibratoriais, neliečiant sienučių; vibratoriaus neleisti giliau kaip 0,5 m į žemiau esantį sluoksnį.</td><td class="src">DIN 18218</td></tr><tr><td>Kampai, laisvi sienučių galai ir angų kraštai betonuojant atremiami (spaustukai / atramos); sienos laikinai atremtos tik pagal montavimo projektą.</td><td class="src">CPT 3690; montavimo instrukcija</td></tr><tr><td>Leistinas betonavimo greitis turi būti nurodytas montavimo brėžinyje. Liudijimo vertė 0,80 m/h – senesnė; pagal DIN 18218 su γF = 1,15 dažnai gaunama mažiau.</td><td class="src">Betonkalender §5.2; Z-15.2-40</td></tr><tr><td>Žiemą: sienutės ne šaltesnės kaip +5 °C, betonas ≥ +10 °C 3 paras arba iki ≥ 5 MPa prieš užšąlant.</td><td class="src">DIN 1045-3 / LST EN 13670</td></tr><tr><td>Termo sienoms su izoliacija be girderių (tik Schöck ComBAR jungtys) ši skaičiuoklė netaikoma – betonavimo greitis skaičiuojamas P14.</td><td class="src">Helstomm</td></tr></tbody></table>
+     </div>
+     <form class="gate" id="gate" novalidate>
+      <h3><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="1"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Gaukite rezultatus nemokamai</h3>
+      <p>Užpildykite vieną kartą. Kitose skaičiuoklėse užteks nurodyti projekto pavadinimą.</p>
+      <div class="g2">
+        <div class="fl"><label for="r-fn">Vardas *</label><input id="r-fn" required autocomplete="given-name"></div>
+        <div class="fl"><label for="r-ln">Pavardė *</label><input id="r-ln" required autocomplete="family-name"></div>
+        <div class="fl"><label for="r-co">Įmonė *</label><input id="r-co" required autocomplete="organization"></div>
+        <div class="fl"><label for="r-em">El. paštas *</label><input id="r-em" type="email" required autocomplete="email"></div>
+        <div class="fl full"><label for="r-pr">Projekto pavadinimas *</label><input id="r-pr" required></div>
+      </div>
+      <div class="err" id="gerr" hidden>Užpildykite visus laukus ir pažymėkite sutikimą.</div>
+      <div class="row"><label class="cb"><input type="checkbox" id="r-ok"> Sutinku su privatumo politika ir duomenų tvarkymu</label><button class="btn dark" type="submit">Rodyti rezultatus →</button></div>
+     </form>
+    </div>
+   </section>
+  </div>
+  <nav class="actions" aria-label="Veiksmai">
+   <a class="pri" href="#pdf" id="a-pdf"><span class="ic"><svg viewBox="0 0 24 24"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4M12 11v6M9 14l3 3 3-3"/></svg></span><span><b>Gauti PDF ataskaitą</b><small>Skaičiavimas su spaudu</small></span></a>
+   <a href="#klausti"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg></span><span><b>Klausti konstruktoriaus</b><small>Atsakymas per 1 darbo dieną</small></span></a>
+   <a href="#vadovas"><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 4h10l4 4v12H5z"/><path d="M14 4v5h5M8 13h8M8 17h6"/></svg></span><span><b>Projektavimo vadovas</b><small>Dvigubos sienos, PDF</small></span></a>
+  </nav>
+  <div class="stamp">
+   <div><span>Projektas</span><b id="s-pr">–</b></div>
+   <div><span>Įmonė / parengė</span><b id="s-co">–</b></div>
+   <div><span>Data</span><b id="s-dt"></b></div>
+   <div><span>Skaičiuoklė</span><b>S4 · v1.0</b></div>
+   <div><span>Normos</span><b>DIN 18218</b></div>
+   <div>HELSTOMM<i>GROUP</i></div>
+  </div>
+ </div>
+ <p class="disc">Skaičiavimas pagal DIN 18218:2010 (šviežio betono slėgis), DIBt Z-15.2-40 / Betonkalender 2016 §5.2 (girderio laikomoji galia R) ir LST EN 14992 B priedą. Leistinas greitis turi būti nurodytas montavimo brėžinyje.</p>
+</main>
+<script>
+/* Excel formulių vykdymo modulis (pogrupis) – Helstomm skaičiuoklėms */
+class XErr{constructor(c){this.c=c;}toString(){return this.c;}}
+const E=c=>new XErr(c);
+const isE=v=>v instanceof XErr;
+class XArr{constructor(rows){this.v=rows;}}
+const isA=v=>v instanceof XArr;
+let VAL=[],DONE=[],OVR={};
+function g(i){
+  if(DONE[i])return VAL[i];
+  let v;
+  if(i in OVR)v=OVR[i];
+  else if(i in CONST)v=CONST[i];
+  else{DONE[i]=true;VAL[i]=E('#CIRC!');v=FUNCS[i]();if(isA(v))v=v.v[0][0];}
+  VAL[i]=v;DONE[i]=true;return v;}
+function R(ids){return new XArr(ids.map(r=>r.map(i=>g(i))));}
+/* --- tipų keitimas --- */
+function num(v){ // → number arba XErr
+  if(v===null||v===undefined||v==='')return 0;
+  if(typeof v==='number')return v;
+  if(typeof v==='boolean')return v?1:0;
+  if(isE(v))return v;
+  if(typeof v==='string'){const t=v.trim();if(t!==''&&!isNaN(Number(t)))return Number(t);return E('#VALUE!');}
+  return E('#VALUE!');}
+function str(v){
+  if(v===null||v===undefined)return '';
+  if(typeof v==='boolean')return v?'TRUE':'FALSE';
+  if(typeof v==='number'){if(Number.isInteger(v))return String(v);let s=String(Number(v.toPrecision(15)));if(s.includes('e')){s=v.toPrecision(15).replace(/\.?0+(e)/,'$1');}return s;}
+  return String(v);}
+function rank(v){return typeof v==='number'?0:typeof v==='string'?1:2;}
+function cmp(a,b){ // Excel palyginimas
+  if(a===null||a===undefined)a=(typeof b==='string')?'':(typeof b==='boolean'?false:0);
+  if(b===null||b===undefined)b=(typeof a==='string')?'':(typeof a==='boolean'?false:0);
+  const ra=rank(a),rb=rank(b);if(ra!==rb)return ra<rb?-1:1;
+  if(typeof a==='string'){const x=a.toLowerCase(),y=b.toLowerCase();return x<y?-1:x>y?1:0;}
+  if(typeof a==='boolean'){return a===b?0:(a?1:-1);}
+  return a<b?-1:a>b?1:0;}
+function bmap(a,b,f){
+  if(isA(a)||isA(b)){
+    const A=isA(a)?a.v:null,B=isA(b)?b.v:null;
+    const nr=Math.max(A?A.length:1,B?B.length:1),nc=Math.max(A?A[0].length:1,B?B[0].length:1);
+    const out=[];for(let r=0;r<nr;r++){const row=[];for(let c=0;c<nc;c++){
+      const x=A?(A[A.length===1?0:r]||[])[A[0].length===1?0:c]:a,y=B?(B[B.length===1?0:r]||[])[B[0].length===1?0:c]:b;
+      row.push(x===undefined||y===undefined?E('#N/A'):f(x,y));}out.push(row);}
+    return new XArr(out);}
+  return f(a,b);}
+function OP(op,a,b){
+  return bmap(a,b,(x,y)=>{
+    if(op==='&'){if(isE(x))return x;if(isE(y))return y;return str(x)+str(y);}
+    if(['=','<>','<','>','<=','>='].includes(op)){if(isE(x))return x;if(isE(y))return y;const c=cmp(x,y);
+      return op==='='?c===0:op==='<>'?c!==0:op==='<'?c<0:op==='>'?c>0:op==='<='?c<=0:c>=0;}
+    const p=num(x),q=num(y);if(isE(p))return p;if(isE(q))return q;
+    switch(op){case '+':return p+q;case '-':return p-q;case '*':return p*q;
+      case '/':return q===0?E('#DIV/0!'):p/q;
+      case '^':{const r=Math.pow(p,q);return isNaN(r)?E('#NUM!'):r;}}
+    return E('#VALUE!');});}
+function NEG(a){return bmap(a,0,(x)=>{const p=num(x);return isE(p)?p:-p;});}
+function flat(args,opt={}){ // reikšmės funkcijoms MAX/MIN/SUM
+  const out=[];
+  for(const a of args){
+    if(isA(a)){for(const row of a.v)for(const x of row){if(isE(x)){if(opt.skipErr)continue;out.push(x);}else if(typeof x==='number')out.push(x);}}
+    else if(a===null)continue;
+    else if(isE(a))out.push(a);
+    else{const p=num(a);out.push(p);}
+  }return out;}
+function firstErr(xs){for(const x of xs)if(isE(x))return x;return null;}
+function rnd(x,d){const m=Math.pow(10,d);const s=Math.sign(x);return s*Math.round(Math.abs(x)*m*(1+1e-15)+1e-9*0)/m;}
+function exround(x,d){ // Excel ROUND
+  const m=Math.pow(10,d);let y=Math.abs(x)*m;y=Number(y.toPrecision(15));return Math.sign(x)*Math.round(y)/m;}
+function fixed(x,d,noc){
+  d=d===undefined?2:d;const v=exround(x,d);let s=Math.abs(v).toFixed(Math.max(0,d));
+  if(!noc){const p=s.split('.');p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,FMT.th);s=p.join('.');}
+  s=s.replace('.',FMT.dec);return (v<0?'-':'')+s;}
+const FMT={dec:',',th:' '};
+function wild(c){return new RegExp('^'+c.replace(/[.+^${}()|[\]\\]/g,'\\$&').replace(/\*/g,'.*').replace(/\?/g,'.')+'$','is');}
+function crit(cr){
+  if(typeof cr==='number')return x=>typeof x==='number'&&x===cr;
+  const s=str(cr);const m=s.match(/^(<=|>=|<>|<|>|=)?(.*)$/s);const op=m[1]||'=',rest=m[2];
+  const n=Number(rest);const isn=rest!==''&&!isNaN(n);
+  return x=>{
+    if(isn&&op!=='='&&op!=='<>'){if(typeof x!=='number')return false;return op==='<'?x<n:op==='>'?x>n:op==='<='?x<=n:x>=n;}
+    if(isn){const eq=typeof x==='number'&&x===n;return op==='='?eq:!eq;}
+    const xs=x===null?'':typeof x==='string'?x:null;
+    let eq=xs!==null&&wild(rest).test(xs);if(op==='<>')return !eq;
+    if(op==='='||op===''){return eq;}
+    if(xs===null)return false;const c=cmp(xs,rest);return op==='<'?c<0:op==='>'?c>0:op==='<='?c<=0:c>=0;};}
+const F={
+  IF:(c,a,b)=>{if(isA(c))c=c.v[0][0];if(isE(c))return c;let t;if(typeof c==='string'){const u=c.toUpperCase();if(u==='TRUE')t=true;else if(u==='FALSE')t=false;else return E('#VALUE!');}else t=!!num(c);
+    return t?(a?a():true):(b?b():false);},
+  IFERROR:(a,b)=>{const v=a();return isE(v)?b():v;},
+  CHOOSE:(i,...xs)=>{const n=num(i);if(isE(n))return n;const k=Math.floor(n);if(k<1||k>xs.length)return E('#VALUE!');return xs[k-1]();},
+  AND:(...xs)=>{const v=flatBool(xs);if(isE(v))return v;return v.every(x=>x);},
+  OR:(...xs)=>{const v=flatBool(xs);if(isE(v))return v;return v.some(x=>x);},
+  NOT:(a)=>{const n=num(a);return isE(n)?n:!n;},
+  MAX:(...xs)=>{const v=flat(xs);const e=firstErr(v);if(e)return e;return v.length?Math.max(...v):0;},
+  MIN:(...xs)=>{const v=flat(xs);const e=firstErr(v);if(e)return e;return v.length?Math.min(...v):0;},
+  SUM:(...xs)=>{const v=flat(xs);const e=firstErr(v);if(e)return e;return v.reduce((s,x)=>s+x,0);},
+  ROUND:(x,d)=>{x=num(x);d=num(d);if(isE(x))return x;if(isE(d))return d;return exround(x,Math.trunc(d));},
+  ROUNDUP:(x,d)=>{x=num(x);d=num(d||0);if(isE(x))return x;const m=Math.pow(10,Math.trunc(d));const y=Number((Math.abs(x)*m).toPrecision(15));return Math.sign(x)*Math.ceil(y)/m;},
+  ROUNDDOWN:(x,d)=>{x=num(x);d=num(d||0);if(isE(x))return x;const m=Math.pow(10,Math.trunc(d));const y=Number((Math.abs(x)*m).toPrecision(15));return Math.sign(x)*Math.floor(y)/m;},
+  CEILING:(x,s)=>{x=num(x);s=num(s===undefined?1:s);if(isE(x))return x;if(isE(s))return s;if(s===0)return 0;return Math.ceil(Number((x/s).toPrecision(15)))*s;},
+  INT:(x)=>{x=num(x);return isE(x)?x:Math.floor(x);},
+  ABS:(x)=>{x=num(x);return isE(x)?x:Math.abs(x);},
+  MOD:(a,b)=>{a=num(a);b=num(b);if(isE(a))return a;if(isE(b))return b;if(b===0)return E('#DIV/0!');return a-b*Math.floor(a/b);},
+  SQRT:(x)=>{x=num(x);if(isE(x))return x;return x<0?E('#NUM!'):Math.sqrt(x);},
+  SIN:(x)=>{x=num(x);return isE(x)?x:Math.sin(x);},COS:(x)=>{x=num(x);return isE(x)?x:Math.cos(x);},
+  TAN:(x)=>{x=num(x);return isE(x)?x:Math.tan(x);},ATAN:(x)=>{x=num(x);return isE(x)?x:Math.atan(x);},
+  RADIANS:(x)=>{x=num(x);return isE(x)?x:x*Math.PI/180;},DEGREES:(x)=>{x=num(x);return isE(x)?x:x*180/Math.PI;},
+  N:(x)=>{if(isA(x))x=x.v[0][0];return typeof x==='number'?x:typeof x==='boolean'?(x?1:0):isE(x)?x:0;},
+  ISNUMBER:(x)=>{if(isA(x))x=x.v[0][0];return typeof x==='number';},
+  ISERROR:(x)=>{if(isA(x))x=x.v[0][0];return isE(x);},
+  LEN:(x)=>{if(isE(x))return x;return str(x).length;},
+  CHAR:(x)=>{if(isE(x))return x;return String.fromCharCode(num(x));},
+  PI:()=>Math.PI,EXP:(x)=>{x=num(x);return isE(x)?x:Math.exp(x);},
+  TRIM:(x)=>{if(isE(x))return x;return str(x).replace(/^ +| +$/g,'').replace(/ {2,}/g,' ');},
+  SEARCH:(f,t,s)=>{if(isE(f))return f;if(isE(t))return t;const st=(s===undefined?1:num(s));const re=new RegExp(str(f).toLowerCase().replace(/[.+^${}()|[\]\\]/g,'\\$&').replace(/\*/g,'.*').replace(/\?/g,'.'));const m=str(t).toLowerCase().slice(st-1).search(re);return m<0?E('#VALUE!'):m+st;},
+  LEFT:(x,n)=>{if(isE(x))return x;n=n===undefined||n===null?1:num(n);return str(x).substring(0,n);},
+  FIXED:(x,d,noc)=>{x=num(x);if(isE(x))return x;d=d===undefined||d===null?2:num(d);const nc=noc===undefined||noc===null?false:!!num(noc);return fixed(x,d,nc);},
+  INDEX:(a,r,c)=>{if(!isA(a))return a;r=num(r);c=(c===undefined||c===null)?null:num(c);if(isE(r))return r;if(c!==null&&isE(c))return c;
+    const V=a.v;let rr,cc;if(c===null){if(V.length===1){rr=1;cc=r;}else{rr=r;cc=1;}}else{rr=r;cc=c;}
+    if(rr<1||cc<1||rr>V.length||cc>V[0].length)return E('#REF!');const v=V[Math.floor(rr)-1][Math.floor(cc)-1];return v===null?0:v;},
+  MATCH:(v,a,t)=>{t=t===undefined||t===null?1:num(t);const xs=a.v.length===1?a.v[0]:a.v.map(r=>r[0]);if(isE(v))return v;
+    if(t===0){const re=typeof v==='string'&&/[*?]/.test(v)?wild(v):null;for(let i=0;i<xs.length;i++){const x=xs[i];if(re?(typeof x==='string'&&re.test(x)):(x!==null&&cmp(x,v)===0))return i+1;}return E('#N/A');}
+    let best=-1;for(let i=0;i<xs.length;i++){const x=xs[i];if(x===null)continue;const c=cmp(x,v);if(t>0?c<=0:c>=0)best=i;else break;}return best<0?E('#N/A'):best+1;},
+  VLOOKUP:(v,a,col,rl)=>{const ex=(rl===undefined||rl===null)?false:!num(rl);col=num(col);const V=a.v;
+    if(!ex){let b=-1;for(let i=0;i<V.length;i++){if(V[i][0]===null)continue;if(cmp(V[i][0],v)<=0)b=i;else break;}return b<0?E('#N/A'):V[b][col-1];}
+    for(let i=0;i<V.length;i++)if(V[i][0]!==null&&cmp(V[i][0],v)===0){const r=V[i][col-1];return r===null?0:r;}return E('#N/A');},
+  COUNTIF:(a,cr)=>{const f=crit(cr);let n=0;if(!isA(a))a=new XArr([[a]]);for(const row of a.v)for(const x of row)if(!isE(x)&&f(x))n++;return n;},
+  SUMPRODUCT:(...xs)=>{const arrs=xs.map(x=>isA(x)?x.v:[[x]]);let s=0;const nr=arrs[0].length,nc=arrs[0][0].length;
+    for(let r=0;r<nr;r++)for(let c=0;c<nc;c++){let p=1;for(const A of arrs){const x=A[r][c];if(isE(x))return x;p*=typeof x==='number'?x:typeof x==='boolean'?(x?1:0):0;}s+=p;}return s;},
+  AGGREGATE:(fn,opt,a,k)=>{fn=num(fn);const v=[];const A=isA(a)?a.v:[[a]];for(const row of A)for(const x of row){if(isE(x))continue;if(typeof x==='number')v.push(x);}
+    if(fn===14){k=num(k);v.sort((p,q)=>q-p);return k>=1&&k<=v.length?v[k-1]:E('#NUM!');}
+    if(fn===15){k=num(k);v.sort((p,q)=>p-q);return k>=1&&k<=v.length?v[k-1]:E('#NUM!');}
+    if(fn===4)return v.length?Math.max(...v):0;if(fn===5)return v.length?Math.min(...v):0;if(fn===9)return v.reduce((s,x)=>s+x,0);return E('#VALUE!');},
+};
+function flatBool(xs){const out=[];for(const a of xs){
+  if(isA(a)){for(const row of a.v)for(const x of row){if(isE(x))return x;if(typeof x==='boolean')out.push(x);else if(typeof x==='number')out.push(x!==0);}}
+  else{if(isE(a))return a;if(a===null)continue;if(typeof a==='string'){const u=a.toUpperCase();if(u==='TRUE')out.push(true);else if(u==='FALSE')out.push(false);else return E('#VALUE!');}else out.push(!!num(a));}}
+  if(!out.length)return E('#VALUE!');return out;}
+/* API */
+const XL={
+  reset(){VAL=[];DONE=[];},
+  set(k,v){const i=CELLKEYS[k];if(i===undefined)throw new Error('nėra langelio '+k);OVR[i]=v;XL.reset();},
+  clear(){OVR={};XL.reset();},
+  get(k){const i=CELLKEYS[k];if(i===undefined)throw new Error('nėra langelio '+k);return g(i);},
+  has(k){return CELLKEYS[k]!==undefined;},
+  isErr:isE,fixed,FMT,
+};
+
+const CELLKEYS={"S4_formulės!E6": 0, "S4_formulės!E7": 1, "S4_formulės!E8": 2, "S4_formulės!E9": 3, "S4_formulės!E10": 4, "S4_formulės!E11": 5, "S4_formulės!E12": 6, "S4_formulės!E13": 7, "S4_formulės!E14": 8, "S4_formulės!E15": 9, "S4_formulės!E16": 10, "S4_formulės!E17": 11, "S4_formulės!E18": 12, "S4_formulės!E19": 13, "S4_formulės!E20": 14, "S4_formulės!E21": 15, "S4_formulės!E22": 16, "S4_formulės!E23": 17, "S4_formulės!E24": 18, "S4_formulės!E25": 19, "S4_formulės!E26": 20, "S4_formulės!E27": 21, "S4_formulės!E28": 22, "S4_formulės!E29": 23, "S4_formulės!E30": 24, "S4_formulės!E31": 25, "S4_formulės!E32": 26, "S4_formulės!E33": 27, "S4_formulės!E34": 28, "S4_formulės!E35": 29, "S4_formulės!E36": 30, "S4_formulės!E37": 31, "S4_formulės!E38": 32, "S4_formulės!E39": 33, "S4_formulės!E40": 34, "S4_formulės!E41": 35, "S4_formulės!E42": 36, "S4_formulės!E43": 37, "S4_formulės!E44": 38, "S4_formulės!E45": 39, "S4_formulės!E46": 40, "S4_formulės!E50": 41, "S4_formulės!E51": 42, "S4_formulės!E52": 43, "S4_formulės!E53": 44, "S4_formulės!E54": 45, "S4_formulės!E55": 46, "S4_formulės!E56": 47, "S4_formulės!E57": 48, "WEB_S4!D13": 49, "WEB_S4!D14": 50, "WEB_S4!D12": 51, "WEB_S4!D21": 52, "WEB_S4!D18": 53, "Duomenys!C25": 54, "Duomenys!D25": 55, "Duomenys!E25": 56, "Duomenys!F25": 57, "Duomenys!C26": 58, "Duomenys!D26": 59, "Duomenys!E26": 60, "Duomenys!F26": 61, "Duomenys!C27": 62, "Duomenys!D27": 63, "Duomenys!E27": 64, "Duomenys!F27": 65, "Duomenys!C28": 66, "Duomenys!D28": 67, "Duomenys!E28": 68, "Duomenys!F28": 69, "Duomenys!C29": 70, "Duomenys!D29": 71, "Duomenys!E29": 72, "Duomenys!F29": 73, "WEB_S4!D19": 74, "WEB_S4!D15": 75, "Duomenys!C5": 76, "Duomenys!C6": 77, "Duomenys!C7": 78, "Duomenys!C8": 79, "Duomenys!C9": 80, "WEB_S4!D16": 81, "Duomenys!B5": 82, "Duomenys!B6": 83, "Duomenys!B7": 84, "Duomenys!B8": 85, "Duomenys!B9": 86, "WEB_S4!D20": 87};
+const CONST={49:250,50:60,51:3,52:1,53:"S3",54:1,55:1.16,56:1.4,57:2.15,58:1,59:1.28,60:1.7,61:3.1,62:1,63:1.4,64:2,65:4,66:1,67:1.4,68:2,69:4,70:1,71:1.4,72:2,73:4,74:"≥ 15 °C (tE = 5 h)",75:17,76:30,77:35,78:40,79:45,80:50,81:"C30/37",82:"C30/37",83:"C35/45",84:"C40/50",85:"C45/55",86:"C50/60",87:450};
+const FUNCS={0:()=>F.INDEX(R([[76], [77], [78], [79], [80]]),F.MATCH(g(81),R([[82], [83], [84], [85], [86]]),0)),1:()=>OP("-",g(49),OP("*",2,g(50))),2:()=>F.IF(F.AND(OP(">=",g(50),50),OP(">=",g(75),17)),()=>(18.4),()=>(F.IF(F.AND(OP(">=",g(50),45),OP(">=",g(75),15)),()=>(17.8),()=>(F.IF(F.AND(OP(">=",g(50),40),F.OR(OP(">=",g(75),15),F.AND(OP(">=",g(75),12),OP(">=",g(0),30)))),()=>(15.6),()=>(0)))))),3:()=>F.IF(OP("=",g(74),"≥ 15 °C (tE = 5 h)"),()=>(1),()=>(F.IF(OP("=",g(74),"10–15 °C (tE = 7 h)"),()=>(2),()=>(F.IF(OP("=",g(74),"5–10 °C (tE = 10 h)"),()=>(3),()=>(4)))))),4:()=>F.CHOOSE(F.IF(OP("=",g(53),"S3"),()=>(1),()=>(F.IF(OP("=",g(53),"S4"),()=>(2),()=>(F.IF(OP("=",g(53),"S5"),()=>(3),()=>(4)))))),()=>(1),()=>(2),()=>(3),()=>(5)),5:()=>F.INDEX(R([[54, 55, 56, 57], [58, 59, 60, 61], [62, 63, 64, 65], [66, 67, 68, 69], [70, 71, 72, 73]]),g(4),g(3)),6:()=>F.CHOOSE(g(4),()=>(OP("*",14,g(5))),()=>(OP("*",17,g(5))),()=>(OP("*",30,g(5))),()=>(OP("*",38,g(5))),()=>(OP("*",33,g(5)))),7:()=>F.CHOOSE(g(4),()=>(OP("*",18,g(5))),()=>(OP("*",17,g(5))),()=>(25),()=>(25),()=>(25)),8:()=>F.IF(OP("<=",g(4),2),()=>(25),()=>(30)),9:()=>OP("*",25,g(51)),10:()=>F.IF(OP(">",g(87),0),()=>(OP("/",g(2),OP("/",g(87),1000))),()=>(0)),11:()=>OP("/",g(10),1.15),12:()=>F.AND(OP(">",g(2),0),OP(">=",g(11),g(9))),13:()=>F.IF(OP("=",g(2),0),()=>(0),()=>(F.IF(g(12),()=>(99),()=>(F.IF(OP("<",g(11),g(8)),()=>(0),()=>(F.MAX(0,OP("/",OP("-",g(11),g(7)),g(6))))))))),14:()=>F.MIN(F.MAX(OP("+",OP("*",g(6),g(52)),g(7)),g(8)),g(9)),15:()=>OP("*",1.15,g(14)),16:()=>OP("/",OP("*",g(15),g(87)),1000),17:()=>F.IF(OP(">",g(2),0),()=>(OP("*",OP("/",g(16),g(2)),100)),()=>(999)),18:()=>F.IF(OP(">",g(2),0),()=>(OP("*",F.ROUNDDOWN(OP("/",OP("*",OP("/",g(2),g(15)),1000),5),0),5)),()=>(0)),19:()=>F.IF(OP(">",g(2),0),()=>(OP("*",F.ROUNDDOWN(OP("/",OP("*",OP("/",g(2),OP("*",1.15,g(9))),1000),5),0),5)),()=>(0)),20:()=>OP("*",OP("/",g(87),625),100),21:()=>F.IF(OP(">=",g(13),99),()=>(OP("/",g(51),g(52))),()=>(F.IF(OP(">",g(13),0),()=>(OP("/",g(51),g(13))),()=>(0)))),22:()=>F.IF(F.AND(OP("<=",g(87),312.5),OP(">",g(2),0)),()=>(F.MIN(g(51),OP("/",g(2),OP("*",OP("*",OP("/",OP("*",2,g(87)),1000),1.15),25)))),()=>(0)),23:()=>F.IF(OP(">",g(2),0),()=>(F.MAX(0,OP("/",OP("-",OP("/",g(2),OP("/",g(87),1000)),18),14))),()=>(0)),24:()=>F.IF(OP(">",g(11),0),()=>(OP("*",OP("/",g(8),g(11)),100)),()=>(999)),25:()=>F.IF(OP("=",g(2),0),()=>("netinka"),()=>(F.IF(g(12),()=>("neribojamas"),()=>(F.IF(OP("=",g(13),0),()=>("0 – netinka"),()=>(OP("&",F.FIXED(g(13),2)," m/h"))))))),26:()=>OP("&",OP("&",OP("&",OP("&",OP("&",OP("&","R = ",F.FIXED(g(2),1))," kN/m · sienutė "),g(50))," mm, danga "),g(75))," mm"),27:()=>OP(">",g(2),0),28:()=>F.IF(g(27),()=>(""),()=>("sienutė ≥ 40 mm ir danga ≥ 15 mm (rekomenduojama ≥ 50 mm ir ≥ 17 mm, R = 18,4 kN/m)")),29:()=>OP("&",g(87)," / 625 mm"),30:()=>g(20),31:()=>F.NOT(F.AND(F.ISNUMBER(g(30)),OP(">",g(30),100))),32:()=>F.IF(g(31),()=>(""),()=>("girderių žingsnis negali viršyti 625 mm")),33:()=>OP("&",OP("&",OP("&",F.FIXED(g(11),1)," / "),g(8))," kN/m²"),34:()=>g(24),35:()=>F.NOT(F.AND(F.ISNUMBER(g(34)),OP(">",g(34),100))),36:()=>F.IF(g(35),()=>(""),()=>(OP("&",OP("&","mažinkite girderių žingsnį iki ",OP("*",F.ROUNDDOWN(OP("/",OP("*",OP("/",g(2),OP("*",1.15,g(8))),1000),5),0),5))," mm arba rinkitės mažesnio takumo betoną"))),37:()=>OP("&",OP("&",OP("&",F.FIXED(g(16),1)," / "),F.FIXED(g(2),1))," kN/m"),38:()=>g(17),39:()=>F.NOT(F.AND(F.ISNUMBER(g(38)),OP(">",g(38),100))),40:()=>F.IF(g(39),()=>(""),()=>(OP("&",OP("&",OP("&",OP("&","betonuokite ne greičiau kaip ",g(25))," arba mažinkite girderių žingsnį iki "),g(18))," mm"))),41:()=>g(25),42:()=>OP("&",OP("&","pagal girderių žingsnį ",g(87))," mm"),43:()=>OP("&",F.FIXED(g(21),1)," h"),44:()=>OP("&",OP("&","sienos aukštis ",F.FIXED(g(51),2))," m"),45:()=>OP("&",g(18)," mm"),46:()=>OP("&",OP("&","kai v = ",F.FIXED(g(52),2))," m/h"),47:()=>OP("&",F.FIXED(OP("/",OP("*",g(51),g(1)),1000),2)," m³/m"),48:()=>OP("&",OP("&","1 m sienos · šerdis ",g(1))," mm")};
+
+const G=k=>XL.has(k)?XL.get(k):null;
+const isNum=v=>typeof v==='number'&&isFinite(v);
+function fv(v,d=1){if(typeof d!=='number')d=1;if(v===null||v===undefined||v==='')return '–';if(XL.isErr(v))return '–';if(typeof v==='number')return v.toLocaleString('lt-LT',{minimumFractionDigits:d,maximumFractionDigits:d});return String(v);}
+function pct(v){if(!isNum(v))return '<span class="st-na">'+(v===''||v===null||XL.isErr(v)?'–':v)+'</span>';const c=v>100?'r':v>85?'o':'';
+  return `<span class="pc ${c}"><i><b style="width:${Math.min(100,Math.max(0,v))}%"></b></i><span>${v.toLocaleString('lt-LT',{minimumFractionDigits:1,maximumFractionDigits:1})} %</span></span>`;}
+function stx(v){const s=String(v===null?'':v);if(XL.isErr(v)||s==='')return '<span class="st-na">–</span>';
+  if(s.startsWith('✔')||s==='ok')return `<span class="st-ok">${s==='ok'?'✔ ok':s}</span>`;
+  if(s.startsWith('✘')||s.startsWith('NE ok')||s.startsWith('!'))return `<span class="st-no">${s}</span>`;
+  if(s==='–')return '<span class="st-na">netaikoma</span>';return s;}
+function stOK(v){const s=String(v||'');return !(s.startsWith('✘')||s.startsWith('NE ok'));}
+function hgtAuto(h,cu,co){const mx=h-cu-co-10;let best=70;for(let x=70;x<=300;x+=10)if(x<=mx)best=x;return best;}
+function setGird(code,h,cu,co){const g=GIRD[code];XL.set('Įvestis!D52',g[0]);XL.set('Įvestis!D53',g[1]);XL.set('Įvestis!D54',g[2]);const hg=hgtAuto(h,cu,co);XL.set('Įvestis!D51',hg);return hg;}
+const LEG='<div class="legend">Išnaudojimas: '+pct(60)+' ≤ 85 % · '+pct(92)+' 85–100 % · '+pct(115)+' &gt; 100 % – netenkinama</div>';
+const ff='font-family="IBM Plex Mono,monospace"';
+const dimH=(a,b,y,lab,col='#262B33')=>`<line x1="${a}" x2="${b}" y1="${y}" y2="${y}" stroke="${col}"/><line x1="${a}" x2="${a}" y1="${y-4}" y2="${y+4}" stroke="${col}"/><line x1="${b}" x2="${b}" y1="${y-4}" y2="${y+4}" stroke="${col}"/><text x="${(a+b)/2}" y="${y-4}" font-size="10" text-anchor="middle" fill="${col}" ${ff}>${lab}</text>`;
+const dimV=(x,a,b,lab,col='#262B33',side=1)=>`<line x1="${x}" x2="${x}" y1="${a}" y2="${b}" stroke="${col}"/><line x1="${x-4}" x2="${x+4}" y1="${a}" y2="${a}" stroke="${col}"/><line x1="${x-4}" x2="${x+4}" y1="${b}" y2="${b}" stroke="${col}"/><text x="${x+side*6}" y="${(a+b)/2+3}" font-size="10" text-anchor="${side>0?'start':'end'}" fill="${col}" ${ff}>${lab}</text>`;
+const HATCH=id=>`<pattern id="${id}" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#9CA3AF"/></pattern>`;
+/* Plokštės skerspjūvis (vienam girderio žingsniui) */
+function svgCross(el,o){
+  const W=360,bw=Math.max(o.aGT,400),k=240/bw,x0=58,h=o.h,kH=Math.min(0.55,130/h),y0=24,Y=mm=>y0+(h-mm)*kH,X=mm=>x0+mm*k;
+  let s=`<defs>${HATCH('hx'+o.id)}</defs>`;
+  s+=`<rect x="${X(0)}" y="${Y(h)}" width="${bw*k}" height="${(h-o.hp)*kH}" fill="#EEF3CF" stroke="#7E8F1E" stroke-dasharray="4 3"/>`;
+  s+=`<rect x="${X(0)}" y="${Y(o.hp)}" width="${bw*k}" height="${o.hp*kH}" fill="url(#hx${o.id})" stroke="#262B33" stroke-width="1.5"/>`;
+  // apatinė armatūra: x strypai (taškai), y strypai (linija virš jų)
+  const yx=o.cu+o.dx/2, yy=o.cu+o.dx+o.dy/2;
+  for(let x=o.sx/2;x<bw;x+=o.sx)s+=`<circle cx="${X(x)}" cy="${Y(yx)}" r="${Math.max(2,o.dx*kH/2)}" fill="#262B33"/>`;
+  s+=`<line x1="${X(4)}" x2="${X(bw-4)}" y1="${Y(yy)}" y2="${Y(yy)}" stroke="#262B33" stroke-width="${Math.max(1.4,o.dy*kH)}"/>`;
+  // viršutinė armatūra
+  if(o.dt>0){const yt=h-o.co-o.dt/2;for(let x=o.st/2;x<bw;x+=o.st)s+=`<circle cx="${X(x)}" cy="${Y(yt)}" r="${Math.max(2,o.dt*kH/2)}" fill="#262B33"/>`;
+    s+=`<text x="${X(bw)}" y="${Y(h)-4}" font-size="10" text-anchor="end" fill="#262B33" ${ff}>${o.tl}</text>`;}
+  // girderis
+  const gx=bw/2,gb=o.cu+o.dx+o.dy+o.ug/2,gt=gb+o.hgt-o.ug/2-o.og/2;
+  s+=`<path d="M${X(gx-40)} ${Y(gb)} L${X(gx)} ${Y(gt)} L${X(gx+40)} ${Y(gb)}" fill="none" stroke="#5F6F0E" stroke-width="1.6"/>`;
+  s+=`<circle cx="${X(gx-40)}" cy="${Y(gb)}" r="2.6" fill="#5F6F0E"/><circle cx="${X(gx+40)}" cy="${Y(gb)}" r="2.6" fill="#5F6F0E"/><circle cx="${X(gx)}" cy="${Y(gt)}" r="3.2" fill="#5F6F0E"/>`;
+  s+=dimV(X(gx+56),Y(gb-o.ug/2),Y(gt+o.og/2),'h_GT '+o.hgt,'#5F6F0E');
+  s+=dimV(X(0)-10,Y(0),Y(h),'h '+h,'#262B33',-1)+dimV(X(bw)+8,Y(0),Y(o.hp),'h_p '+o.hp);
+  s+=dimH(X(gx),X(gx+o.aGT>bw?bw:gx+o.aGT),Y(0)+16,'a_GT '+o.aGT,'#5F6F0E');
+  s+=`<text x="${X(0)}" y="${Y(0)+34}" font-size="10" fill="#262B33" ${ff}>${o.bl}</text>`;if(o.bl2)s+=`<text x="${X(0)}" y="${Y(0)+48}" font-size="10" fill="#5F6F0E" ${ff}>${o.bl2}</text>`;
+  el.setAttribute('viewBox',`0 0 ${W} ${Y(0)+(o.bl2?56:42)}`);el.innerHTML=s;}
+
+const SP={"inp": [{"id": "H", "eid": "f0", "cell": "WEB_S4!D12"}, {"id": "h", "eid": "f1", "cell": "WEB_S4!D13"}, {"id": "bp", "eid": "f2", "cell": "WEB_S4!D14"}, {"id": "cg", "eid": "f3", "cell": "WEB_S4!D15"}, {"id": "cls", "eid": "f4", "cell": "WEB_S4!D16"}, {"id": "cons", "eid": "f5", "cell": "WEB_S4!D18"}, {"id": "tE", "eid": "f6", "cell": "WEB_S4!D19"}, {"id": "sG", "eid": "f7", "cell": "WEB_S4!D20"}, {"id": "vt", "eid": "f8", "cell": "WEB_S4!D21"}], "checks": [{"lab": "Sienutės storis ir juostos danga (girderio galia R)", "v": "cv0", "p": null, "o": "co0", "a": "ca0", "group": "Girderiai", "info": false, "gd": "girderių laikomoji galia betonuojant"}, {"lab": "Girderių žingsnis ≤ 625 mm", "v": "cv1", "p": "cp1", "o": "co1", "a": "ca1", "group": "Girderiai", "info": false, "gd": "girderių laikomoji galia betonuojant"}, {"lab": "Minimalus pradinis slėgis", "v": "cv2", "p": "cp2", "o": "co2", "a": "ca2", "group": "Girderiai", "info": false, "gd": "girderių laikomoji galia betonuojant"}, {"lab": "Šviežio betono slėgis planuojamu greičiu", "v": "cv3", "p": "cp3", "o": "co3", "a": "ca3", "group": "Betonavimas", "info": false, "gd": "šviežio betono slėgis visame sienos aukštyje"}], "steps": [{"lab": "Girderio laikomoji galia", "f": "R = f(b_p, c_g) – 15,6 / 17,8 / 18,4 kN/m", "key": "R", "u": "kN/m", "d": 1, "src": "Betonkalender 46 lent."}, {"lab": "Kietėjimo koeficientas", "f": "K1 = f(konsistencija, tE)", "key": "K1", "u": "", "d": 2, "src": "DIN 18218, 2 lent."}, {"lab": "Leistinas slėgis girderiui", "f": "p = R / s_G", "key": "pAd", "u": "kN/m²", "d": 1, "src": "liudijimas Z-15.2-40"}, {"lab": "Charakteristinis leistinas slėgis", "f": "p_k = p / γF,  γF = 1,15", "key": "pAk", "u": "kN/m²", "d": 1, "src": "Betonkalender (39)"}, {"lab": "Slėgis planuojamu greičiu", "f": "σhk = (14·v + 18)·K1 ≥ 25 (S3≈F3);  S4≈F4: (17v+17)K1;  S5≈F5 / SCC: 25 + (30/33)·v·K1 ≥ 30;  ≤ 25·H", "key": "sT", "u": "kN/m²", "d": 1, "src": "DIN 18218 (40), (41)"}, {"lab": "Skaičiuotinis slėgis", "f": "σhd = 1,15·σhk", "key": "sTd", "u": "kN/m²", "d": 1, "src": ""}, {"lab": "Apkrova girderiui", "f": "σhd · s_G ≤ R", "key": "fT", "u": "kN/m", "d": 1, "src": ""}, {"lab": "Leistinas greitis", "f": "v = (p_k − b)/a  (S3: a = 14·K1, b = 18·K1)", "key": "vAll", "u": "m/h", "d": 2, "src": "išvesta iš DIN 18218"}, {"lab": "Žingsnis planuojamam greičiui", "f": "s_G = R / σhd(v)", "key": "sGreq", "u": "mm", "d": 0, "src": ""}, {"lab": "Žingsnis neribotam greičiui", "f": "s_G = R / (1,15·25·H)", "key": "sGunl", "u": "mm", "d": 0, "src": "Betonkalender §5.2"}, {"lab": "Kas antras girderis trumpesnis iki gylio", "f": "z = R / (2·s_G·1,15·25), kai s_G ≤ 312 mm", "key": "zS", "u": "m", "d": 2, "src": "Betonkalender §5.2"}, {"lab": "Palyginimui: LST EN 14992 B priedas", "f": "v = (R/s_G − 18)/14 (F3, be γF)", "key": "vEN", "u": "m/h", "d": 2, "src": "LST EN 14992 B.3 pav."}], "kl": ["LEISTINAS GREITIS", "BETONAVIMO LAIKAS", "ŽINGSNIS GREIČIUI v", "BETONAS"], "keys": {"H": "WEB_S4!D12", "h": "WEB_S4!D13", "bp": "WEB_S4!D14", "cg": "WEB_S4!D15", "cls": "WEB_S4!D16", "cons": "WEB_S4!D18", "tE": "WEB_S4!D19", "sG": "WEB_S4!D20", "vt": "WEB_S4!D21", "fck": "S4_formulės!E6", "bn": "S4_formulės!E7", "R": "S4_formulės!E8", "iT": "S4_formulės!E9", "iC": "S4_formulės!E10", "K1": "S4_formulės!E11", "aS": "S4_formulės!E12", "bS": "S4_formulės!E13", "sMin": "S4_formulės!E14", "hyd": "S4_formulės!E15", "pAd": "S4_formulės!E16", "pAk": "S4_formulės!E17", "unl": "S4_formulės!E18", "vAll": "S4_formulės!E19", "sT": "S4_formulės!E20", "sTd": "S4_formulės!E21", "fT": "S4_formulės!E22", "uP": "S4_formulės!E23", "sGreq": "S4_formulės!E24", "sGunl": "S4_formulės!E25", "uS": "S4_formulės!E26", "tH": "S4_formulės!E27", "zS": "S4_formulės!E28", "vEN": "S4_formulės!E29", "uMin": "S4_formulės!E30", "vTxt": "S4_formulės!E31", "cv0": "S4_formulės!E32", "co0": "S4_formulės!E33", "ca0": "S4_formulės!E34", "cv1": "S4_formulės!E35", "cp1": "S4_formulės!E36", "co1": "S4_formulės!E37", "ca1": "S4_formulės!E38", "cv2": "S4_formulės!E39", "cp2": "S4_formulės!E40", "co2": "S4_formulės!E41", "ca2": "S4_formulės!E42", "cv3": "S4_formulės!E43", "cp3": "S4_formulės!E44", "co3": "S4_formulės!E45", "ca3": "S4_formulės!E46", "reg": "WEB_S4!R47", "act": "WEB_S4!R48", "show": "WEB_S4!R49", "kv0": "S4_formulės!E50", "ks0": "S4_formulės!E51", "kv1": "S4_formulės!E52", "ks1": "S4_formulės!E53", "kv2": "S4_formulės!E54", "ks2": "S4_formulės!E55", "kv3": "S4_formulės!E56", "ks3": "S4_formulės!E57"}, "grid": {}, "notes": []};const IDS=SP.inp.map(o=>o.eid);const HS=null;
+const K=k=>G(SP.keys[k]);
+/* ===== Schemos ir mazgai (SVG) – Filigran dvigubos sienos ===== */
+const INKc='#262B33',LIM='#5F6F0E',LIMF='#EEF3CF',ORGc='#C2410C',BLU='#2563EB',GRY='#9CA3AF';
+const T=(x,y,s,o={})=>`<text x="${x}" y="${y}" font-size="${o.fs||10}" text-anchor="${o.a||'start'}" fill="${o.c||INKc}" ${o.b?'font-weight="600"':''} ${ff}>${s}</text>`;
+const Ln=(x1,y1,x2,y2,c=INKc,w=1,d='')=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="${w}" ${d?`stroke-dasharray="${d}"`:''}/>`;
+const Rc=(x,y,w,h,f='#fff',c=INKc,sw=1.2)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${f}" stroke="${c}" stroke-width="${sw}"/>`;
+const arrow=(x1,y1,x2,y2,c=INKc)=>{const a=Math.atan2(y2-y1,x2-x1),l=6;return Ln(x1,y1,x2,y2,c,1.3)+`<path d="M${x2} ${y2} L${x2-l*Math.cos(a-0.4)} ${y2-l*Math.sin(a-0.4)} L${x2-l*Math.cos(a+0.4)} ${y2-l*Math.sin(a+0.4)} Z" fill="${c}"/>`;};
+const zig=(x1,x2,y0,y1,step,c=LIM)=>{let p=`M${x1} ${y0}`,k=0;for(let y=y0;y<y1;y+=step,k++)p+=` L${k%2?x1:x2} ${Math.min(y+step,y1)}`;return `<path d="${p}" fill="none" stroke="${c}" stroke-width="1.2"/>`+Ln(x1,y0,x1,y1,c,1.6)+Ln(x2,y0,x2,y1,c,1.6);};
+const soilHatch=id=>`<pattern id="${id}" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M0 8 L8 0" stroke="#A8A29E" stroke-width="0.8"/></pattern>`;
+/* sienos pjūvis (vertikalus): x0 – kairys kraštas, sc px/mm storiui, y0..y1 */
+function wallSec(x0,y0,y1,h,bp,sc,id,o={}){const w1=bp*sc,wc=(h-2*bp)*sc;let s='';
+  s+=`<rect x="${x0}" y="${y0}" width="${w1}" height="${y1-y0}" fill="url(#${id})" stroke="${INKc}" stroke-width="1.3"/>`;
+  s+=`<rect x="${x0+w1}" y="${y0}" width="${wc}" height="${y1-y0}" fill="${LIMF}" stroke="#7E8F1E" stroke-dasharray="4 3"/>`;
+  s+=`<rect x="${x0+w1+wc}" y="${y0}" width="${w1}" height="${y1-y0}" fill="url(#${id})" stroke="${INKc}" stroke-width="1.3"/>`;
+  if(o.gird!==false)s+=zig(x0+w1-3,x0+w1+wc+3,y0+4,y1-(o.gb||4),16);
+  return s;}
+const defs=id=>`<defs>${HATCH(id)}${soilHatch(id+'s')}</defs>`;
+/* ---------- S4 ---------- */
+function svgS4(el,i){const H=i.H,y1=230,sy=190/6,y0=y1-H*sy,x0=52,sc=0.3;let s=defs('hs4');
+  s+=wallSec(x0,y0,y1,i.h,i.bp,sc,'hs4');s+=Rc(x0-16,y1,i.h*sc+32,10,'#E5E7EB');const xr=x0+i.h*sc+26;
+  const sMax=K('sT'),pk=K('pAk'),hyd=25*H,ps=150/Math.max(100,hyd,pk);
+  const zc=Math.min(H,sMax/25);let p=`M${xr} ${y0} L${xr+25*zc*ps} ${y0+zc*sy} L${xr+sMax*ps} ${y1} L${xr} ${y1} Z`;
+  s+=Ln(xr,y1,xr+150,y1,GRY,0.8);for(let q=0;q<=Math.max(100,hyd,pk);q+=25){s+=Ln(xr+q*ps,y1,xr+q*ps,y1+3,GRY,0.8)+(q%50==0?T(xr+q*ps,y1+12,q,{a:'middle',fs:7.5,c:'#6B7280'}):'');}
+  s+=`<path d="${p}" fill="#FDE7D7" stroke="${ORGc}" stroke-width="1.3"/>`;
+  s+=Ln(xr,y0,xr+hyd*ps,y1,GRY,1,'4 3');
+  s+=Ln(xr+pk*ps,y0-6,xr+pk*ps,y1,LIM,1.4,'5 3')+T(xr+pk*ps+3,y0-8,'leist. p_k '+fv(pk,1),{fs:8.5,c:LIM});
+  s+=T(xr+sMax*ps+4,y1-6,'σhk '+fv(sMax,1),{fs:9,c:ORGc,b:1})+T(xr,y1+24,'kN/m² · v = '+fv(i.vt,2)+' m/h · '+i.cons,{fs:8.5,c:ORGc});
+  s+=dimV(x0-8,y0,y1,'H '+fv(H,2),INKc,-1);s+=T(x0,y0-8,'h '+i.h+' · šerdis '+(i.h-2*i.bp),{fs:8.5});
+  // girderių planas
+  const py=y1+52,pw=300,sx=pw/2500,px0=20;s+=T(px0,py-8,'Planas (2,5 m elementas): girderiai kas '+i.sG+' mm',{fs:9.5,b:1});
+  s+=Rc(px0,py,pw,16,'#F6F7F9');const xs=[];for(let x=i.sG/2>312.5?312.5:i.sG/2;x<2500;x+=i.sG){xs.push(x);s+=Ln(px0+x*sx,py-3,px0+x*sx,py+19,i.sG<=625?LIM:ORGc,2);}
+  if(xs.length>1)s+=dimH(px0+xs[0]*sx,px0+xs[1]*sx,py+30,'s_G '+i.sG);
+  el.setAttribute('viewBox',`0 0 360 ${py+40}`);el.innerHTML=s;}
+/* ---------- P4A ---------- */
+function svgP4A(el,i){const y0=104,y1=y0+40*i.lw,x0=150,sc=0.3,h=i.h,w=h*sc;let s=defs('h4a');
+  s+=wallSec(x0,y0,y1,h,i.bp,sc,'h4a');
+  const two=i.slab!=='Iš vienos pusės',a=Math.min(50,h)*sc;
+  s+=Rc(x0+(two?0:w-a)-(two?70:0),y0-16,two?w+140:a+70,16,'#E5E7EB');
+  if(!two)s+=`<rect x="${x0+w-a}" y="${y0-16}" width="${a+70}" height="16" fill="#E5E7EB" stroke="${INKc}"/>`;
+  s+=Rc(x0-60,y1+(!i.gap.startsWith('Neužpildyta')?10:4),w+120,20,'#E5E7EB');
+  if(!i.gap.startsWith('Neužpildyta'))s+=`<rect x="${x0}" y="${y1}" width="${w}" height="10" fill="${LIMF}" stroke="#7E8F1E"/>`+T(8,y1+68,(i.gap.startsWith('10')?'10–15 mm skiedinys – pade h − 20 = '+(i.h-20)+' mm':'tarpas 30 mm užbetonuotas – pade visas h = '+i.h+' mm'),{fs:8.5,c:LIM});
+  else s+=Rc(x0+3,y1,8,4,'#bbb')+Rc(x0+w-11,y1,8,4,'#bbb')+T(8,y1+68,'apačia neužpildyta – dirba tik šerdis',{fs:8.5,c:ORGc});
+  const xc=x0+w/2,iM=K('iM');s+=arrow(xc,y0-84,xc,y0-18,ORGc)+T(xc-6,y0-88,'N iš viršaus (centre)',{a:'end',fs:9,c:ORGc})+T(xc-6,y0-76,'G '+fv(i.NG,0)+' + Q '+fv(i.NQ,0)+' → '+fv(K('NaEd'),0),{a:'end',fs:9,c:ORGc});
+  {const e1=K('e1E')*sc;s+=arrow(xc+e1,y0-44,xc+e1,y0-18,'#9A3412')+T(xc+e1+5,y0-34,'N_1 '+fv(i.N1G,0)+' + '+fv(i.N1Q,0)+' → '+fv(K('N1Ed'),0),{fs:9,c:'#9A3412'})+dimH(xc,xc+e1,y0-52,'','#9A3412')+T(xc+e1+5,y0-50,'e_1 '+fv(K('e1E'),0),{fs:8.5,c:'#9A3412'});
+    if(iM!==3){const e2=K('e2E')*sc;s+=arrow(xc-e2,y0-44,xc-e2,y0-18,'#9A3412')+T(xc-e2-5,y0-34,'N_2 '+fv(K('G2k'),0)+' + '+fv(K('Q2k'),0)+' → '+fv(K('N2Ed'),0),{a:'end',fs:9,c:'#9A3412'})+dimH(xc-e2,xc,y0-52,'','#9A3412')+T(xc-e2-5,y0-50,'e_2 '+fv(K('e2E'),0),{a:'end',fs:8.5,c:'#9A3412'});}}
+  const l0=K('l0'),et=K('etot')+K('e2'),fxS=K('kJ')<1000,rl=fxS?Math.min(1,Math.max(0,K('rl'))):0;
+  const mS=K('N1Ed')*K('e1E')-(iM===3?0:K('N2Ed')*K('e2E')),dir=mS>0.01?-1:(mS<-0.01?1:-1),amp=Math.min(34,5+et*0.45);
+  let p=`M${xc} ${y0}`;for(let k=1;k<=24;k++){const t=k/24,y=y0+(y1-y0)*t,f=(1-rl)*Math.sin(Math.PI*t)+rl*(1-Math.cos(2*Math.PI*t))/2;p+=` L${xc+dir*amp*f} ${y}`;}
+  s+=`<path d="${p}" fill="none" stroke="${BLU}" stroke-dasharray="4 3" stroke-width="1.5"/>`;
+  const ym=(y0+y1)/2,uM=K('uMain'),uT=K('uT'),uF=K('uF'),cl=u=>u<=100?LIM:ORGc,xm=xc+dir*amp,yb=y1+126;
+  s+=T(8,y1+102,'G + Q – įvesta, kN/m  →  N_Ed = 1,35·G + 1,5·Q',{fs:8.5,c:'#6B7280'});
+  s+=Ln(xc,ym,xm,ym,BLU,1.2)+T(xm+dir*4,ym-4,fv(et,1)+' mm',{a:dir<0?'end':'start',fs:8.5,c:BLU});
+  s+=T(x0+w+12,ym+4,'λ = '+fv(K('lam'),0)+(K('lam')>K('lamlim')?' > λ,lim '+fv(K('lamlim'),0):' ≤ λ,lim'),{fs:9});
+  const rw=(k,txt,u)=>T(8,yb+k*15,txt,{fs:9,c:cl(u)})+T(352,yb+k*15,fv(u,0)+' %',{a:'end',fs:9.5,c:cl(u),b:1});
+  s+=Ln(8,yb-12,352,yb-12,'#D1D5DB',0.8);
+  s+=rw(0,'Viršus: M02 = '+fv(K('M02'),2)+' kNm/m, e = '+fv(K('eT'),1)+' mm',uT);
+  s+=rw(1,'Klupumas: e_tot + e2 = '+fv(et,1)+' mm → MEd '+fv(K('MEd'),1)+' / MRd '+fv(K('MRd'),1),uM);
+  s+=rw(2,'Padas: NEd '+fv(K('NEdF'),0)+' / NRd '+fv(K('NRdF'),0)+' kN/m',uF);
+  s+=dimV(x0-70,y0,y1,'l_w '+fv(i.lw,2)+' m',INKc,-1)+T(8,y1+84,'l0 = min(β; l0/l)·l_w = '+fv(Math.min(K('beta'),K('fE')),2)+' × '+fv(i.lw,2)+' = '+fv(l0,2)+' m',{fs:9.5,c:BLU});
+  s+=dimH(x0,x0+w,y1+48,'h '+h);
+  const fx=K('kJ')<1000,two2=K('two')===true;
+  const lbl=(y,yy)=>{let r=T(x0+w+12,y,fx?'įtvirtinta, k = '+fv(K('kJ'),2):'lankstas',{fs:8.5,c:fx?LIM:'#6B7280'});
+    if(two2){const zx=Math.max((i.h/2-i.bp-K('aj'))*sc,3);r+=Ln(x0+w/2-zx,yy-16,x0+w/2-zx,yy+16,'#9A3412',1.8)+Ln(x0+w/2+zx,yy-16,x0+w/2+zx,yy+16,'#9A3412',1.8);}
+    else r+=Ln(x0+w/2,yy-16,x0+w/2,yy+16,'#9A3412',1.8);return r;};
+  s+=lbl(y0+14,y0)+lbl(y1-14,y1);
+  el.setAttribute('viewBox',`0 0 360 ${y1+164}`);el.innerHTML=s;}
+function svgP4Aplan(el,i){const x0=30,x1=330,y=60,b=i.bw,L=Math.max(b,0.1),sc=(x1-x0)/L;const iS=['2 kraštai (viršus ir apačia)','3 kraštai','4 kraštai'].indexOf(i.sup)+1,jr=i.vj==='Taip';let s='';
+  s+=T(x0,16,'Planas: siena tarp skersinių sienų (b = '+fv(b,2)+' m)',{fs:9.5,b:1});
+  s+=Rc(x0,y,x1-x0,14,LIMF,'#7E8F1E');
+  if(iS>=2){s+=Rc(x0-12,y-26,12,66,'#E5E7EB');}
+  if(iS>=3){s+=Rc(x1,y-26,12,66,'#E5E7EB');}
+  const jc=jr?LIM:ORGc;s+=Ln(x0+(x1-x0)/2,y-6,x0+(x1-x0)/2,y+20,jc,2,'3 2')+T(x0+(x1-x0)/2,y+34,jr?'vertikali jungtis armuota':'jungtis be armatūros → β = 1,0',{a:'middle',fs:9,c:jc});
+  s+=T(x0,y+56,'β = '+fv(K('beta'),3)+(iS>1&&!jr?' (3–4 kraštai neleidžiami – jungtys nearmuotos)':''),{fs:9.5,c:iS>1&&!jr?ORGc:INKc});
+  el.setAttribute('viewBox','0 0 360 125');el.innerHTML=s;}
+/* ---------- P4B ---------- */
+function svgP4B(el,i){const H=i.H,y1=250,sy=210/4.5,y0=y1-H*sy,x0=150,sc=0.3,w=i.h*sc;let s=defs('h4b');
+  const yf=y1-Math.min(i.hf,H)*sy;s+=`<rect x="${x0+w}" y="${yf}" width="${360-x0-w}" height="${y1-yf}" fill="url(#h4bs)" stroke="none"/>`+Ln(x0+w,yf,356,yf,'#78716C',1.2);
+  if(i.q>0)for(let x=x0+w+14;x<350;x+=22)s+=arrow(x,yf-18,x,yf-2,'#78716C');if(i.q>0)s+=T(352,yf-22,'q = '+fv(i.q,1),{a:'end',fs:9});
+  if(i.hw>0){const yw=y1-Math.min(i.hw,i.hf,H)*sy;s+=Ln(x0+w,yw,356,yw,BLU,1.4,'6 3')+T(352,yw-4,'GWL +'+fv(i.hw,2)+' m',{a:'end',fs:9,c:BLU});}
+  s+=wallSec(x0,y0,y1,i.h,i.bp,sc,'h4b');s+=Rc(x0-40,y0-14,w+90,14,'#E5E7EB')+Rc(x0-50,y1,w+110,18,'#E5E7EB');
+  const P=SP.grid.p.map(c=>G(c)),X=SP.grid.x.map(c=>G(c)),M=SP.grid.M.map(c=>G(c)),XB=SP.grid.xb.map(c=>G(c));
+  const pm=Math.max(...P,1),ps=70/Math.max(pm,60);let pp=`M${x0+w} ${y1}`;P.forEach((p,k)=>{pp+=` L${x0+w+p*ps} ${y1-X[k]*sy}`;});pp+=` L${x0+w} ${y1-X[X.length-1]*sy} Z`;
+  s+=`<path d="${pp}" fill="#FDE7D7" fill-opacity=".85" stroke="${ORGc}" stroke-width="1.2"/>`+T(356,y1+14,fv(P[0],1)+' kN/m²',{a:'end',fs:9,c:ORGc,b:1});
+  const mm=Math.max(...M.map(Math.abs),1),ms=80/Math.max(mm,40);let mp=`M${x0-6} ${y1}`;M.forEach((m,k)=>{mp+=` L${x0-6-m*ms} ${y1-XB[k]*sy}`;});mp+=` L${x0-6} ${y0} Z`;
+  s+=`<path d="${mp}" fill="#E3EBB5" stroke="${LIM}" stroke-width="1.3"/>`;const xm=K('xM');s+=T(x0-10-K('Mmax')*ms,y1-xm*sy+4,'M '+fv(K('Mmax'),1),{a:'end',fs:9.5,c:LIM,b:1});
+  s+=T(x0-6,y0-20,'M_Ed, kNm/m',{a:'end',fs:9})+T(x0+w+4,y0-20,'p, kN/m² (ULS)',{fs:9});
+  {const xc=x0+w/2,xe=xc-Math.min(i.e1||0,i.h/2)*sc;s+=arrow(xc,y0-52,xc,y0-15,INKc)+T(xc+4,y0-66,'N iš viršaus (centre)',{fs:9})+T(xc+4,y0-54,'G '+fv(i.NG,0)+' + Q '+fv(i.NQ,0)+' kN/m',{fs:9})+arrow(xe,y0-38,xe,y0-15,ORGc)+T(xe-4,y0-52,'N_1 '+fv(i.N1G,0)+' + '+fv(i.N1Q,0)+' kN/m',{a:'end',fs:9,c:ORGc,b:1})+T(xe-4,y0-40,'e_1 = '+fv(i.e1||0,0)+' mm',{a:'end',fs:9,c:ORGc,b:1});}
+  s+=T(x0-44,y0-2,'R_t '+fv(K('Rtf'),1),{a:'end',fs:9})+T(x0+w/2,y1+30,'R_b '+fv(K('Rbf'),1)+' kN/m',{a:'middle',fs:9})+T(x0-6,y1+30,(Math.abs(K('MBe'))>0.01?'M_B '+fv(K('MBe'),1):'pade lankstas'),{a:'end',fs:9,c:LIM,b:1});
+  s+=dimV(16,y0,y1,'H '+fv(H,2),INKc,1);
+  el.setAttribute('viewBox',`0 ${y0-80} 360 ${y1+118-y0}`);el.innerHTML=s;}
+/* ---------- P9 ---------- */
+function svgP9h(el,i){let s=defs('hj4');const n=K('nH'),two=n==2,hdf=K('hdf')===true,RB='#9A3412';
+  const lr=Math.min(two?K('lreqH'):K('lancH'),1500);
+  const N=p4aNode({h:i.h,bp:i.bp,hs:i.hs,le:i.leH,lr:lr,two,hdf,one:false,aj:K('ajH'),dsv:K('dsv'),sx:0.42,sy:0.15,x0:90,y0:30});s+=N.s;const x0=90,W=N.W,le=i.leH*0.15,lrs=lr*0.15;
+  s+=dimV(x0-14,N.yS-le,N.yS,'l_e '+i.leH,RB,-1)+dimV(x0-14,N.yS2,N.yS2+le,'l_e '+i.leH,RB,-1);
+  s+=Ln(x0+W+4,N.yS-lrs,x0+W+24,N.yS-lrs,LIM,1.2,'4 3')+T(x0+W+28,N.yS-lrs+3,(two?'l_req ':'l_anc ')+fv(lr,0),{fs:8.5,c:LIM})+Ln(x0+W+4,N.yS2+lrs,x0+W+24,N.yS2+lrs,LIM,1.2,'4 3');
+  const yv=(N.yS+N.yS2)/2;s+=arrow(x0+W+140,yv,x0+W+54,yv,ORGc)+T(x0+W+58,yv-6,'V⊥ '+fv(i.VhN,1),{fs:9,c:ORGc});
+  s+=`<circle cx="${x0+W+66}" cy="${N.yS-56}" r="7" fill="none" stroke="${ORGc}" stroke-width="1.4"/><circle cx="${x0+W+66}" cy="${N.yS-56}" r="1.8" fill="${ORGc}"/>`+T(x0+W+78,N.yS-52,'V∥ '+fv(i.VhP,1),{fs:9,c:ORGc});
+  if(i.MjH>0)s+=T(x0+W+58,yv+20,'M_j '+fv(i.MjH,1)+' kNm/m',{fs:9,c:ORGc,b:1});
+  s+=T(8,16,'Horizontali jungtis tarp aukštų – '+i.rH,{fs:9.5,b:1});
+  s+=T(8,N.yB+16,(hdf?'HDF, atrėmimas 80 mm':'Filigran, h_s '+i.hs)+' · strypas Ø'+i.dsH+'/'+i.ssH+', ilgis '+fv(K('Lbar'),0)+' = '+i.leH+' + '+i.hs+' + '+i.leH,{fs:8.5});
+  s+=T(8,N.yB+30,two?'2 eilės – standi jungtis (M_R '+fv(K('MR2'),1)+' kNm/m)':'1 eilė – lankstas',{fs:8.5,c:two?LIM:'#6B7280',b:1});
+  s+=T(8,N.yB+44,'Ryšiai: vert. T '+fv(K('Tv'),1)+' kN/m → '+fv(K('AsTv'),0)+' mm²/m · horiz. Ø'+i.dT+'/'+i.sT,{fs:8.5,c:'#5F6F0E'});
+  s+=T(8,N.yB+58,'raudona – jungiamieji strypai, mėlyna – sienučių armatūra',{fs:7.8,c:'#6B7280'});
+  el.setAttribute('viewBox',`0 0 360 ${N.yB+66}`);el.innerHTML=s;}
+function p9node(nd,i,B,d,pid){const RB='#9A3412',BL='#2563EB';let s='';
+  const hatch=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#${pid})" stroke="${INKc}"/>`;
+  const zig=(x1,y1,x2,y2)=>{let p=`M${x1} ${y1}`;for(let k=1;k<=6;k++){const t=k/6;const xx=x1+(x2-x1)*t,yy=y1+(y2-y1)*t;p+=` L${xx+(x1===x2?(k%2?4:-4):0)} ${yy+(y1===y2?(k%2?4:-4):0)}`;}return `<path d="${p}" fill="none" stroke="${LIM}" stroke-width="1.6"/>`;};
+  const dot=(x,y)=>`<circle cx="${x}" cy="${y}" r="2.5" fill="${RB}"/>`;
+  let y0=58,H=0;
+  if(nd<=2){const sc=0.42,xj=170,w=i.h*sc,bp=i.bp*sc,g=2.5*sc,L=320*sc;
+    for(const dd of [-1,1]){const xa=dd<0?xj-g-L:xj+g;s+=hatch(xa,y0,L,bp)+hatch(xa,y0+w-bp,L,bp)+`<rect x="${xa}" y="${y0+bp}" width="${L}" height="${w-2*bp}" fill="${LIMF}"/>`;
+      s+=Ln(xa+2,y0+bp*0.55,xa+L-2,y0+bp*0.55,BL,1.1)+Ln(xa+2,y0+w-bp*0.55,xa+L-2,y0+w-bp*0.55,BL,1.1);const xg=xj+dd*280*sc;s+=zig(xg,y0+bp-2,xg,y0+w-bp+2);}
+    s+=T(xj-280*sc,y0-6,'girderis',{a:'middle',fs:8,c:LIM})+T(xj+280*sc,y0-6,'girderis',{a:'middle',fs:8,c:LIM});
+    s+=Ln(xj-g,y0,xj-g,y0+w,INKc,0.8)+Ln(xj+g,y0,xj+g,y0+w,INKc,0.8);
+    if(nd==1){const y=B?y0+bp+d*sc:y0+w/2;s+=Ln(xj-225*sc,y,xj+225*sc,y,RB,2.2);[-150,0,150].forEach(x=>s+=dot(xj+x*sc,y+3));
+      s+=dimH(xj-225*sc,xj,y0+w+14,'225',RB)+dimH(xj,xj+225*sc,y0+w+14,'225',RB);}
+    else{const la=(1050-(i.h-2*i.bp-40-d))/4,ya=y0+bp+(20+d/2)*sc,yb=y0+w-bp-(20+d/2)*sc,xl=xj-la*sc,xr=xj+la*sc;
+      s+=`<path d="M${xr} ${ya} L${xl+6} ${ya} Q${xl} ${ya} ${xl} ${ya+6} L${xl} ${yb-6} Q${xl} ${yb} ${xl+6} ${yb} L${xr} ${yb}" fill="none" stroke="${RB}" stroke-width="2.2"/>`;
+      [ya,yb].forEach(y=>[-150,0,150].forEach(x=>s+=dot(xj+x*sc,y+(y===ya?3:-3))));
+      s+=dimH(xl,xj,y0+w+14,fv(la,0),RB)+dimH(xj,xr,y0+w+14,fv(la,0),RB);}
+    s+=dimH(xj,xj+280*sc,y0+w+36,'girderis 280',LIM)+dimV(xj+g+L+8,y0,y0+w,'h '+i.h,INKc,1);H=y0+w+50;}
+  else{const sc=0.36,w=i.h*sc,bp=i.bp*sc,X0=40,Y1=60+Math.max(380,i.h+300)*sc,Y0=Y1-w-320*sc,XR=X0+w+420*sc,g=2.5*sc;
+    s+=hatch(X0,Y0,bp,Y1-Y0)+hatch(X0+w-bp,Y0,bp,Y1-w-Y0)+`<rect x="${X0+bp}" y="${Y0}" width="${w-2*bp}" height="${Y1-bp-Y0}" fill="${LIMF}"/>`;
+    s+=hatch(X0+w+g,Y1-w,XR-X0-w-g,bp)+hatch(X0+bp,Y1-bp,XR-X0-bp,bp)+`<rect x="${X0+w-bp}" y="${Y1-w+bp}" width="${XR-X0-w+bp}" height="${w-2*bp}" fill="${LIMF}"/>`;
+    s+=hatch(X0+w-bp,Y1-w,bp+g,bp)+Ln(X0+w+g,Y1-w,X0+w+g,Y1-bp,'#6B7280',1,'4 3')+T(X0+w+4,Y1+14,'šlyties plokštuma',{fs:7.5,c:'#6B7280'});
+    const xg=X0+w+280*sc,yg=Y1-w-280*sc;s+=zig(xg,Y1-w+bp-2,xg,Y1-bp+2)+zig(X0+bp-2,yg,X0+w-bp+2,yg)+T(xg,Y1-w-6,'girderis',{a:'middle',fs:8,c:LIM});
+    const mesh=(xv,yh,lv,lh)=>{let r=`<path d="M${xv} ${yh-lv*sc} L${xv} ${yh-5} Q${xv} ${yh} ${xv+5} ${yh} L${xv+lh*sc} ${yh}" fill="none" stroke="${RB}" stroke-width="2.2"/>`;
+      for(let t=150;t<lh;t+=150)r+=dot(xv+t*sc,yh-3);for(let t=150;t<lv;t+=150)r+=dot(xv+3,yh-t*sc);return r;};
+    if(nd==3){const xv=B?X0+bp+d*sc:X0+w/2,yh=B?Y1-bp-d*sc:Y1-w/2;s+=mesh(xv,yh,285,335);}
+    else{s+=mesh(X0+bp+(20+d/2)*sc,Y1-bp-(20+d/2)*sc,350,420)+mesh(X0+w-bp-(20+d/2)*sc,Y1-w+bp+(20+d/2)*sc,275,345);}
+    s+=dimH(X0+w+g,xg,Y1+28,'280',LIM)+dimV(X0-14,Y1-w,Y1,'h '+i.h,INKc,-1);H=Y1+36;}
+  return [s,H];}
+function svgP9v(el,i){const nd=K('iN'),RB='#9A3412',d=K('dM'),B=K('iPos')==2;let s=defs('h9v');let H;{const r=p9node(nd,i,B,d,'h9v');s+=r[0];H=r[1];}
+  s+=`<circle cx="320" cy="34" r="7" fill="none" stroke="${ORGc}" stroke-width="1.4"/><circle cx="320" cy="34" r="1.8" fill="${ORGc}"/>`+T(310,38,'V∥ '+fv(i.VvP,1),{a:'end',fs:9,c:ORGc});
+  s+=T(8,16,'Mazgas '+i.nodeV,{fs:9.5,b:1});
+  s+=T(8,H+14,'tarpas 5 mm neužpildomas – pjūvyje dirba tik šerdis b_n = '+fv(K('bn'),0)+' mm',{fs:8.5});
+  s+=T(8,H+28,(nd==1?'● privirinti vert. strypai: po 1 kiekvienoje pusėje (ašyje – neinkaruoja)':'● privirinti vert. strypai: laisvoje pusėje '+K('nW')+', kitoje – '+(nd==2?'kilpa':'lenkimas')),{fs:8,c:RB});
+  s+=T(8,H+42,B?'B – prisiglaudęs prie sienutės: tik kaiščiai':'A – projektinėje vietoje, fiksuotas; ≥ 30 mm nuo sienutės',{fs:8,c:B?ORGc:'#5F6F0E',b:B?1:0});
+  el.setAttribute('viewBox',`0 0 360 ${H+50}`);el.innerHTML=s;}
+function svgP9m(el,i){const nd=K('iN'),Hm=i.Hw*1000,RB='#9A3412',d=K('dM'),sM=K('sM');const Ls=[450,1050,600,750][nd-1];
+  const bends={1:[],2:[K('lavD')*2+2.5*2,1050-(K('lavD')*2+5)],3:[285],4:[350]}[nd];
+  const sx=220/Ls,sy=210/4500,x0=60,y0=62,y1=y0+Hm*sy,W=Ls*sx;let s='';
+  s+=Rc(x0-30,y0-12,W+60,12,'#E5E7EB')+Rc(x0-30,y1,W+60,12,'#E5E7EB');
+  for(let x=75;x<Ls;x+=150)s+=Ln(x0+x*sx,y0+3,x0+x*sx,y1-3,RB,1.5);
+  let nH=0;for(let y=75;y<Hm;y+=sM){s+=Ln(x0,y1-y*sy,x0+W,y1-y*sy,RB,1.2);nH++;}
+  (bends||[]).forEach(b=>{if(b>0&&b<Ls)s+=Ln(x0+b*sx,y0-4,x0+b*sx,y1+4,'#6B7280',1,'4 3');});
+  s+=dimH(x0,x0+W,y0-24,'L = '+Ls+' mm (išklotinė)',RB)+dimV(x0-14,y0,y1,'H '+fv(i.Hw,2),INKc,-1);
+  s+=arrow(x0+W+24,y0-30,x0+W+24,y0+40,'#5F6F0E')+T(x0+W+28,y0+12,'iš',{fs:8,c:'#5F6F0E'})+T(x0+W+28,y0+23,'viršaus',{fs:8,c:'#5F6F0E'});
+  s+=T(8,16,'Tinklelis – išklotinė (vaizdas iš šono)',{fs:9.5,b:1});
+  s+=T(8,y1+30,'Ø'+d+'/'+sM+' horiz. + Ø'+d+'/150 vert. · '+nH+' horiz. strypai'+(nd==4?' · + antras tinklelis L600':''),{fs:8.5});
+  s+=T(8,y1+44,(bends.length?'brūkšninė – lenkimo vieta':'tiesus tinklelis'),{fs:8,c:'#6B7280'});
+  el.setAttribute('viewBox',`0 0 360 ${y1+52}`);el.innerHTML=s;}
+function svgP9t(el,i){const H=[180,200,250,300,400],nds=['F','D','E','C'],cx=[8,90,155,220,290];let s=T(8,16,'Tipinių mazgų ribinė V_Rd, kN/m (Ø8/150, A – centre)',{fs:9.5,b:1});
+  s+=T(8,30,'b_p '+i.bp+' mm, girderiai Ø6/'+i.sG+' · F, E – 1 tinklelis; D, C – 2 eilės (h ≥ 250)',{fs:7.8,c:'#6B7280'});
+  let y=40;const rh=19;
+  [0,1].forEach(c=>{s+=Rc(4,y,352,rh,'#F1F5E4','#D1D5DB',0.6)+T(cx[0],y+13,c?'C30/37':'C25/30',{fs:8.5,b:1});
+    ['F tiesi','D tiesi C','E kampas','C kampas'].forEach((t,k)=>s+=T(cx[k+1]+28,y+13,t,{a:'middle',fs:8,b:1}));y+=rh;
+    H.forEach((h,r)=>{const cur=(h===+i.h);s+=Rc(4,y,352,rh,cur?'#FDE7D7':(r%2?'#FAFAFA':'#fff'),'#E5E7EB',0.5)+T(cx[0],y+13,'h '+h+(cur?' ◀':''),{fs:8.5,b:cur?1:0});
+      nds.forEach((nd,k)=>{const two=nd=='D'||nd=='C';const v=(two&&h<250)?'–':fv(K('tb'+nd+c+'_'+h),0);const lim=v!=='–'&&K('tq'+nd+c+'_'+h)===true;
+        s+=T(cx[k+1]+28,y+13,v+(lim?' k':''),{a:'middle',fs:9,c:lim?ORGc:INKc,b:two?0:1});});y+=rh;});y+=6;});
+  s+=Rc(4,y,352,rh,'#FFF7ED','#E5E7EB',0.6)+T(cx[0],y+13,'B kaiščiai',{fs:8.5,b:1,c:ORGc})+T(cx[1]+28,y+13,'1 eil.: '+fv(K('tbB0_1'),0)+' / '+fv(K('tbB1_1'),0),{fs:8.5,c:ORGc})+T(cx[3]-10,y+13,'2 eil.: '+fv(K('tbB0_2'),0)+' / '+fv(K('tbB1_2'),0),{fs:8.5,c:ORGc});y+=rh+12;
+  s+=T(8,y,'B: C25/30 / C30/37 · A, 1 tinkl. – padėtis 30 mm nuo sienutės (b_ef 68)',{fs:7.8,c:'#6B7280'})+T(8,y+12,'k – riboja perdavimas į elementą (kontūras)',{fs:7.8,c:ORGc});
+  el.setAttribute('viewBox',`0 0 360 ${y+20}`);el.innerHTML=s;}
+/* ---------- P13 ---------- */
+function svgP13(el,i){const H=i.H,y1=220,sy=190/6,y0=y1-H*sy,x0=150,sc=0.3,w=i.h*sc;let s=defs('h13');
+  s+=`<rect x="${x0+w}" y="${y0+20}" width="${360-x0-w}" height="${y1-y0-20}" fill="url(#h13s)"/>`;
+  if(i.hw>0){const yw=y1-Math.min(i.hw,H)*sy;s+=`<rect x="${x0+w}" y="${yw}" width="${360-x0-w}" height="${y1-yw}" fill="#DBEAFE" fill-opacity=".6"/>`+Ln(x0+w,yw,356,yw,BLU,1.4,'6 3')+T(352,yw-4,'h_w = '+fv(i.hw,2)+' m',{a:'end',fs:9,c:BLU});}
+  s+=wallSec(x0,y0,y1,i.h,i.bp,sc,'h13',{gb:12});s+=`<rect x="${x0-60}" y="${y1+10}" width="${w+200}" height="26" fill="#E5E7EB" stroke="${INKc}"/>`;
+  s+=`<rect x="${x0}" y="${y1}" width="${w}" height="10" fill="${!i.gap.startsWith('Neužpildyta')?LIMF:'#fff'}" stroke="${!i.gap.startsWith('Neužpildyta')?'#7E8F1E':ORGc}"/>`;
+  const xs=x0+w-i.bp*sc-50*sc;s+=Rc(xs-4,y1-6,5,22,BLU,BLU)+Ln(xs-4,y1+4,x0-12,y1-6,BLU,0.8)+T(x0-14,y1-18,'brinkstanti',{a:'end',fs:8.5,c:BLU})+T(x0-14,y1-8,'juosta ≥ 5 cm',{a:'end',fs:8.5,c:BLU});
+  s+=dimH(x0,x0+w,y0-10,'h '+i.h+' (min '+K('hreq')+')')+T(x0-8,y0+60,'šerdis',{a:'end',fs:9})+T(x0-8,y0+72,(i.h-2*i.bp)+' mm',{a:'end',fs:9,b:1});
+  s+=T(x0-8,y0+92,'min '+K('bnm')+' mm',{a:'end',fs:8.5,c:LIM});
+  el.setAttribute('viewBox',`0 0 360 ${y1+44}`);el.innerHTML=s;}
+function svgP13plan(el,i){const x0=20,x1=340,y=40,Lt=Math.max(3*i.L,12),sc=(x1-x0)/Lt;let s='';s+=T(x0,16,'Planas: plyšiai jungtyse kas '+fv(i.L,2)+' m (leist. ≤ '+fv(K('Lmax'),2)+' m)',{fs:9.5,b:1});
+  s+=Rc(x0,y,x1-x0,16,LIMF,'#7E8F1E');for(let x=i.L;x<Lt;x+=i.L){const xx=x0+x*sc;s+=Ln(xx,y-6,xx,y+22,i.L<=K('Lmax')?LIM:ORGc,2,'3 2');}
+  s+=Ln(x0,y+11,x1,y+11,BLU,1.2,'5 3')+T(x0,y+38,'brinkstanti juosta – vientisa (horiz. + vert. jungtys)',{fs:8.5,c:BLU});
+  el.setAttribute('viewBox','0 0 360 90');el.innerHTML=s;}
+/* ---------- P14 ---------- */
+function svgP14(el,i){const y0=30,y1=200,sc=Math.min(0.45,300/(i.b1+i.bn+i.ti+i.b2)),x0=20;let s=defs('h14');let x=x0;
+  const lay=[[i.b1,'url(#h14)','vidinė '+i.b1],[i.bn,LIMF,'šerdis '+i.bn],[i.ti,'#FEF3C7','izoliacija '+i.ti],[i.b2,'url(#h14)','išorinė '+i.b2]];
+  lay.forEach(([t,f,l],k)=>{s+=`<rect x="${x}" y="${y0}" width="${t*sc}" height="${y1-y0}" fill="${f}" stroke="${INKc}" stroke-width="${k==1?0.8:1.2}" ${k==1?'stroke-dasharray="4 3"':''}/>`+T(x+t*sc/2,y1+(k%2?24:13),l,{a:'middle',fs:8.5});x+=t*sc;});
+  const xi=x0+(i.b1+i.bn)*sc,xo=xi+i.ti*sc,xs=x0+i.b1*sc*0.3;for(let y=y0+20;y<y1-10;y+=34)s+=Ln(xs,y,xo+i.b2*sc*0.7,y,'#0F766E',2.2);
+  s+=Ln(xs+6,y0+(y1-y0)/2+26,xo+i.b2*sc*0.6,y0+(y1-y0)/2-18,'#7C3AED',2.2)+T(xo+i.b2*sc+6,y0+(y1-y0)/2,'45°',{fs:9,c:'#7C3AED'});
+  const xc=x0+(i.b1+i.bn/2)*sc;for(let y=y0+37;y<y1-10;y+=68){s+=arrow(xc,y,x0+i.b1*sc+2,y,ORGc)+arrow(xc,y,xi-2,y,ORGc);}
+  s+=T(x0+(i.b1+i.bn/2)*sc,y0-8,'be girderių',{a:'middle',fs:8.5,c:ORGc})+T(xo+i.b2*sc+6,y1-20,'σhd '+fv(K('sTd'),1),{fs:9,c:ORGc})+T(xo+i.b2*sc+6,y1-8,'kN/m²',{fs:9,c:ORGc});
+  s+=T(xo+i.b2*sc+6,y0+30,'Schöck',{fs:9,c:'#0F766E'})+T(xo+i.b2*sc+6,y0+42,'ComBAR 90°',{fs:9,c:'#0F766E'})+T(x0,y1+40,'U = '+fv(K('U'),3)+' W/(m²K) · laikančioji dalis '+(i.b1+i.bn)+' mm',{fs:9.5,b:1});
+  el.setAttribute('viewBox',`0 0 360 ${y1+48}`);el.innerHTML=s;}
+function svgP14el(el,i){const x0=20,W=320,sc=W/Math.max(i.L,i.Hp*1.3,6),Lw=i.L*sc,Hh=i.Hp*sc,y0=26;let s='';s+=T(x0,16,'Išorinė sienutė (vaizdas): '+K('n90')+' × 90° + '+i.n45+' × 45° jungtys',{fs:9.5,b:1});
+  s+=Rc(x0,y0,Lw,Hh,'#F6F7F9');const nx=K('nx'),ny=K('ny'),ox=(i.L-(nx-1)*i.a)/2,oy=(i.Hp-(ny-1)*i.b)/2;
+  for(let a=0;a<nx;a++)for(let b=0;b<ny;b++)s+=`<circle cx="${x0+(ox+a*i.a)*sc}" cy="${y0+(oy+b*i.b)*sc}" r="2.6" fill="#0F766E"/>`;
+  const c45=(i.n45-1)*i.s45/2;for(let k=0;k<i.n45;k++){const xx=x0+(i.L/2-c45+k*i.s45)*sc,yy=y0+Hh/2;s+=`<path d="M${xx} ${yy-4} L${xx+4} ${yy+3} L${xx-4} ${yy+3} Z" fill="#7C3AED"/>`;}
+  const cx=x0+Lw/2,cy=y0+Hh/2;s+=arrow(cx,cy,x0+ox*sc,y0+oy*sc,ORGc)+T(cx-6,cy-8,'d_g '+fv(K('dg'),2)+' m',{a:'end',fs:9,c:ORGc});
+  s+=dimH(x0,x0+Lw,y0+Hh+14,'L '+fv(i.L,2)+' m')+T(x0,y0+Hh+34,'siūlė ≥ '+fv(K('ujr'),1)+' mm · tankis '+fv(K('den'),1)+' vnt./m²',{fs:9});
+  el.setAttribute('viewBox',`0 0 360 ${y0+Hh+44}`);el.innerHTML=s;}
+
+/* ---------- P4A mazgas: siena – perdanga – siena ---------- */
+function p4aNode(o){/* o: {h,bp,hs,le,lr,two,hdf,one,aj,dsv,sx,sy,x0,y0} -> svg string, height */
+  const {sx,sy}=o,W=o.h*sx,bp=o.bp*sx,x0=o.x0,hs=o.hs*sy,le=o.le*sy,lr=o.lr*sy,RB='#9A3412',BL='#2563EB';
+  const yS=o.y0+Math.max(le,lr)+8,yS2=yS+hs,yB=yS2+Math.max(le,lr)+8;let s='';
+  const wall=(yt,yb)=>`<rect x="${x0}" y="${yt}" width="${bp}" height="${yb-yt}" fill="url(#hj4)" stroke="${INKc}"/><rect x="${x0+W-bp}" y="${yt}" width="${bp}" height="${yb-yt}" fill="url(#hj4)" stroke="${INKc}"/><rect x="${x0+bp}" y="${yt}" width="${W-2*bp}" height="${yb-yt}" fill="${LIMF}"/>`;
+  s+=wall(o.y0,yS)+wall(yS2,yB);
+  if(o.hdf){const ab=80*sx;/* plokštės remiasi 80 mm */
+    const ov=o.ov||50;s+=`<rect x="${x0-ov}" y="${yS}" width="${ov+ab}" height="${hs}" fill="#E5E7EB" stroke="${INKc}"/>`;for(let k=0;k<2;k++)s+=`<circle cx="${x0-ov+12+k*14}" cy="${yS+hs/2}" r="${hs*0.28}" fill="#fff" stroke="#9CA3AF"/>`;
+    if(!o.one){s+=`<rect x="${x0+W-ab}" y="${yS}" width="${ov+ab}" height="${hs}" fill="#E5E7EB" stroke="${INKc}"/>`;for(let k=0;k<2;k++)s+=`<circle cx="${x0+W+ov-26+k*14}" cy="${yS+hs/2}" r="${hs*0.28}" fill="#fff" stroke="#9CA3AF"/>`;}
+    s+=`<rect x="${x0+ab}" y="${yS}" width="${o.one?W-ab:W-2*ab}" height="${hs}" fill="${LIMF}" stroke="#7E8F1E" stroke-dasharray="3 2"/>`;}
+  else{const ov=o.ov||50;s+=Rc(o.one?x0-ov:x0-ov,yS,o.one?W+ov:W+2*ov,hs,'#E5E7EB');}
+  const dsv=o.dsv*sx;for(const xs of [x0+bp-dsv,x0+W-bp+dsv]){s+=Ln(xs,o.y0+2,xs,yS-3,BL,1.5)+Ln(xs,yS2+3,xs,yB-2,BL,1.5);}
+  const xr=o.two?[x0+bp+o.aj*sx,x0+W-bp-o.aj*sx]:[x0+W/2];for(const xx of xr)s+=Ln(xx,yS-le,xx,yS2+le,RB,2.2);
+  return {s,yS,yS2,yB,W};}
+function svgP4Aj(el,i){let s=defs('hj4');const two=K('two')===true,hdf=K('hdf')===true,one=i.slab==='Iš vienos pusės';
+  const n=p4aNode({h:i.h,bp:i.bp,hs:i.hs,le:i.le,lr:Math.min(K('lreq'),1500),two,hdf,one,aj:K('aj'),dsv:K('dsv'),sx:0.42,sy:0.15,x0:80,y0:18});s+=n.s;const x0=80,W=n.W,RB='#9A3412';
+  const le=i.le*0.15,lr=Math.min(K('lreq'),1500)*0.15;
+  s+=dimV(x0-14,n.yS-le,n.yS,'l_e '+i.le,RB,-1)+dimV(x0-14,n.yS2,n.yS2+le,'l_e '+i.le,RB,-1);
+  if(two)s+=Ln(x0+W+60,n.yS-lr,x0+W+80,n.yS-lr,LIM,1.2,'4 3')+T(x0+W+82,n.yS-lr+3,'l_req '+fv(K('lreq'),0),{fs:8.5,c:LIM})+Ln(x0+W+60,n.yS2+lr,x0+W+80,n.yS2+lr,LIM,1.2,'4 3');
+  s+=T(x0+W+60,n.yS2+16,(hdf?'HDF, atrėmimas 80 mm':'Filigran, h_s '+i.hs),{fs:8.5});
+  const bx=x0+W+60,by=n.yS2+34;s+=T(bx,by,'Jungties įtempiai:',{fs:8.5,b:1});
+  const bw=72;s+=Rc(bx,by+8,bw,14,'#fff','#D1D5DB',1);const xc=Math.min(K('xj')/i.h,1)*bw*0.8;s+=Rc(bx+bw-xc,by+8,xc,14,'#FDE7D7',ORGc,1)+T(bx+bw+4,by+19,'F_c',{fs:8,c:ORGc});
+  if(two&&K('Tj')>0){const tx=bx+(i.bp+K('aj'))/i.h*bw;s+=arrow(tx,by+22,tx,by+44,RB)+T(tx+4,by+44,'T '+fv(K('Tj'),0)+' kN/m',{fs:8,c:RB});}
+  s+=T(10,n.yB+18,'Tipas: '+K('jType'),{fs:9,b:1,c:K('kJ')<1000?LIM:INKc})+T(10,n.yB+32,'Strypas '+fv(K('Lbar'),0)+' mm = '+i.le+' + '+i.hs+' + '+i.le,{fs:8.5});
+  s+=T(10,n.yB+46,'raudona – jungiamieji strypai, mėlyna – sienučių armatūra',{fs:7.8,c:'#6B7280'});
+  el.setAttribute('viewBox',`0 0 368 ${n.yB+54}`);el.innerHTML=s;}
+/* ---------- P4A mazgų variantai ---------- */
+function svgP4Av(el,i){let s=defs('hj4');const two=K('two')===true,hdf=K('hdf')===true,one=i.slab==='Iš vienos pusės';
+  const V=[['Filigran · 1 eilė','lankstas',false,false,false],['Filigran · 2 eilės, l_e ≥ l_req','įtvirtinta',true,false,false],['HDF vidinė · 1 eilė','lankstas',false,true,false],['HDF išorinė · 1 eilė','lankstas, e didesnis',false,true,true]];
+  V.forEach(([t,sub,tw,hd,on],k)=>{const bx=(k%2)*184+4,by=Math.floor(k/2)*200+4;const sel=(tw===two)&&(hd===hdf)&&(!hd||on===one);
+    s+=Rc(bx,by,178,198,sel?'#F4F7E1':'#fff',sel?'#7E8F1E':'#D1D5DB',sel?2:1)+T(bx+6,by+14,t,{fs:8.6,b:1,c:sel?LIM:INKc})+T(bx+6,by+193,sub,{fs:8,c:tw?LIM:'#6B7280'});
+    const n=p4aNode({h:200,bp:50,hs:200,le:tw?650:350,lr:650,two:tw,hdf:hd,one:on,aj:25,dsv:16,sx:0.42,sy:0.085,x0:bx+50,y0:by+22,ov:40});s+=n.s;});
+  el.setAttribute('viewBox','0 0 368 414');el.innerHTML=s;}
+
+
+
+/* ---------- P4B pado jungties variantai (CPT 3690 IX: 7.1, 7.2, 8/9) ---------- */
+function svgP4Bj(el,i){let s=defs('hjb');const W=112,H=118,RB='#9A3412',BL='#2563EB';const two=i.rowsB.startsWith('2'),fx=Math.abs(K('MBe'))>0.01;
+  const sel=[!two,two&&!fx,two&&fx];
+  const wall=(x,yt,yb)=>`<rect x="${x}" y="${yt}" width="12" height="${yb-yt}" fill="url(#hjb)" stroke="${INKc}"/><rect x="${x+38}" y="${yt}" width="12" height="${yb-yt}" fill="url(#hjb)" stroke="${INKc}"/><rect x="${x+12}" y="${yt}" width="26" height="${yb-yt}" fill="${LIMF}"/>`;
+  ['Lankstas – 1 eilė','2 eilės, l_e trumpas','Įtvirtinta l_e≥l_req'].forEach((t,k)=>{const x=[4,124,244][k],y=6;
+    s+=Rc(x,y,W,H+30,sel[k]?'#F4F7E1':'#fff',sel[k]?'#7E8F1E':'#D1D5DB',sel[k]?2:1)+T(x+6,y+14,t,{fs:8.6,b:1,c:sel[k]?LIM:INKc})+T(x+6,y+H+24,['CPT 7.1','CPT 7.2 – lankstas','CPT 8 / 9'][k],{fs:7.5,c:'#6B7280'});
+    const wx=x+31;s+=wall(wx,y+22,y+92)+Rc(x+8,y+92,W-16,26,'#E5E7EB')+`<rect x="${wx}" y="${y+92}" width="50" height="4" fill="${LIMF}" stroke="#7E8F1E"/>`;
+    s+=Ln(wx+6,y+26,wx+6,y+90,BL,1.5)+Ln(wx+44,y+26,wx+44,y+90,BL,1.5);
+    if(k==0)s+=Ln(wx+25,y+56,wx+25,y+114,RB,2);
+    if(k==1)s+=Ln(wx+17,y+68,wx+17,y+114,RB,2)+Ln(wx+33,y+68,wx+33,y+114,RB,2);
+    if(k==2)s+=Ln(wx+17,y+30,wx+17,y+114,RB,2)+Ln(wx+33,y+30,wx+33,y+114,RB,2);});
+  s+=T(6,H+56,'Dabar: '+K('jTypeB')+' · l_req = '+fv(K('lreqB'),0)+' mm',{fs:8.6,b:1,c:fx?LIM:INKc});
+  s+=T(6,H+70,'raudona – jungiamieji strypai iš pamato, mėlyna – sienučių armatūra',{fs:7.8,c:'#6B7280'});
+  el.setAttribute('viewBox',`0 0 368 ${H+78}`);el.innerHTML=s;}
+
+/* ---------- P4A ekscentricitetų schemos (įvestys) ---------- */
+function svgP4Ae(el,i){let s=defs('he4');const iM=K('iM'),RB='#9A3412';
+  const node=(bx,title,mode,sel)=>{let r=Rc(bx,4,178,206,sel?'#F4F7E1':'#fff',sel?'#7E8F1E':'#D1D5DB',sel?2:1)+T(bx+6,18,title,{fs:8.6,b:1,c:sel?LIM:INKc});
+    const x0=bx+64,w=50,yS=110,hs=22;r+=wallSec(x0,yS+hs,196,200,50,0.25,'he4',{gird:false})+wallSec(x0,40,yS,200,50,0.25,'he4',{gird:false});
+    if(mode!==3)r+=Rc(bx+8,yS,162,hs,'#E5E7EB');else r+=Rc(x0+w-12,yS,bx+170-(x0+w-12),hs,'#E5E7EB')+Rc(x0,yS,w-12,hs,LIMF,'#7E8F1E');
+    const xc=x0+w/2;r+=Ln(xc,34,xc,200,GRY,0.8,'5 3')+arrow(xc,26,xc,yS-2,ORGc)+T(xc-4,34,'N_Gk, N_Qk',{a:'end',fs:7.8,c:ORGc});
+    if(mode===1){r+=arrow(xc-18,yS-20,xc-18,yS-2,RB)+arrow(xc+18,yS-20,xc+18,yS-2,RB)+T(xc-22,yS-8,'N_2',{a:'end',fs:7.8,c:RB})+T(xc+22,yS-8,'N_1',{fs:7.8,c:RB})+dimH(xc-18,xc,yS-30,'',RB)+dimH(xc,xc+18,yS-30,'',RB)+T(xc+22,yS-27,'e_1 = e_2',{fs:7.8,c:RB});}
+    if(mode===2){r+=arrow(xc-22,yS-20,xc-22,yS-2,RB)+T(xc-26,yS-8,'N_2',{a:'end',fs:7.8,c:RB})+arrow(xc+14,yS-20,xc+14,yS-2,RB)+T(xc+18,yS-8,'N_1',{fs:7.8,c:RB});
+      r+=dimH(xc-22,xc,yS-30,'',RB)+T(xc-26,yS-27,'e_2',{a:'end',fs:7.8,c:RB})+dimH(xc,xc+14,yS-40,'',RB)+T(xc+18,yS-37,'e_1',{fs:7.8,c:RB});}
+    if(mode===3){r+=arrow(xc+20,yS-20,xc+20,yS-2,RB)+T(xc+24,yS-8,'N_1',{fs:7.8,c:RB})+dimH(xc,xc+20,yS-30,'',RB)+T(xc+24,yS-27,'e_1',{fs:7.8,c:RB})+T(bx+8,205,'atrėmimas ~50 mm, e_1 ≈ h/2 − a/3',{fs:7.5,c:'#6B7280'});}
+    return r;};
+  s+=node(4,iM===2?'Iš abiejų pusių – nesimetriška':'Iš abiejų pusių – simetriška',mode0(iM),iM!==3);s+=node(188,'Iš vienos pusės',3,iM===3);
+  s+=T(6,226,iM===1?'Simetriška: N_1 = N_2, e_1 = e_2, Q '+i.qhi+' % / '+i.qlo+' %':(iM===2?'Nesimetriška: N_1, e_1, N_2, e_2, Q '+i.qhi+' % / '+i.qlo+' %':'Vienpusė: N_1, e_1 (atrėmimas ~50 mm)'),{fs:8.6,b:1,c:LIM});
+  s+=T(6,240,'M02 = '+fv(K('M02'),2)+' kNm/m · e = M02/NEd = '+fv(K('eRes'),1)+' mm · e_min = '+fv(K('emin'),0)+' mm',{fs:8.3});
+  el.setAttribute('viewBox','0 0 370 248');el.innerHTML=s;}
+function mode0(iM){return iM===2?2:1;}
+
+function svgP9n(el,i){const cur=K('iN'),d=K('dM');let s=defs('h9n');
+  const names=['F – tiesi, L450','D – tiesi, C tinkl. L1050','E – L kampas, L600','C – L kampas, L750+L600'];
+  const cw=180,ch=[0,0],rows=[[1,2],[3,4]];let y=26;
+  s+=T(8,16,'Tipiniai vertikalūs mazgai (planas) – pasirinktas paryškintas',{fs:9.5,b:1});
+  for(const rw of rows){let hh=0;const parts=rw.map(nd=>{const ii={...i};if(nd%2==0&&ii.h<250)ii.h=300;const r=p9node(nd,ii,false,d,'h9n');return [nd,r,ii];});
+    const sc=0.47;parts.forEach(([nd,r])=>hh=Math.max(hh,r[1]*sc));
+    parts.forEach(([nd,r,ii],k)=>{const x=k*cw,on=nd==cur;
+      s+=`<rect x="${x+3}" y="${y}" width="${cw-6}" height="${hh+34}" fill="${on?'#F4F7E1':'#fff'}" stroke="${on?'#8DA62A':'#D9DCE1'}" stroke-width="${on?2:1}"/>`;
+      s+=T(x+10,y+14,names[nd-1],{fs:7.6,b:on?1:0,c:on?'#4D5A0C':INKc});
+      s+=`<g transform="translate(${x+6},${y+12}) scale(${sc})">${r[0]}</g>`;
+      s+=T(x+10,y+hh+28,nd%2==0?'2 eilės · tik h ≥ 250'+(i.h<250?' (rodoma 300)':''):'1 eilė · visiems h',{fs:7,c:'#6B7280'});});
+    y+=hh+42;}
+  s+=T(8,y+6,'Girderiai – 280 mm nuo jungties. Pasirinkto mazgo',{fs:7.6,c:'#6B7280'})+T(8,y+17,'matmenys – schemoje „Vertikali jungtis“.',{fs:7.6,c:'#6B7280'});
+  el.setAttribute('viewBox',`0 0 360 ${y+24}`);el.innerHTML=s;}
+
+function apply(i){XL.clear();SP.inp.forEach(o=>XL.set(o.cell,i[o.id]));}
+const allOk=()=>SP.checks.every(c=>K(c.o)===true);
+function render(){const r0=read();const i=r0?Object.fromEntries(SP.inp.map(o=>[o.id,r0[o.eid]])):null;const err=$('#err');if(!i){err.hidden=false;err.textContent='Patikrinkite pažymėtas reikšmes: jos už leidžiamų ribų.';return;}err.hidden=true;
+  apply(i);
+  let kh='';SP.kl.forEach((l,t)=>{const v=K('kv'+t),sb=K('ks'+t);const bad=String(v).startsWith('REIK');kh+=kp('',l.charAt(0)+l.slice(1).toLowerCase(),fv(v),fv(sb),t==0?('st'+(bad?' bad':'')):'');});$('#kp').innerHTML=kh;
+  let h='<thead><tr><th>Patikra</th><th class="v">Skaičiuotinė / ribinė</th><th class="v">Išnaud.</th><th>Būklė / ką keisti</th></tr></thead><tbody>',g='',fails=[];
+  SP.checks.forEach(c=>{if(c.group&&c.group!==g){g=c.group;h+=`<tr class="g"><td colspan="4"><span class="gz">${g}</span>${c.gd?`<span class="gd">${c.gd}</span>`:''}</td></tr>`;}
+    const ok=K(c.o)===true,p=c.p?K(c.p):'–',a=K(c.a);if(!ok&&!c.info)fails.push([c.lab,a]);
+    h+=`<tr><td>${c.lab}</td><td class="num">${fv(K(c.v))}</td><td class="num">${isNum(p)?pct(Math.min(p,999)):'<span class="st-na">–</span>'}</td><td>${c.info?'<span class="st-na">ℹ '+a+'</span>':(ok?'<span class="st-ok">✔ tenkinama</span>':'<span class="st-no">✘</span> <span class="adv2">'+a+'</span>')}</td></tr>`;});
+  $('#t1').innerHTML=h+'</tbody>';
+  let extra='';if(fails.length&&HS){const h0=i[HS];let hm=null;for(let x=h0+10;x<=450;x+=10){apply({...i,[HS]:x});if(allOk()){hm=x;break;}}apply(i);
+    extra=hm?`Su tais pačiais kitais duomenimis visos patikros tenkinamos nuo h = ${hm} mm (dabar ${h0} mm).`:'Vien storinant sieną iki 450 mm visų patikrų patenkinti nepavyksta – keiskite kitus duomenis.';}
+  $('#adv').innerHTML=fails.length?`<div class="advbox"><div class="advh">Ką keisti – pasiūlymai</div><ul>${fails.map(f=>`<li><b>${f[0]}:</b> ${f[1]}</li>`).join('')}</ul>${extra?`<div class="advx2">${extra}</div>`:''}</div>`:'<div class="okbox" style="border:1px solid #CFE3A6;background:#F4F7E1;padding:10px 14px;margin:12px 0 4px;font-size:12.5px"><span class="st-ok">✔ Visos patikros tenkinamos.</span></div>';
+  $('#leg').innerHTML=LEG;
+  if($('#t2')){let s='<thead><tr><th>Žingsnis</th><th>Formulė</th><th class="v">Reikšmė</th><th>Vnt.</th><th>Šaltinis</th></tr></thead><tbody>';
+  SP.steps.forEach(st=>{const v=K(st.key);s+=`<tr><td>${st.lab}</td><td class="f">${st.f}</td><td class="num">${isNum(v)?fv(v,st.d):fv(v)}</td><td class="u">${st.u}</td><td class="src">${st.src}</td></tr>`;});
+  $('#t2').innerHTML=s+'</tbody>';}
+  FIGRUN(i);
+}
+function FIGRUN(i){svgS4($('#svg1'),i);}
+
+
+const $=s=>document.querySelector(s);
+const f0=n=>Number(n).toLocaleString('lt-LT',{maximumFractionDigits:0});
+const f1=n=>Number(n).toLocaleString('lt-LT',{minimumFractionDigits:1,maximumFractionDigits:1});
+const f2=n=>Number(n).toLocaleString('lt-LT',{minimumFractionDigits:2,maximumFractionDigits:2});
+const OK=b=>b?'<span class="okb">TINKA</span>':'<span class="nok">NETINKA</span>';
+$('#s-dt').textContent=new Date().toISOString().slice(0,10);
+function read(){const i={};let ok=true;
+  IDS.forEach(k=>{const el=$('#i-'+k);if(el.tagName==='SELECT'){const v=el.value;i[k]=isNaN(+v)?v:+v;return;}
+    const v=parseFloat(el.value);const bad=!(v>=parseFloat(el.min)&&v<=parseFloat(el.max));el.classList.toggle('bad',bad);if(bad)ok=false;i[k]=v;});
+  return ok?i:null;}
+function kp(id,lab,val,sub,cls=''){return `<div class="${cls}"><div class="k">${lab}</div><div class="v">${val}</div><div class="s">${sub}</div></div>`;}
+/* Sienos pjūvis (horizontalus): 1 pusė kairėje, 2 pusė dešinėje */
+function svgSec(el,t,r,mode){
+  const W=360,k=Math.min(0.62,250/t),x0=(W-t*k)/2,y0=52,h=150,X=mm=>x0+mm*k,ff='font-family="IBM Plex Mono,monospace"';
+  const T1=r.T1.T,T2=r.T2.T;
+  let s=`<defs><pattern id="hp${mode}" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#9CA3AF"/></pattern>
+  <marker id="ar${mode}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#C2410C"/></marker></defs>`;
+  s+=`<rect x="${X(T1)}" y="${y0}" width="${(t-T1-T2)*k}" height="${h}" fill="#EEF3CF" stroke="#7E8F1E" stroke-dasharray="4 3"/>`;
+  s+=`<rect x="${X(0)}" y="${y0}" width="${T1*k}" height="${h}" fill="url(#hp${mode})" stroke="#262B33" stroke-width="1.5"/><rect x="${X(t-T2)}" y="${y0}" width="${T2*k}" height="${h}" fill="url(#hp${mode})" stroke="#262B33" stroke-width="1.5"/>`;
+  // armatūra: horizontalūs strypai (linijos) ir vertikalūs (taškai)
+  const xh1=r.cef1+r.dhf/2, xv1=r.cef1+r.dhf+r.dvf/2, xh2=t-r.cef2-r.dhf/2, xv2=t-r.cef2-r.dhf-r.dvf/2;
+  s+=`<line x1="${X(xh1)}" x2="${X(xh1)}" y1="${y0+4}" y2="${y0+h-4}" stroke="#262B33" stroke-width="1.6"/><line x1="${X(xh2)}" x2="${X(xh2)}" y1="${y0+4}" y2="${y0+h-4}" stroke="#262B33" stroke-width="1.6"/>`;
+  for(let y=y0+16;y<y0+h;y+=26) s+=`<circle cx="${X(xv1)}" cy="${y}" r="3" fill="#262B33"/><circle cx="${X(xv2)}" cy="${y}" r="3" fill="#262B33"/>`;
+  // girderis
+  if(r.h>0){const gb=r.cef1+r.dhf+r.botf/2-1, gt=gb+r.h-r.botf/2-r.topf/2;
+    s+=`<line x1="${X(gb)}" x2="${X(gb)}" y1="${y0}" y2="${y0+h}" stroke="#5F6F0E" stroke-width="2"/><line x1="${X(gt)}" x2="${X(gt)}" y1="${y0}" y2="${y0+h}" stroke="#5F6F0E" stroke-width="2.4"/>`;
+    let p=`M${X(gb)} ${y0}`;for(let y=y0,j=0;y<y0+h;y+=22,j++)p+=` L${j%2?X(gb):X(gt)} ${Math.min(y+22,y0+h)}`;s+=`<path d="${p}" fill="none" stroke="#5F6F0E" stroke-width="1.3"/>`;}
+  const dim=(a,b,y,lab,col='#262B33')=>`<line x1="${X(a)}" x2="${X(b)}" y1="${y}" y2="${y}" stroke="${col}"/><line x1="${X(a)}" x2="${X(a)}" y1="${y-5}" y2="${y+5}" stroke="${col}"/><line x1="${X(b)}" x2="${X(b)}" y1="${y-5}" y2="${y+5}" stroke="${col}"/><text x="${(X(a)+X(b))/2}" y="${y-4}" font-size="10" text-anchor="middle" fill="${col}" ${ff}>${lab}</text>`;
+  s+=dim(0,T1,30,T1)+dim(T1,t-T2,30,t-T1-T2)+dim(t-T2,t,30,T2)+dim(0,t,y0+h+22,'t = '+t);
+  if(mode==='fire'){s+=dim(0,xv1,y0+h+40,'a₁ '+f0(r._a1),'#9A3412')+dim(xv2,t,y0+h+40,'a₂ '+f0(r._a2),'#9A3412');
+    const arr=x=>`<line x1="${x}" x2="${x+(x<W/2?22:-22)}" y1="${y0+h/2}" y2="${y0+h/2}" stroke="#C2410C" stroke-width="2" marker-end="url(#ar${mode})"/><text x="${x+(x<W/2?0:0)}" y="${y0+h/2-8}" font-size="10" fill="#C2410C" text-anchor="${x<W/2?'start':'end'}" ${ff}>ugnis</text>`;
+    s+=arr(4);if(r._sides==2)s+=arr(W-4);}
+  else {s+=dim(0,r.cef1,y0+h+40,'c '+r.cef1,'#5F6F0E')+dim(t-r.cef2,t,y0+h+40,'c '+r.cef2,'#5F6F0E');
+    if(r.h>0){const gb=r.cef1+r.dhf;s+=dim(gb,gb+r.h,y0-8,'girderis h = '+r.h,'#5F6F0E');}}
+  s+=`<text x="${X(0)}" y="${y0+h+(mode==='fire'?58:58)}" font-size="10" fill="#6B7280" ${ff}>1 pusė · ${r.s1.env}</text><text x="${X(t)}" y="${y0+h+58}" font-size="10" fill="#6B7280" text-anchor="end" ${ff}>2 pusė · ${r.s2.env}</text>`;
+  el.innerHTML=s;
+}
+$('#gate').addEventListener('submit',e=>{e.preventDefault();
+  const req=['r-fn','r-ln','r-co','r-em','r-pr'].map(id=>$('#'+id));
+  const ok=req.every(x=>x.value.trim())&&/\S+@\S+\.\S+/.test($('#r-em').value)&&$('#r-ok').checked;
+  $('#gerr').hidden=ok; if(!ok)return;
+  unlock($('#r-pr').value.trim(),`${$('#r-co').value.trim()} · ${$('#r-fn').value.trim()[0]}. ${$('#r-ln').value.trim()}`);
+});
+function unlock(pr,co){$('#lockwrap').classList.remove('locked');$('#gate').hidden=true;
+  $('#proj').textContent='Projektas: '+pr;$('#s-pr').textContent=pr;$('#s-co').textContent=co;}
+$('#a-pdf').addEventListener('click',e=>{if(!$('#lockwrap').classList.contains('locked')){e.preventDefault();window.print();}});
+function boot(){IDS.forEach(k=>{const el=$('#i-'+k);el.addEventListener('input',render);el.addEventListener('change',render);});render();
+  if(location.hash==='#atrakinta')unlock('Daugiabutis, Žirmūnų g. 12, Vilnius','UAB Projektas · J. Jonaitis');}
+
+boot();
+</script>
+
+<script src="/skaiciuokles-forms/log-calc.js"></script>
+
+</body>
+</html>

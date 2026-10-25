@@ -1,0 +1,6 @@
+{
+  "name": "Helstomm Group - Statybos Sprendimai",
+  "description": "Helstomm Group surenkamo-monolitinio gelžbetonio („Filigran“) sprendimų, produktų katalogo, mazgų, skaičiuoklių ir mokymų platforma.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

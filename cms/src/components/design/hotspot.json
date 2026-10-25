@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_design_hotspots",
+  "info": {
+    "displayName": "Konstrukcijos taškas",
+    "description": "Interaktyvaus modelio mazgas",
+    "icon": "pin"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "techDetail": {
+      "type": "string"
+    },
+    "xPct": {
+      "type": "decimal",
+      "required": true
+    },
+    "yPct": {
+      "type": "decimal",
+      "required": true
+    },
+    "file": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["files", "images"],
+      "description": "Mazgo DWG / PDF. Be failo diagramoje rodoma „Failas netrukus“."
+    }
+  }
+}

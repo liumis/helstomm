@@ -1,0 +1,81 @@
+{
+  "kind": "collectionType",
+  "collectionName": "calculator_submissions",
+  "info": {
+    "singularName": "calculator-submission",
+    "pluralName": "calculator-submissions",
+    "displayName": "Skaičiuoklių pateikimai",
+    "description": "P1–P14, V1–V3 ir S4 skaičiavimai ir konstruktoriaus klausimai"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "kind": {
+      "type": "enumeration",
+      "enum": ["calculation", "ask", "notify"],
+      "default": "calculation",
+      "required": true
+    },
+    "code": {
+      "type": "enumeration",
+      "enum": ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11", "P12", "P13", "P14", "V1", "V2", "V3", "V4", "S2", "S3", "S4"],
+      "required": true
+    },
+    "title": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "company": {
+      "type": "string"
+    },
+    "projectName": {
+      "type": "string"
+    },
+    "question": {
+      "type": "text"
+    },
+    "pageUrl": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "text"
+    },
+    "inputs": {
+      "type": "json"
+    },
+    "results": {
+      "type": "json"
+    },
+    "notifyEmails": {
+      "type": "text"
+    },
+    "ipAddress": {
+      "type": "string"
+    },
+    "userAgent": {
+      "type": "text"
+    },
+    "deviceType": {
+      "type": "enumeration",
+      "enum": ["desktop", "mobile"]
+    },
+    "submittedAt": {
+      "type": "datetime"
+    }
+  }
+}

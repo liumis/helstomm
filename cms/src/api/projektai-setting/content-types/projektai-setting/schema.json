@@ -1,0 +1,28 @@
+{
+  "kind": "singleType",
+  "collectionName": "projektai_settings",
+  "info": {
+    "singularName": "projektai-setting",
+    "pluralName": "projektai-settings",
+    "displayName": "Projektai (blokas)",
+    "description": "Įgyvendintų projektų bloko antraštės ir filtrai"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "badge": { "type": "string" },
+    "title": { "type": "string" },
+    "highlight": { "type": "string" },
+    "intro": { "type": "text" },
+    "emptyTitle": { "type": "string" },
+    "emptyCta": { "type": "string" },
+    "analysisCta": { "type": "string" },
+    "filters": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.filter"
+    }
+  }
+}

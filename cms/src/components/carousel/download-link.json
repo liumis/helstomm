@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_carousel_download_links",
+  "info": {
+    "displayName": "Atsisiuntimo nuoroda",
+    "description": "Skaidrės atsisiuntimo mygtukas",
+    "icon": "download"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "url": {
+      "type": "text"
+    },
+    "file": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["files", "images"],
+      "description": "Įkelkite failą čia. Jei failo nėra, galima palikti išorinę URL nuorodą lauke žemiau."
+    },
+    "icon": {
+      "type": "enumeration",
+      "enum": ["download", "code", "check"],
+      "default": "download"
+    }
+  }
+}

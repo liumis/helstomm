@@ -1,0 +1,153 @@
+{
+  "kind": "collectionType",
+  "collectionName": "products",
+  "info": {
+    "singularName": "product",
+    "pluralName": "products",
+    "displayName": "Produktai",
+    "description": "Gelžbetonio produktai: meniu, karuselė, privalumai, mazgai, specifikacijos"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "menuTitle": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "imageUrl": {
+      "type": "text"
+    },
+    "menuIcon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "menuIconUrl": {
+      "type": "text"
+    },
+    "badge": {
+      "type": "string"
+    },
+    "pageTitle": {
+      "type": "string"
+    },
+    "pageIntro": {
+      "type": "text"
+    },
+    "tilesSectionTitle": {
+      "type": "string"
+    },
+    "tilesSelectable": {
+      "type": "boolean",
+      "default": false
+    },
+    "tilesColumns": {
+      "type": "integer",
+      "default": 6,
+      "min": 2,
+      "max": 6
+    },
+    "schemaTitle": {
+      "type": "string"
+    },
+    "schemaImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "schemaImageUrl": {
+      "type": "text"
+    },
+    "catalogLabel": {
+      "type": "string"
+    },
+    "catalogFile": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["files"],
+      "description": "Produkto katalogas (PDF). Mygtukas „catalogLabel“ atidaro šį failą."
+    },
+    "jointsTitle": {
+      "type": "string"
+    },
+    "jointsCtaLabel": {
+      "type": "string"
+    },
+    "showInMenu": {
+      "type": "boolean",
+      "default": true
+    },
+    "showInCarousel": {
+      "type": "boolean",
+      "default": true
+    },
+    "sortOrder": {
+      "type": "integer",
+      "default": 0
+    },
+    "layout": {
+      "type": "enumeration",
+      "enum": ["standard", "engineering"],
+      "default": "standard"
+    },
+    "guidePdfUrl": {
+      "type": "text"
+    },
+    "detailsCadUrl": {
+      "type": "text"
+    },
+    "bimModelUrl": {
+      "type": "text"
+    },
+    "advantages": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.advantage"
+    },
+    "specs": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.spec"
+    },
+    "tiles": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.tile"
+    },
+    "joints": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.joint"
+    },
+    "schemaParagraphs": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.paragraph"
+    }
+  }
+}

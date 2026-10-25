@@ -1,0 +1,496 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Helstomm P6 Perdangos atsparumas ugniai</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* HELSTOMM skaičiuoklių šablonas: šviesus techninis lapas.
+   1 Pradiniai duomenys | 2 Rezultatai (užrakinti iki registracijos) · veiksmų juosta · spaudas */
+:root{
+  --paper:#FFFFFF; --sheet:#F6F7F9; --ink:#262B33; --muted:#6B7280; --rule:#C9CED6; --rule-2:#E4E7EC;
+  --lime:#B7CC34; --lime-soft:#FBFCF5; --lime-ink:#5F6F0E; --ok:#2E7D32; --warn:#9A5B12;
+  --mono-1:#6B7280; --mono-2:#9CA3AF; --mono-3:#C3C8D0; --mono-4:#DADDE2; --mono-5:#8A919C;
+  --fil-1:#7E8F1E; --fil-2:#B7CC34; --fil-3:#D3E07A; --fil-4:#E7EEB8; --fil-5:#A3B52B; --fil-6:#5F6F0E;
+  --f:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --m:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--sheet);font-family:var(--f);color:var(--ink);font-size:15px;line-height:1.5}
+.w{max-width:1320px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{margin:0;text-wrap:balance}
+.num{font-family:var(--m);font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--lime-ink);outline-offset:2px}
+
+/* Antraštė */
+.tstrip{border-bottom:1px solid var(--rule-2);padding-block:22px 24px}
+.crumb{font-size:13px;color:var(--muted)}
+.crumb b{color:var(--ink);font-weight:600}
+.trow{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-top:12px;flex-wrap:wrap}
+.code{font-family:var(--m);font-size:12.5px;color:var(--muted);letter-spacing:.04em}
+.code b{color:var(--ink);background:#fff;border:1px solid var(--rule);border-radius:4px;padding:2px 7px;margin-right:8px;font-weight:600}
+.tstrip h1{font-size:30px;font-weight:700;line-height:1.2;margin-top:8px}
+.tstrip p{margin:6px 0 0;color:var(--muted);max-width:760px;font-size:14.5px}
+.norm{font-family:var(--m);font-size:12.5px;border:1px solid var(--rule);background:#fff;border-radius:6px;padding:8px 12px}
+
+/* Lapas */
+.sheetwrap{padding-block:20px 40px}
+.sheet{background:var(--paper);border:1px solid var(--rule);border-radius:4px}
+.cols{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr)}
+.col{padding:22px 24px;min-width:0}
+.col+.col{border-left:1px solid var(--rule)}
+.sh{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding-bottom:10px;border-bottom:2px solid var(--ink);margin-bottom:6px}
+.sh .n{font-family:var(--m);width:22px;height:22px;border:1.5px solid var(--ink);border-radius:3px;display:grid;place-items:center;font-size:12px;letter-spacing:0}
+.sh small{margin-left:auto;font-weight:500;letter-spacing:0;text-transform:none;color:var(--muted);font-size:12.5px}
+.sub{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:20px 0 4px}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+table.t th{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 6px;border-bottom:1px solid var(--rule);white-space:nowrap}
+table.t td{padding:7px 6px;border-bottom:1px solid var(--rule-2);vertical-align:middle}
+table.t td.sym{font-family:var(--m);font-size:13px;color:var(--muted);width:48px}
+table.t td.u{font-family:var(--m);font-size:12.5px;color:var(--muted);width:56px}
+table.t th.v,table.t td.v{text-align:right;font-family:var(--m);font-variant-numeric:tabular-nums;white-space:nowrap}
+table.t tr.total td{border-top:2px solid var(--ink);border-bottom:0;font-weight:600}
+table.t tr.grp td{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:14px}
+td.pos{color:var(--ok)} td.neg{color:var(--warn)}
+.in{width:130px;border:1px solid var(--rule);border-radius:3px;padding:6px 9px;font-family:var(--m);font-size:14px;text-align:right;background:#fff;color:var(--ink)}
+select.in{text-align:left}
+.in.bad{border-color:var(--warn)}
+.err{font-size:12px;color:var(--warn);margin-top:6px}
+details.adv{margin-top:14px;border:1px solid var(--rule-2);border-radius:4px}
+details.adv summary{cursor:pointer;padding:10px 12px;font-size:13px;font-weight:600;list-style:none;display:flex;justify-content:space-between}
+details.adv summary::after{content:"+";font-family:var(--m)}
+details.adv[open] summary::after{content:"−"}
+details.adv .body{padding:0 12px 10px}
+.fixed{font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6}
+.fixed b{color:var(--ink);font-weight:600}
+
+/* Rezultatai */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--rule);margin:14px 0 6px}
+.kpis>div{padding:12px 14px;min-width:0}
+.kpis>div+div{border-left:1px solid var(--rule)}
+.kpis .k{font-size:12.5px;font-weight:600;color:var(--muted)}
+.kpis .v{font-family:var(--m);font-size:22px;font-weight:600;line-height:1.25;margin-top:2px;white-space:nowrap}
+.kpis .s{font-size:12.5px;color:var(--muted)}
+.kpis .main{border-left:4px solid var(--lime)!important;background:var(--lime-soft)}
+.ppl{border:1px solid var(--rule);border-left:4px solid var(--lime);margin-top:22px;padding:12px 14px 4px}
+.ph{font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+#ppl td.v{font-size:17px;font-weight:600}
+#ppl td.vf{color:var(--lime-ink)}
+#ppl td.pc{font-family:var(--m);font-weight:700;color:var(--ok);text-align:right;white-space:nowrap}
+.pnote{background:var(--lime-soft);padding:10px 12px;font-size:13.5px;line-height:1.55;margin:10px 0 10px}
+.charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}
+.ch{margin:0;border:1px solid var(--rule-2);padding:10px 10px 4px;min-width:0}
+.ch figcaption{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ch svg{width:100%;height:auto;display:block}
+.sg{display:flex;gap:18px;justify-content:center;font-size:12.5px;color:var(--muted);margin-top:8px}
+.sg i{display:inline-block;width:11px;height:11px;margin-right:6px;vertical-align:-1px}
+.sg i.m{background:#8A929D}.sg i.f{background:#B7CC34}
+@media (max-width:560px){.charts{grid-template-columns:1fr}.ppl{padding:10px 8px 4px}#ppl th:nth-child(4),#ppl td:nth-child(4){display:none}#ppl td.v{font-size:15px}}
+.bars{display:grid;gap:8px;margin-top:8px}
+.bar{display:grid;grid-template-columns:96px minmax(0,1fr) 110px;gap:10px;align-items:center;font-size:13.5px}
+.bar .tr{height:18px;background:var(--sheet);border:1px solid var(--rule-2);display:flex;overflow:hidden}
+.bar .tr span{display:block;height:100%}
+.bar b{font-family:var(--m);font-weight:500;text-align:right}
+.lg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted);margin-top:6px}
+.lg i{display:inline-block;width:10px;height:10px;margin-right:5px;vertical-align:-1px;border:1px solid rgba(0,0,0,.08)}
+.figs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
+.fig{border:1px solid var(--rule-2);padding:8px 10px 6px}
+.fig h4{margin:0;font-size:12.5px;font-weight:700}
+.fig svg{width:100%;height:auto;display:block}
+.fig p{margin:0;font-size:12px;color:var(--muted)}
+.link{color:var(--ink);text-decoration:none;display:flex;justify-content:space-between;align-items:center;gap:12px;border:1px dashed var(--rule);padding:10px 14px;margin-top:16px;font-size:14px}
+.link b{font-weight:600}
+.link span{font-family:var(--m);font-size:13px;color:var(--lime-ink);font-weight:600;white-space:nowrap}
+.small{font-size:12px;color:var(--muted)}
+
+/* Užrakinta */
+.lockwrap{position:relative}
+.lockwrap.locked .res{filter:blur(6px);opacity:.5;user-select:none;pointer-events:none;max-height:640px;overflow:hidden}
+.gate{position:absolute;inset:110px 6px auto 6px;background:#fff;border:1px solid var(--ink);border-radius:4px;box-shadow:0 12px 32px rgba(38,43,51,.14);padding:22px}
+.gate h3{font-size:18px;font-weight:700;display:flex;gap:10px;align-items:center}
+.gate h3 svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:2}
+.gate p{margin:4px 0 14px;color:var(--muted);font-size:13.5px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+.g2 .full{grid-column:1/-1}
+.fl label{display:block;font-size:12px;font-weight:600;margin-bottom:4px}
+.fl input{width:100%;border:1px solid var(--rule);border-radius:3px;padding:8px 10px;font-size:14px;font-family:var(--f);color:var(--ink)}
+.gate .row{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:14px;flex-wrap:wrap}
+.cb{display:inline-flex;gap:8px;align-items:center;font-size:12.5px;color:var(--muted)}
+.cb input{accent-color:var(--ink)}
+.btn{border:0;border-radius:4px;padding:11px 18px;font-weight:600;font-size:14.5px;display:inline-flex;gap:8px;align-items:center;cursor:pointer;font-family:var(--f)}
+.btn.dark{background:var(--ink);color:#fff}
+
+/* Veiksmai ir spaudas */
+.actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--rule)}
+.actions a{display:flex;gap:12px;align-items:center;padding:16px 22px;color:var(--ink);text-decoration:none}
+.actions a+a{border-left:1px solid var(--rule)}
+.actions .ic{width:40px;height:40px;border:1.5px solid var(--ink);border-radius:4px;display:grid;place-items:center;flex:none}
+.actions .ic svg{width:20px;height:20px;fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.actions a.pri .ic{background:var(--lime);border-color:var(--lime)}
+.actions b{display:block;font-size:14px;text-transform:uppercase;letter-spacing:.04em}
+.actions small{color:var(--muted);font-size:12.5px}
+.stamp{display:grid;grid-template-columns:2.2fr 1.6fr 1fr 1fr 1.2fr 1.4fr;border-top:2px solid var(--ink);font-size:12px}
+.stamp>div{padding:8px 12px;border-right:1px solid var(--rule);min-width:0}
+.stamp>div:last-child{border-right:0;display:flex;align-items:center;justify-content:center;font-weight:700;letter-spacing:.06em}
+.stamp>div:last-child i{color:var(--lime-ink);font-style:normal;margin-left:4px}
+.stamp span{display:block;font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.stamp b{font-family:var(--m);font-weight:500;font-size:13px;overflow-wrap:anywhere}
+.disc{font-size:12.5px;color:var(--muted);margin-top:12px;max-width:1000px}
+details.how{margin-top:14px;border-top:1px solid var(--rule-2);padding-top:10px}
+details.how summary{cursor:pointer;font-weight:600;font-size:14px}
+details.how .body{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.7}
+details.how code{font-family:var(--m);font-size:12.5px;color:var(--ink);background:var(--sheet);padding:1px 5px}
+
+@media (max-width:980px){
+  .cols{grid-template-columns:minmax(0,1fr)}
+  .col+.col{border-left:0;border-top:1px solid var(--rule)}
+  .kpis{grid-template-columns:1fr 1fr}
+  .kpis>div:nth-child(3){border-left:0}
+  .kpis>div:nth-child(n+3){border-top:1px solid var(--rule)}
+  .actions{grid-template-columns:1fr}
+  .actions a+a{border-left:0;border-top:1px solid var(--rule)}
+  .stamp{grid-template-columns:1fr 1fr}
+  .stamp>div{border-bottom:1px solid var(--rule)}
+}
+@media (max-width:560px){
+  .col{padding:16px 14px}
+  .tstrip h1{font-size:23px}
+  .figs{grid-template-columns:1fr}
+  .g2{grid-template-columns:1fr}
+  .gate{position:relative;inset:auto;margin-top:-420px}
+  .lockwrap.locked .res{max-height:520px}
+  .bar{grid-template-columns:70px minmax(0,1fr) 90px;font-size:12.5px}
+  .kpis .v{font-size:18px}
+  .in{width:110px}
+  .scroll{overflow-x:auto}
+}
+@media print{
+  body{background:#fff}
+  .tstrip .norm,.actions,.adv summary,.gate,.link{display:none!important}
+  .sheet{border:0}
+  .lockwrap.locked .res{filter:none;opacity:1;max-height:none}
+}
+
+.kp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--rule);margin:14px 0 6px}
+.kp>div{padding:12px 14px;min-width:0}.kp>div+div{border-left:1px solid var(--rule)}
+.kp .k{font-size:12.5px;font-weight:600;color:var(--muted)}
+.kp .v{font-family:var(--m);font-size:21px;font-weight:600;line-height:1.25;margin-top:2px;overflow-wrap:anywhere}
+.kp .s{font-size:12.5px;color:var(--muted)}
+.kp .st{background:var(--lime-soft);border-left:4px solid var(--lime)!important}
+.kp .st.bad{background:#FFF7ED;border-left-color:#C2410C!important}.kp .st.bad .v{color:#9A3412}
+.okb{font-family:var(--m);font-weight:700;color:var(--ok)}.nok{font-family:var(--m);font-weight:700;color:#B45309}
+table.t td.src{font-size:12px;color:var(--muted);white-space:nowrap}
+table.t tr.key td{font-weight:600;border-top:2px solid var(--ink)}
+.note{font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:10px}
+.fig2{border:1px solid var(--rule-2);padding:8px 10px 6px;margin-top:10px}
+.fig2 h4{margin:0;font-size:12.5px;font-weight:700}.fig2 svg{width:100%;height:auto;display:block}
+.fig2 p{margin:2px 0 0;font-size:12px;color:var(--muted)}
+td.hit{background:var(--lime-soft)}
+@media (max-width:980px){.kp{grid-template-columns:1fr 1fr}.kp>div:nth-child(3){border-left:0}.kp>div:nth-child(n+3){border-top:1px solid var(--rule)}}
+@media (max-width:560px){.kp .v{font-size:17px}table.t td.src{white-space:normal}}
+
+.printonly{display:none}
+@media print{.printonly{display:block}}
+.instr{font-size:12.5px;line-height:1.6;margin-top:12px;border-top:1px solid var(--rule-2);padding-top:8px}
+.instr ol{margin:4px 0 0 18px;padding:0}
+.hi{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;border:1px solid #9AAA3A;color:#5F6F0E;font:600 10px/1 var(--m);margin-left:6px;cursor:help;position:relative;vertical-align:1px;background:#fff}
+.hi:hover::after,.hi:focus::after{content:attr(data-h);position:absolute;left:-40px;top:21px;z-index:30;width:min(280px,72vw);background:#fff;border:1px solid #D9DCE1;border-left:3px solid #8DA62A;box-shadow:0 4px 14px rgba(38,43,51,.14);padding:8px 10px;font:400 12px/1.45 Poppins,sans-serif;color:#262B33;text-align:left;white-space:normal}
+.hi:focus{outline:2px solid #B7CC34;outline-offset:1px}
+details.guide{border:1px solid #D9E4A8;background:#F8FAEC;margin:0 0 14px;padding:0}
+details.guide>summary{cursor:pointer;padding:11px 16px;font-weight:700;font-size:13.5px;color:#4D5A0C;list-style:none;display:flex;align-items:center;gap:10px}
+details.guide>summary::-webkit-details-marker{display:none}
+details.guide>summary::before{content:'+';display:inline-flex;width:18px;height:18px;align-items:center;justify-content:center;border:1px solid #8DA62A;font:600 13px/1 var(--m)}
+details.guide[open]>summary::before{content:'−'}
+details.guide>summary small{font-weight:400;color:#6B7280;font-size:12px}
+.gbody{padding:2px 18px 16px;font-size:13px;line-height:1.55;color:#262B33;display:grid;grid-template-columns:1fr 1fr;gap:6px 28px}
+.gbody h5{margin:12px 0 4px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#5F6F0E}
+.gbody ol,.gbody ul{margin:0;padding-left:20px}.gbody li{margin:3px 0}
+.gbody .use{grid-column:1/3;margin:6px 0 0}.gbody .gn{grid-column:1/3;font-size:11.5px;color:#6B7280;margin-top:8px}
+.gbody dl{margin:0}.gbody dt{font-weight:600;margin-top:6px}.gbody dd{margin:0 0 0 0;color:#374151}.gbody dd i{color:#6B7280;font-style:normal;font-size:12px}
+.gbody .lg span{display:inline-block;width:14px;height:12px;border:1px solid #9AAA3A;vertical-align:-1px;margin-right:6px}
+@media(max-width:760px){.gbody{grid-template-columns:1fr}.gbody .use,.gbody .gn{grid-column:1}}
+</style>
+
+<header class="tstrip">
+  <div class="w">
+    <div class="crumb">Skaičiuoklės / Projektuotojams / <b>Perdangos atsparumas ugniai</b></div>
+    <div class="trow"><div><div class="code"><b>P6</b>PROJEKTUOTOJAMS · v1.0</div><h1>Perdangos atsparumas ugniai</h1>
+      <p>Filigran (HalfSlab) perdangos ugniaatsparumo patikra lenteliniu metodu: perdangos storis ir ašinis atstumas iki apatinės armatūros.</p></div>
+      <div class="norm">LST EN 1992-1-2 · lent. 5.8</div></div>
+  </div>
+</header>
+<main class="sheetwrap w">
+ <details class="guide"><summary>Kaip naudotis šia skaičiuokle <small>– žingsniai, ką įvesti, ką skaičiuoja</small></summary><div class="gbody"><p class="use">Kada naudoti: kai perdangai keliamas ugniaatsparumo reikalavimas – patikrinti storį ir ašinį atstumą iki apatinės armatūros.</p><div><h5>Žingsniai</h5><ol><li>Pasirinkite REI klasę ir atramų schemą.</li><li>Įveskite perdangos storį, betono klasę ir apačios aplinkos klasę.</li><li>Pasirinkite apatinę armatūrą.</li><li>Žiūrėkite, ar storis ir ašinis atstumas tenkina.</li></ol><h5>Ženklai</h5><ul class="lg" style="list-style:none;padding:0"><li><span style="background:#EAF1C4"></span><b>Įvesties laukelis</b> – įveskite reikšmę arba pasirinkite iš sąrašo; ženkliukas <b>i</b> šalia pavadinimo – paaiškinimas, iš kur paimti reikšmę.</li><li><b>✔</b> tenkinama · <b>✘</b> netenkina (šalia – ką keisti) · <b>ℹ</b> informacinis pranešimas.</li><li><b>Išnaudojimas</b>: iki 85 % – atsargos pakanka; 85–100 % – artėja prie ribos; virš 100 % – netenkina.</li></ul></div><div><h5>Ką skaičiuoja</h5><dl><dt>Lentelinis metodas</dt><dd>Pagal LST EN 1992-1-2 5.8 lentelę: mažiausias perdangos storis ir ašinis atstumas a pagal REI ir atramų schemą.</dd></dl><h5>Jei rezultatas netenkina</h5><ul><li>Storis per mažas – storinkite perdangą.</li><li>Ašinis atstumas per mažas – didinkite apatinį apsauginį sluoksnį.</li></ul></div><p class="gn">Rezultatai rodomi užpildžius registracijos laukus (vieną kartą). Kitose Helstomm skaičiuoklėse pakanka nurodyti projekto pavadinimą. Skaičiuoklė skirta preliminariam projektavimui ir sprendimų patikrinimui. Galutinius sprendimus tvirtina konstrukcijų projekto rengėjas. Prielaidos – po įvesties lentele.</p></div></details>
+<div class="sheet">
+  <div class="cols">
+   <section class="col" aria-labelledby="in-h">
+    <div class="sh" id="in-h"><span class="n">1</span>Pradiniai duomenys<small>įvedimas laisvas</small></div>
+    <table class="t"><thead><tr><th>Simb.</th><th>Parametras</th><th class="v">Reikšmė</th><th>Vnt.</th></tr></thead><tbody>
+<tr class="grp"><td colspan="4">Gaisro sąlygos</td></tr>
+<tr><td class="sym">R</td><td><label for="i-rei">Reikalaujama ugniaatsparumo klasė</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Reikalaujama perdangos ugniaatsparumo klasė iš gaisrinės saugos sprendinių.">i</span></td><td class="v"><select class="in" id="i-rei"><option value="REI 30">REI 30</option><option value="REI 60">REI 60</option><option value="REI 90" selected>REI 90</option><option value="REI 120">REI 120</option><option value="REI 180">REI 180</option><option value="REI 240">REI 240</option></select></td><td class="u"></td></tr>
+<tr><td class="sym">sch</td><td><label for="i-sch">Atramų schema</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Kaip perdanga dirba: vienpusė – atremta dviem priešingais kraštais; dvipusė – keturiais kraštais (pagal kraštinių santykį).">i</span></td><td class="v"><select class="in" id="i-sch"><option value="1" selected>Vienpusė</option><option value="2">Dvipusė ly/lx ≤ 1,5</option><option value="3">Dvipusė 1,5 < ly/lx ≤ 2</option></select></td><td class="u"></td></tr>
+<tr class="grp"><td colspan="4">Perdanga</td></tr>
+<tr><td class="sym">H</td><td><label for="i-H">Perdangos storis</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Visas perdangos storis (vertinamas visas, su monolitine dalimi).">i</span></td><td class="v"><input class="in" id="i-H" type="number" inputmode="decimal" min="160" max="400" step="10" value="220"></td><td class="u">mm</td></tr>
+<tr><td class="sym">f<sub>ck</sub></td><td><label for="i-cls">Betono stiprio klasė</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Betono klasė. Helstomm standartas – C30/37 (mažiausia leidžiama).">i</span></td><td class="v"><select class="in" id="i-cls"><option value="C30/37" selected>C30/37</option><option value="C35/45">C35/45</option><option value="C40/50">C40/50</option><option value="C45/55">C45/55</option><option value="C50/60">C50/60</option></select></td><td class="u"></td></tr>
+<tr><td class="sym">X<sub>a</sub></td><td><label for="i-envB">Aplinkos klasė – apačia</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Perdangos apačios aplinkos klasė – lemia apsauginį sluoksnį ir ašinį atstumą.">i</span></td><td class="v"><select class="in" id="i-envB"><option value="X0">X0</option><option value="XC1" selected>XC1</option><option value="XC2">XC2</option><option value="XC3">XC3</option><option value="XC4">XC4</option><option value="XD1">XD1</option><option value="XD2">XD2</option><option value="XD3">XD3</option><option value="XS1">XS1</option><option value="XS2">XS2</option><option value="XS3">XS3</option></select></td><td class="u"></td></tr>
+<tr><td class="sym">Ø<sub>s</sub></td><td><label for="i-dsB">Apatinė skersinė armatūra</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Apatinė skersinė armatūra (arčiau apačios).">i</span></td><td class="v"><select class="in" id="i-dsB"><option value="6" selected>Ø6</option><option value="8">Ø8</option><option value="10">Ø10</option><option value="12">Ø12</option></select></td><td class="u"></td></tr>
+<tr><td class="sym">Ø<sub>l</sub></td><td><label for="i-dlB">Apatinė išilginė (tempiamoji) armatūra</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Apatinė išilginė (tempiamoji) armatūra – iki jos ašies matuojamas ašinis atstumas a.">i</span></td><td class="v"><select class="in" id="i-dlB"><option value="6">Ø6</option><option value="8" selected>Ø8</option><option value="10">Ø10</option><option value="12">Ø12</option></select></td><td class="u"></td></tr>
+    </tbody></table>
+    <div class="err" id="err" hidden></div>
+    <p class="fixed">a = c1 + Ø<sub>skers.</sub> + Ø<sub>išilg.</sub>/2 (faktiniai Ø) – iki apatinės tempiamosios armatūros ašies; c1 – kaip P5. Vertinamas visas perdangos storis H. Eksploatavimo laikas 50 m.</p>
+    <div class="sub">Pjūvis</div>
+<div class="fig2"><h4>Perdangos pjūvis gaisro metu</h4><svg id="svg" viewBox="0 0 360 260" role="img" aria-label="Perdangos pjūvis gaisro metu"></svg></div>
+   </section>
+   <section class="col" aria-labelledby="out-h">
+    <div class="sh" id="out-h"><span class="n">2</span>Rezultatai<small id="proj">rodomi po registracijos</small></div>
+    <div class="lockwrap locked" id="lockwrap">
+     <div class="res" id="res">
+      <div class="kp" id="kp"></div>
+      <div class="sub">1. Reikalavimai ir patikra (EN 1992-1-2, lent. 5.8)</div><div class="scroll"><table class="t" id="t1"></table></div>
+      <div class="sub">2. Ašinis atstumas</div><div class="scroll"><table class="t" id="t2"></table></div>
+      <div class="sub">3. Visos REI klasės šiai perdangai</div><div class="scroll"><table class="t" id="t3"></table></div>
+      <p class="note" id="nt"></p>
+     </div>
+     <form class="gate" id="gate" novalidate>
+      <h3><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="1"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Gaukite rezultatus nemokamai</h3>
+      <p>Užpildykite vieną kartą. Kitose skaičiuoklėse užteks nurodyti projekto pavadinimą.</p>
+      <div class="g2">
+        <div class="fl"><label for="r-fn">Vardas *</label><input id="r-fn" required autocomplete="given-name"></div>
+        <div class="fl"><label for="r-ln">Pavardė *</label><input id="r-ln" required autocomplete="family-name"></div>
+        <div class="fl"><label for="r-co">Įmonė *</label><input id="r-co" required autocomplete="organization"></div>
+        <div class="fl"><label for="r-em">El. paštas *</label><input id="r-em" type="email" required autocomplete="email"></div>
+        <div class="fl full"><label for="r-pr">Projekto pavadinimas *</label><input id="r-pr" required></div>
+      </div>
+      <div class="err" id="gerr" hidden>Užpildykite visus laukus ir pažymėkite sutikimą.</div>
+      <div class="row"><label class="cb"><input type="checkbox" id="r-ok"> Sutinku su privatumo politika ir duomenų tvarkymu</label><button class="btn dark" type="submit">Rodyti rezultatus →</button></div>
+     </form>
+    </div>
+   </section>
+  </div>
+  <nav class="actions" aria-label="Veiksmai">
+   <a class="pri" href="#pdf" id="a-pdf"><span class="ic"><svg viewBox="0 0 24 24"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4M12 11v6M9 14l3 3 3-3"/></svg></span><span><b>Gauti PDF ataskaitą</b><small>Skaičiavimas su spaudu</small></span></a>
+   <a href="#klausti"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg></span><span><b>Klausti konstruktoriaus</b><small>Atsakymas per 1 darbo dieną</small></span></a>
+   <a href="#vadovas"><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 4h10l4 4v12H5z"/><path d="M14 4v5h5M8 13h8M8 17h6"/></svg></span><span><b>Projektavimo vadovas</b><small>Filigran perdangos, PDF</small></span></a>
+  </nav>
+  <div class="stamp">
+   <div><span>Projektas</span><b id="s-pr">–</b></div>
+   <div><span>Įmonė / parengė</span><b id="s-co">–</b></div>
+   <div><span>Data</span><b id="s-dt"></b></div>
+   <div><span>Skaičiuoklė</span><b>P6 · v1.0</b></div>
+   <div><span>Normos</span><b>LST EN 1992-1-2</b></div>
+   <div>HELSTOMM<i>GROUP</i></div>
+  </div>
+ </div>
+ <p class="disc">Patikra pagal LST EN 1992-1-2:2005, 5.8 lentelė (laikančiosios plokštės); ašinis atstumas – pagal apsauginį sluoksnį LST EN 1992-1-1. Galutinį sprendimą patvirtina Helstomm projektavimo skyrius.</p>
+</main>
+<script>
+/* ===== HELSTOMM FILIGRAN (HalfSlab) PERDANGOS – BENDRAS SKAIČIAVIMO BRANDUOLYS (P5, P6, P7) =====
+   Šaltinis: HELSTOMM_HalfSlab_skaiciuokle, lapai „Skaičiuoklė“ (1–5 žingsniai), „Montavimas“, „Atramos“, „Duomenys“, „Montavimo duomenys“ (DIBt Z-15.1-147).
+   IT: blokas vienodas visose trijose skaičiuoklėse – laikyti vienoje serverio bibliotekoje. */
+const DATA = {"env": ["X0", "XC1", "XC2", "XC3", "XC4", "XD1", "XD2", "XD3", "XS1", "XS2", "XS3"], "cdur": {"X0": [10, 10, 10, 10, 15, 20], "XC1": [10, 10, 10, 15, 20, 25], "XC2": [10, 15, 20, 25, 30, 35], "XC3": [10, 15, 20, 25, 30, 35], "XC4": [15, 20, 25, 30, 35, 40], "XD1": [20, 25, 30, 35, 40, 45], "XD2": [25, 30, 35, 40, 45, 50], "XD3": [30, 35, 40, 45, 50, 55], "XS1": [20, 25, 30, 35, 40, 45], "XS2": [25, 30, 35, 40, 45, 50], "XS3": [30, 35, 40, 45, 50, 55]}, "flim": {"X0": 30, "XC1": 30, "XC2": 35, "XC3": 35, "XC4": 40, "XD1": 40, "XD2": 40, "XD3": 45, "XS1": 40, "XS2": 45, "XS3": 45}, "fck": {"C20/25": 20, "C25/30": 25, "C30/37": 30, "C35/45": 35, "C40/50": 40, "C45/55": 45, "C50/60": 50}, "fire": {"REI 30": [60, 10, 10, 10], "REI 60": [80, 20, 10, 15], "REI 90": [100, 30, 15, 20], "REI 120": [120, 40, 20, 25], "REI 180": [150, 55, 30, 40], "REI 240": [175, 65, 40, 50]}, "gird": {"06608": [8, 6, 6, 6], "06610": [10, 6, 6, 8], "06612": [12, 6, 6, 8], "06712": [12, 7, 6, 8]}, "gdesc": {"06608": "apačia 2ø6 / įstrižainės ø6 / viršus ø8 – plokštėms iki 6 m", "06610": "apačia 2ø6 / įstrižainės ø6 / viršus ø10 – plokštėms 6…8 m", "06612": "apačia 2ø6 / įstrižainės ø6 / viršus ø12 – renkama RANKINIU režimu, kai reikia retesnio išramstymo. Su Ø12 viršutine viela 2a lentelė leidžia įstrižaines ø6 tik iki h = 120 mm.", "06712": "apačia 2ø6 / įstrižainės ø7 / viršus ø12 – reikalinga, kai kopetėlės aukštis > 120 mm (2a lentelės sąlyga)."}, "bar": {"6": [0.222, 8], "8": [0.395, 10], "10": [0.617, 12], "12": [0.888, 14]}, "conc": {"X0": ["-", "C8/10", 8, "-"], "XC1": [0.75, "C16/20", 16, 240], "XC2": [0.75, "C16/20", 16, 240], "XC3": [0.65, "C20/25", 20, 260], "XC4": [0.6, "C25/30", 25, 280], "XD1": [0.55, "C30/37", 30, 300], "XD2": [0.55, "C30/37", 30, 300], "XD3": [0.45, "C35/45", 35, 320], "XS1": [0.5, "C30/37", 30, 300], "XS2": [0.45, "C35/45", 35, 320], "XS3": [0.45, "C35/45", 35, 340]}, "t2a": [[8, 60, "5", 0.9, 0.83, 1.3, 1.2, null], [8, 70, "5", 0.95, 0.88, 1.35, 1.25, null], [8, 130, "5", 1.2, 1.11, 1.45, 1.34, null], [8, 220, "5", 1.7, 1.57, 1.7, 1.57, null], [10, 60, "5", 1.8, 1.67, 1.95, 1.8, null], [10, 70, "5", 1.85, 1.73, 2, 1.87, null], [10, 130, "5", 2.1, 1.96, 2.1, 1.96, null], [12, 90, "6", 2.5, 2.36, null, null, 1.1], [12, 110, "6", 3, 2.83, null, null, 1.1], [12, 120, "6", 3.25, 3.06, null, null, 1.1], [12, 130, "7,8,9", 3.5, 3.3, null, null, 1.1], [12, 150, "7,8,9", 4, 3.77, null, null, 1.1], [12, 170, "7,8,9", 4.2, 3.96, null, null, 1.72], [12, 190, "7,8,9", 4.4, 4.15, null, null, 1.72], [14, 90, "7,8,9", 3.25, 3.1, null, null, 1.84], [14, 110, "7,8,9", 3.84, 3.66, null, null, 1.71], [14, 130, "7,8,9", 4.43, 4.23, null, null, 1.63], [14, 150, "7,8,9", 4.93, 4.7, null, null, 1.56], [14, 180, "7,8,9", 5.28, 5.04, null, null, 1.34], [16, 70, "7,8,9", 3.3, 3.17, null, null, 2.1], [16, 80, "7,8,9", 3.7, 3.56, null, null, 1.99], [16, 90, "7,8,9", 4.1, 3.94, null, null, 1.91], [16, 110, "7,8,9", 4.8, 4.62, null, null, 1.77], [16, 130, "7,8,9", 5.5, 5.29, null, null, 1.67], [16, 150, "7,8,9", 6, 5.77, null, null, 1.56], [16, 180, "7,8,9", 6.4, 6.16, null, null, 1.36]], "t2b": [[200, 4.55, 4.2, 6.5, 6, 7, 6.55], [220, 3.85, 3.55, 5.6, 5.2, 6, 5.6], [240, 3.2, 2.95, 4.9, 4.55, 5.1, 4.75], [260, 2.55, 2.35, 4.2, 3.9, 4.2, 3.9], [300, null, null, 2.2, 2.05, 2.2, 2.05]], "t2c": [[10, 180, "7", 2.58, 2.61, 2.61, 2.61, 7, null], [10, 200, "7", 2.78, 2.82, 2.83, 2.84, 7, null], [10, 240, "7", 3.13, 3.22, 3.24, 3.25, 5.5, null], [10, 300, "7", 3.49, 3.72, 3.76, 3.78, 5.2, null], [10, 400, "8", null, 4.81, 4.98, 5.15, 5.2, null], [16, 180, "9", 6.89, 7.13, 7.18, 7.2, 7.7, 1.53], [16, 200, "9", 7.31, 7.7, 7.77, 7.8, 7.7, 1.48], [16, 240, "9", 7.79, 8.63, 8.8, 8.87, 7.7, 1.38], [16, 300, "9", 7.41, 9.38, 9.81, 10, 7.7, 1.23], [16, 400, "9", 8.49, 9.61, 9.61, 9.61, 6.4, 0.87]], "app": [["E", 12, 330, 90, 120, 3.18], ["E", 12, 330, 90, 140, 3.09], ["E", 12, 330, 90, 160, 3.03], ["E", 12, 330, 90, 180, 2.96], ["E", 12, 330, 90, 200, 2.9], ["E", 12, 330, 90, 220, 2.85], ["E", 12, 330, 90, 240, 2.8], ["E", 12, 330, 90, 260, 2.72], ["E", 12, 330, 90, 300, 2.56], ["E", 12, 330, 110, 140, 3.28], ["E", 12, 330, 110, 160, 3.2], ["E", 12, 330, 110, 180, 3.13], ["E", 12, 330, 110, 200, 3.07], ["E", 12, 330, 110, 220, 3.02], ["E", 12, 330, 110, 240, 2.96], ["E", 12, 330, 110, 260, 2.91], ["E", 12, 330, 110, 300, 2.83], ["E", 12, 330, 130, 160, 3.36], ["E", 12, 330, 130, 180, 3.28], ["E", 12, 330, 130, 200, 3.22], ["E", 12, 330, 130, 220, 3.16], ["E", 12, 330, 130, 240, 3.11], ["E", 12, 330, 130, 260, 3.06], ["E", 12, 330, 130, 300, 2.97], ["E", 12, 330, 150, 180, 3.42], ["E", 12, 330, 150, 200, 3.35], ["E", 12, 330, 150, 220, 3.29], ["E", 12, 330, 150, 240, 3.23], ["E", 12, 330, 150, 260, 3.18], ["E", 12, 330, 150, 300, 3.07], ["E", 12, 330, 170, 200, 3.37], ["E", 12, 330, 170, 220, 3.33], ["E", 12, 330, 170, 240, 3.27], ["E", 12, 330, 170, 260, 3.22], ["E", 12, 330, 170, 300, 3.13], ["E", 12, 330, 180, 220, 3.4], ["E", 12, 330, 180, 240, 3.34], ["E", 12, 330, 180, 260, 3.28], ["E", 12, 330, 180, 300, 3.19], ["E", 12, 330, 190, 220, 3.46], ["E", 12, 330, 190, 240, 3.4], ["E", 12, 330, 190, 260, 3.34], ["E", 12, 330, 190, 300, 3.25], ["E", 12, 370, 90, 120, 3.09], ["E", 12, 370, 90, 140, 3.01], ["E", 12, 370, 90, 160, 2.94], ["E", 12, 370, 90, 180, 2.88], ["E", 12, 370, 90, 200, 2.82], ["E", 12, 370, 90, 220, 2.75], ["E", 12, 370, 110, 140, 3.19], ["E", 12, 370, 110, 160, 3.11], ["E", 12, 370, 110, 180, 3.05], ["E", 12, 370, 110, 200, 2.99], ["E", 12, 370, 110, 220, 2.94], ["E", 12, 370, 110, 240, 2.89], ["E", 12, 370, 130, 160, 3.27], ["E", 12, 370, 130, 180, 3.19], ["E", 12, 370, 130, 200, 3.13], ["E", 12, 370, 130, 220, 3.07], ["E", 12, 370, 130, 240, 3.02], ["E", 12, 370, 130, 260, 2.97], ["E", 12, 370, 130, 300, 2.87], ["E", 12, 370, 150, 180, 3.33], ["E", 12, 370, 150, 200, 3.26], ["E", 12, 370, 150, 220, 3.2], ["E", 12, 370, 150, 240, 3.14], ["E", 12, 370, 150, 260, 3.09], ["E", 12, 370, 150, 300, 3], ["E", 12, 370, 170, 200, 3.28], ["E", 12, 370, 170, 220, 3.24], ["E", 12, 370, 170, 240, 3.18], ["E", 12, 370, 170, 260, 3.13], ["E", 12, 370, 170, 300, 3.04], ["E", 12, 370, 180, 220, 3.31], ["E", 12, 370, 180, 240, 3.25], ["E", 12, 370, 180, 260, 3.19], ["E", 12, 370, 180, 300, 3.1], ["E", 12, 370, 190, 220, 3.37], ["E", 12, 370, 190, 240, 3.31], ["E", 12, 370, 190, 260, 3.25], ["E", 12, 370, 190, 300, 3.16], ["E", 12, 440, 90, 120, 2.96], ["E", 12, 440, 90, 140, 2.88], ["E", 12, 440, 90, 160, 2.81], ["E", 12, 440, 90, 180, 2.74], ["E", 12, 440, 90, 200, 2.56], ["E", 12, 440, 90, 220, 2.65], ["E", 12, 440, 110, 140, 3.05], ["E", 12, 440, 110, 160, 2.98], ["E", 12, 440, 110, 180, 2.92], ["E", 12, 440, 110, 200, 2.86], ["E", 12, 440, 110, 220, 2.78], ["E", 12, 440, 110, 240, 2.7], ["E", 12, 440, 130, 160, 3.13], ["E", 12, 440, 130, 180, 3.06], ["E", 12, 440, 130, 200, 3], ["E", 12, 440, 130, 220, 2.94], ["E", 12, 440, 130, 240, 2.89], ["E", 12, 440, 130, 260, 2.81], ["E", 12, 440, 130, 300, 2.66], ["E", 12, 440, 150, 180, 3.18], ["E", 12, 440, 150, 200, 3.09], ["E", 12, 440, 150, 220, 3.06], ["E", 12, 440, 150, 240, 3.01], ["E", 12, 440, 150, 260, 2.96], ["E", 12, 440, 150, 300, 2.83], ["E", 12, 440, 170, 200, 3.14], ["E", 12, 440, 170, 220, 3.1], ["E", 12, 440, 170, 240, 3.05], ["E", 12, 440, 170, 260, 3], ["E", 12, 440, 170, 300, 2.88], ["E", 12, 440, 180, 220, 3.17], ["E", 12, 440, 180, 240, 3.11], ["E", 12, 440, 180, 260, 3.05], ["E", 12, 440, 180, 300, 2.93], ["E", 12, 440, 190, 220, 3.23], ["E", 12, 440, 190, 240, 3.17], ["E", 12, 440, 190, 260, 3.1], ["E", 12, 440, 190, 300, 2.97], ["E", 12, 500, 90, 120, 2.86], ["E", 12, 500, 90, 140, 2.79], ["E", 12, 500, 90, 160, 2.7], ["E", 12, 500, 90, 180, 2.59], ["E", 12, 500, 90, 200, 2.48], ["E", 12, 500, 90, 220, 2.39], ["E", 12, 500, 110, 140, 2.96], ["E", 12, 500, 110, 160, 2.89], ["E", 12, 500, 110, 180, 2.82], ["E", 12, 500, 110, 200, 2.72], ["E", 12, 500, 110, 220, 2.62], ["E", 12, 500, 110, 240, 2.52], ["E", 12, 500, 130, 160, 3.03], ["E", 12, 500, 130, 180, 2.96], ["E", 12, 500, 130, 200, 2.9], ["E", 12, 500, 130, 220, 2.83], ["E", 12, 500, 130, 240, 2.73], ["E", 12, 500, 130, 260, 2.65], ["E", 12, 500, 130, 300, 2.49], ["E", 12, 500, 150, 180, 3.08], ["E", 12, 500, 150, 200, 3.02], ["E", 12, 500, 150, 220, 2.96], ["E", 12, 500, 150, 240, 2.91], ["E", 12, 500, 150, 260, 2.83], ["E", 12, 500, 150, 300, 2.67], ["E", 12, 500, 170, 200, 3.04], ["E", 12, 500, 170, 220, 3], ["E", 12, 500, 170, 240, 2.95], ["E", 12, 500, 170, 260, 2.9], ["E", 12, 500, 170, 300, 2.73], ["E", 12, 500, 180, 220, 3.06], ["E", 12, 500, 180, 240, 3.01], ["E", 12, 500, 180, 260, 2.94], ["E", 12, 500, 180, 300, 2.77], ["E", 12, 500, 190, 220, 3.12], ["E", 12, 500, 190, 240, 3.06], ["E", 12, 500, 190, 260, 2.97], ["E", 12, 500, 190, 300, 2.8], ["E", 12, 550, 90, 120, 2.8], ["E", 12, 550, 90, 140, 2.7], ["E", 12, 550, 90, 160, 2.57], ["E", 12, 550, 90, 180, 2.46], ["E", 12, 550, 90, 200, 2.37], ["E", 12, 550, 90, 220, 2.27], ["E", 12, 550, 110, 140, 2.89], ["E", 12, 550, 110, 160, 2.82], ["E", 12, 550, 110, 180, 2.7], ["E", 12, 550, 110, 200, 2.59], ["E", 12, 550, 110, 220, 2.5], ["E", 12, 550, 110, 240, 2.41], ["E", 12, 550, 130, 160, 2.95], ["E", 12, 550, 130, 180, 2.89], ["E", 12, 550, 130, 200, 2.8], ["E", 12, 550, 130, 220, 2.7], ["E", 12, 550, 130, 240, 2.61], ["E", 12, 550, 130, 260, 2.52], ["E", 12, 550, 130, 300, 2.38], ["E", 12, 550, 150, 180, 3.01], ["E", 12, 550, 150, 200, 2.95], ["E", 12, 550, 150, 220, 2.88], ["E", 12, 550, 150, 240, 2.79], ["E", 12, 550, 150, 260, 2.7], ["E", 12, 550, 150, 300, 2.54], ["E", 12, 550, 170, 200, 2.97], ["E", 12, 550, 170, 220, 2.93], ["E", 12, 550, 170, 240, 2.85], ["E", 12, 550, 170, 260, 2.76], ["E", 12, 550, 170, 300, 2.61], ["E", 12, 550, 180, 220, 2.98], ["E", 12, 550, 180, 240, 2.89], ["E", 12, 550, 180, 260, 2.8], ["E", 12, 550, 180, 300, 2.64], ["E", 12, 550, 190, 220, 3.02], ["E", 12, 550, 190, 240, 2.92], ["E", 12, 550, 190, 260, 2.83], ["E", 12, 550, 190, 300, 2.67], ["E", 12, 625, 90, 120, 2.67], ["E", 12, 625, 90, 140, 2.53], ["E", 12, 625, 90, 160, 2.42], ["E", 12, 625, 90, 180, 2.31], ["E", 12, 625, 90, 200, 2.21], ["E", 12, 625, 90, 220, 2.14], ["E", 12, 625, 110, 140, 2.77], ["E", 12, 625, 110, 160, 2.64], ["E", 12, 625, 110, 180, 2.53], ["E", 12, 625, 110, 200, 2.44], ["E", 12, 625, 110, 220, 2.35], ["E", 12, 625, 110, 240, 2.26], ["E", 12, 625, 130, 160, 2.85], ["E", 12, 625, 130, 180, 2.73], ["E", 12, 625, 130, 200, 2.63], ["E", 12, 625, 130, 220, 2.53], ["E", 12, 625, 130, 240, 2.44], ["E", 12, 625, 130, 260, 2.37], ["E", 12, 625, 130, 300, 2.23], ["E", 12, 625, 150, 180, 2.91], ["E", 12, 625, 150, 200, 2.81], ["E", 12, 625, 150, 220, 2.7], ["E", 12, 625, 150, 240, 2.61], ["E", 12, 625, 150, 260, 2.53], ["E", 12, 625, 150, 300, 2.39], ["E", 12, 625, 170, 200, 2.84], ["E", 12, 625, 170, 220, 2.77], ["E", 12, 625, 170, 240, 2.68], ["E", 12, 625, 170, 260, 2.59], ["E", 12, 625, 170, 300, 2.35], ["E", 12, 625, 180, 220, 2.81], ["E", 12, 625, 180, 240, 2.71], ["E", 12, 625, 180, 260, 2.62], ["E", 12, 625, 180, 300, 2.35], ["E", 12, 625, 190, 220, 2.84], ["E", 12, 625, 190, 240, 2.74], ["E", 12, 625, 190, 260, 2.65], ["E", 12, 625, 190, 300, 2.35], ["E", 12, 750, 90, 120, 2.43], ["E", 12, 750, 90, 140, 2.31], ["E", 12, 750, 90, 160, 2.2], ["E", 12, 750, 90, 180, 2.11], ["E", 12, 750, 90, 200, 2.03], ["E", 12, 750, 90, 220, 1.96], ["E", 12, 750, 110, 140, 2.53], ["E", 12, 750, 110, 160, 2.41], ["E", 12, 750, 110, 180, 2.31], ["E", 12, 750, 110, 200, 2.22], ["E", 12, 750, 110, 220, 2.14], ["E", 12, 750, 110, 240, 2.06], ["E", 12, 750, 130, 160, 2.61], ["E", 12, 750, 130, 180, 2.49], ["E", 12, 750, 130, 200, 2.4], ["E", 12, 750, 130, 220, 2.31], ["E", 12, 750, 130, 240, 2.23], ["E", 12, 750, 130, 260, 2.16], ["E", 12, 750, 130, 300, 1.96], ["E", 12, 750, 150, 180, 2.67], ["E", 12, 750, 150, 200, 2.58], ["E", 12, 750, 150, 220, 2.47], ["E", 12, 750, 150, 240, 2.39], ["E", 12, 750, 150, 260, 2.26], ["E", 12, 750, 150, 300, 1.96], ["E", 12, 750, 170, 200, 2.59], ["E", 12, 750, 170, 220, 2.53], ["E", 12, 750, 170, 240, 2.44], ["E", 12, 750, 170, 260, 2.26], ["E", 12, 750, 170, 300, 1.96], ["E", 12, 750, 180, 220, 2.56], ["E", 12, 750, 180, 240, 2.44], ["E", 12, 750, 180, 260, 2.26], ["E", 12, 750, 180, 300, 1.96], ["E", 12, 750, 190, 220, 2.59], ["E", 12, 750, 190, 240, 2.44], ["E", 12, 750, 190, 260, 2.26], ["E", 12, 750, 190, 300, 1.96], ["E", 14, 330, 90, 120, 3.2], ["E", 14, 330, 90, 140, 3.11], ["E", 14, 330, 90, 160, 3.05], ["E", 14, 330, 90, 180, 2.98], ["E", 14, 330, 90, 200, 2.92], ["E", 14, 330, 90, 220, 2.87], ["E", 14, 330, 90, 240, 2.82], ["E", 14, 330, 90, 260, 2.76], ["E", 14, 330, 90, 300, 2.63], ["E", 14, 330, 110, 140, 3.38], ["E", 14, 330, 110, 160, 3.3], ["E", 14, 330, 110, 180, 3.23], ["E", 14, 330, 110, 200, 3.16], ["E", 14, 330, 110, 220, 3.11], ["E", 14, 330, 110, 240, 3.05], ["E", 14, 330, 110, 260, 3], ["E", 14, 330, 110, 300, 2.92], ["E", 14, 330, 130, 160, 3.5], ["E", 14, 330, 130, 180, 3.42], ["E", 14, 330, 130, 200, 3.36], ["E", 14, 330, 130, 220, 3.3], ["E", 14, 330, 130, 240, 3.24], ["E", 14, 330, 130, 260, 3.19], ["E", 14, 330, 130, 300, 3.1], ["E", 14, 330, 150, 180, 3.58], ["E", 14, 330, 150, 200, 3.51], ["E", 14, 330, 150, 220, 3.45], ["E", 14, 330, 150, 240, 3.38], ["E", 14, 330, 150, 260, 3.33], ["E", 14, 330, 150, 300, 3.24], ["E", 14, 330, 170, 200, 3.58], ["E", 14, 330, 170, 220, 3.53], ["E", 14, 330, 170, 240, 3.46], ["E", 14, 330, 170, 260, 3.41], ["E", 14, 330, 170, 300, 3.31], ["E", 14, 330, 180, 220, 3.59], ["E", 14, 330, 180, 240, 3.53], ["E", 14, 330, 180, 260, 3.47], ["E", 14, 330, 180, 300, 3.37], ["E", 14, 370, 90, 120, 3.12], ["E", 14, 370, 90, 140, 3.03], ["E", 14, 370, 90, 160, 2.96], ["E", 14, 370, 90, 180, 2.9], ["E", 14, 370, 90, 200, 2.84], ["E", 14, 370, 90, 220, 2.78], ["E", 14, 370, 90, 240, 2.72], ["E", 14, 370, 90, 260, 2.65], ["E", 14, 370, 90, 300, 2.53], ["E", 14, 370, 110, 140, 3.33], ["E", 14, 370, 110, 160, 3.22], ["E", 14, 370, 110, 180, 3.15], ["E", 14, 370, 110, 200, 3.08], ["E", 14, 370, 110, 220, 3.03], ["E", 14, 370, 110, 240, 2.97], ["E", 14, 370, 110, 260, 2.91], ["E", 14, 370, 110, 300, 2.8], ["E", 14, 370, 130, 160, 3.41], ["E", 14, 370, 130, 180, 3.33], ["E", 14, 370, 130, 200, 3.27], ["E", 14, 370, 130, 220, 3.21], ["E", 14, 370, 130, 240, 3.15], ["E", 14, 370, 130, 260, 3.1], ["E", 14, 370, 130, 300, 3], ["E", 14, 370, 150, 180, 3.49], ["E", 14, 370, 150, 200, 3.42], ["E", 14, 370, 150, 220, 3.35], ["E", 14, 370, 150, 240, 3.29], ["E", 14, 370, 150, 260, 3.24], ["E", 14, 370, 150, 300, 3.14], ["E", 14, 370, 170, 200, 3.48], ["E", 14, 370, 170, 220, 3.43], ["E", 14, 370, 170, 240, 3.37], ["E", 14, 370, 170, 260, 3.31], ["E", 14, 370, 170, 300, 3.21], ["E", 14, 370, 180, 220, 3.49], ["E", 14, 370, 180, 240, 3.43], ["E", 14, 370, 180, 260, 3.37], ["E", 14, 370, 180, 300, 3.27], ["E", 14, 440, 90, 120, 2.99], ["E", 14, 440, 90, 140, 2.91], ["E", 14, 440, 90, 160, 2.83], ["E", 14, 440, 90, 180, 2.76], ["E", 14, 440, 90, 200, 2.69], ["E", 14, 440, 90, 220, 2.62], ["E", 14, 440, 90, 240, 2.56], ["E", 14, 440, 90, 260, 2.49], ["E", 14, 440, 90, 300, 2.38], ["E", 14, 440, 110, 140, 3.17], ["E", 14, 440, 110, 160, 3.09], ["E", 14, 440, 110, 180, 3.02], ["E", 14, 440, 110, 200, 2.94], ["E", 14, 440, 110, 220, 2.88], ["E", 14, 440, 110, 240, 2.81], ["E", 14, 440, 110, 260, 2.74], ["E", 14, 440, 110, 300, 2.62], ["E", 14, 440, 130, 160, 3.28], ["E", 14, 440, 130, 180, 3.2], ["E", 14, 440, 130, 200, 3.13], ["E", 14, 440, 130, 220, 3.07], ["E", 14, 440, 130, 240, 3], ["E", 14, 440, 130, 260, 2.94], ["E", 14, 440, 130, 300, 2.81], ["E", 14, 440, 150, 180, 3.34], ["E", 14, 440, 150, 200, 3.27], ["E", 14, 440, 150, 220, 3.21], ["E", 14, 440, 150, 240, 3.15], ["E", 14, 440, 150, 260, 3.09], ["E", 14, 440, 150, 300, 2.96], ["E", 14, 440, 170, 200, 3.34], ["E", 14, 440, 170, 220, 3.28], ["E", 14, 440, 170, 240, 3.22], ["E", 14, 440, 170, 260, 3.17], ["E", 14, 440, 170, 300, 3.01], ["E", 14, 440, 180, 220, 3.34], ["E", 14, 440, 180, 240, 3.28], ["E", 14, 440, 180, 260, 3.22], ["E", 14, 440, 180, 300, 3.06], ["E", 14, 500, 90, 120, 2.88], ["E", 14, 500, 90, 140, 2.81], ["E", 14, 500, 90, 160, 2.73], ["E", 14, 500, 90, 180, 2.64], ["E", 14, 500, 90, 200, 2.56], ["E", 14, 500, 90, 220, 2.49], ["E", 14, 500, 90, 240, 2.43], ["E", 14, 500, 90, 260, 2.37], ["E", 14, 500, 90, 300, 2.27], ["E", 14, 500, 110, 140, 3.06], ["E", 14, 500, 110, 160, 2.98], ["E", 14, 500, 110, 180, 2.91], ["E", 14, 500, 110, 200, 2.83], ["E", 14, 500, 110, 220, 2.75], ["E", 14, 500, 110, 240, 2.67], ["E", 14, 500, 110, 260, 2.6], ["E", 14, 500, 110, 300, 2.49], ["E", 14, 500, 130, 160, 3.17], ["E", 14, 500, 130, 180, 3.09], ["E", 14, 500, 130, 200, 3.02], ["E", 14, 500, 130, 220, 2.96], ["E", 14, 500, 130, 240, 2.87], ["E", 14, 500, 130, 260, 2.8], ["E", 14, 500, 130, 300, 2.67], ["E", 14, 500, 150, 180, 3.22], ["E", 14, 500, 150, 200, 3.16], ["E", 14, 500, 150, 220, 3.1], ["E", 14, 500, 150, 240, 3.04], ["E", 14, 500, 150, 260, 2.97], ["E", 14, 500, 150, 300, 2.79], ["E", 14, 500, 170, 200, 3.23], ["E", 14, 500, 170, 220, 3.17], ["E", 14, 500, 170, 240, 3.11], ["E", 14, 500, 170, 260, 3.06], ["E", 14, 500, 170, 300, 2.82], ["E", 14, 500, 180, 220, 3.23], ["E", 14, 500, 180, 240, 3.17], ["E", 14, 500, 180, 260, 3.11], ["E", 14, 500, 180, 300, 2.84], ["E", 14, 550, 90, 120, 2.82], ["E", 14, 550, 90, 140, 2.73], ["E", 14, 550, 90, 160, 2.63], ["E", 14, 550, 90, 180, 2.54], ["E", 14, 550, 90, 200, 2.47], ["E", 14, 550, 90, 220, 2.4], ["E", 14, 550, 90, 240, 2.34], ["E", 14, 550, 90, 260, 2.28], ["E", 14, 550, 90, 300, 2.19], ["E", 14, 550, 110, 140, 2.98], ["E", 14, 550, 110, 160, 2.9], ["E", 14, 550, 110, 180, 2.81], ["E", 14, 550, 110, 200, 2.72], ["E", 14, 550, 110, 220, 2.64], ["E", 14, 550, 110, 240, 2.57], ["E", 14, 550, 110, 260, 2.51], ["E", 14, 550, 110, 300, 2.4], ["E", 14, 550, 130, 160, 3.08], ["E", 14, 550, 130, 180, 3.01], ["E", 14, 550, 130, 200, 2.93], ["E", 14, 550, 130, 220, 2.85], ["E", 14, 550, 130, 240, 2.77], ["E", 14, 550, 130, 260, 2.7], ["E", 14, 550, 130, 300, 2.52], ["E", 14, 550, 150, 180, 3.15], ["E", 14, 550, 150, 200, 3.08], ["E", 14, 550, 150, 220, 3.01], ["E", 14, 550, 150, 240, 2.93], ["E", 14, 550, 150, 260, 2.86], ["E", 14, 550, 150, 300, 2.6], ["E", 14, 550, 170, 200, 3.15], ["E", 14, 550, 170, 220, 3.09], ["E", 14, 550, 170, 240, 3.02], ["E", 14, 550, 170, 260, 2.9], ["E", 14, 550, 170, 300, 2.64], ["E", 14, 550, 180, 220, 3.15], ["E", 14, 550, 180, 240, 3.07], ["E", 14, 550, 180, 260, 2.93], ["E", 14, 550, 180, 300, 2.65], ["E", 14, 625, 90, 120, 2.71], ["E", 14, 625, 90, 140, 2.6], ["E", 14, 625, 90, 160, 2.5], ["E", 14, 625, 90, 180, 2.42], ["E", 14, 625, 90, 200, 2.36], ["E", 14, 625, 90, 220, 2.29], ["E", 14, 625, 90, 240, 2.23], ["E", 14, 625, 90, 260, 2.18], ["E", 14, 625, 90, 300, 2.07], ["E", 14, 625, 110, 140, 2.87], ["E", 14, 625, 110, 160, 2.76], ["E", 14, 625, 110, 180, 2.67], ["E", 14, 625, 110, 200, 2.59], ["E", 14, 625, 110, 220, 2.52], ["E", 14, 625, 110, 240, 2.45], ["E", 14, 625, 110, 260, 2.39], ["E", 14, 625, 110, 300, 2.2], ["E", 14, 625, 130, 160, 2.97], ["E", 14, 625, 130, 180, 2.87], ["E", 14, 625, 130, 200, 2.79], ["E", 14, 625, 130, 220, 2.71], ["E", 14, 625, 130, 240, 2.63], ["E", 14, 625, 130, 260, 2.53], ["E", 14, 625, 130, 300, 2.29], ["E", 14, 625, 150, 180, 3.04], ["E", 14, 625, 150, 200, 2.95], ["E", 14, 625, 150, 220, 2.86], ["E", 14, 625, 150, 240, 2.76], ["E", 14, 625, 150, 260, 2.61], ["E", 14, 625, 150, 300, 2.37], ["E", 14, 625, 170, 200, 3.04], ["E", 14, 625, 170, 220, 2.95], ["E", 14, 625, 170, 240, 2.8], ["E", 14, 625, 170, 260, 2.65], ["E", 14, 625, 170, 300, 2.35], ["E", 14, 625, 180, 220, 2.99], ["E", 14, 625, 180, 240, 2.81], ["E", 14, 625, 180, 260, 2.66], ["E", 14, 625, 180, 300, 2.35], ["E", 14, 750, 90, 120, 2.51], ["E", 14, 750, 90, 140, 2.42], ["E", 14, 750, 90, 160, 2.33], ["E", 14, 750, 90, 180, 2.25], ["E", 14, 750, 90, 200, 2.2], ["E", 14, 750, 90, 220, 2.14], ["E", 14, 750, 90, 240, 2.07], ["E", 14, 750, 90, 260, 2], ["E", 14, 750, 90, 300, 1.8], ["E", 14, 750, 110, 140, 2.67], ["E", 14, 750, 110, 160, 2.57], ["E", 14, 750, 110, 180, 2.49], ["E", 14, 750, 110, 200, 2.41], ["E", 14, 750, 110, 220, 2.34], ["E", 14, 750, 110, 240, 2.24], ["E", 14, 750, 110, 260, 2.12], ["E", 14, 750, 110, 300, 1.86], ["E", 14, 750, 130, 160, 2.77], ["E", 14, 750, 130, 180, 2.67], ["E", 14, 750, 130, 200, 2.6], ["E", 14, 750, 130, 220, 2.48], ["E", 14, 750, 130, 240, 2.33], ["E", 14, 750, 130, 260, 2.21], ["E", 14, 750, 130, 300, 1.96], ["E", 14, 750, 150, 180, 2.84], ["E", 14, 750, 150, 200, 2.72], ["E", 14, 750, 150, 220, 2.56], ["E", 14, 750, 150, 240, 2.41], ["E", 14, 750, 150, 260, 2.26], ["E", 14, 750, 150, 300, 1.96], ["E", 14, 750, 170, 200, 2.72], ["E", 14, 750, 170, 220, 2.6], ["E", 14, 750, 170, 240, 2.44], ["E", 14, 750, 170, 260, 2.26], ["E", 14, 750, 170, 300, 1.96], ["E", 14, 750, 180, 220, 2.61], ["E", 14, 750, 180, 240, 2.44], ["E", 14, 750, 180, 260, 2.26], ["E", 14, 750, 180, 300, 1.96], ["E", 16, 330, 70, 120, 2.84], ["E", 16, 330, 70, 140, 2.76], ["E", 16, 330, 70, 160, 2.7], ["E", 16, 330, 70, 180, 2.64], ["E", 16, 330, 70, 200, 2.59], ["E", 16, 330, 70, 220, 2.54], ["E", 16, 330, 80, 120, 2.96], ["E", 16, 330, 80, 140, 2.88], ["E", 16, 330, 80, 160, 2.81], ["E", 16, 330, 80, 180, 2.75], ["E", 16, 330, 80, 200, 2.7], ["E", 16, 330, 80, 220, 2.65], ["E", 16, 330, 90, 120, 3.23], ["E", 16, 330, 90, 140, 3.14], ["E", 16, 330, 90, 160, 3.07], ["E", 16, 330, 90, 180, 3], ["E", 16, 330, 90, 200, 2.94], ["E", 16, 330, 90, 220, 2.89], ["E", 16, 330, 90, 240, 2.84], ["E", 16, 330, 90, 260, 2.8], ["E", 16, 330, 90, 300, 2.71], ["E", 16, 330, 110, 140, 3.49], ["E", 16, 330, 110, 160, 3.41], ["E", 16, 330, 110, 180, 3.34], ["E", 16, 330, 110, 200, 3.27], ["E", 16, 330, 110, 220, 3.21], ["E", 16, 330, 110, 240, 3.16], ["E", 16, 330, 110, 260, 3.11], ["E", 16, 330, 110, 300, 3.02], ["E", 16, 330, 130, 160, 3.66], ["E", 16, 330, 130, 180, 3.58], ["E", 16, 330, 130, 200, 3.51], ["E", 16, 330, 130, 220, 3.45], ["E", 16, 330, 130, 240, 3.39], ["E", 16, 330, 130, 260, 3.33], ["E", 16, 330, 130, 300, 3.24], ["E", 16, 330, 150, 180, 3.77], ["E", 16, 330, 150, 200, 3.69], ["E", 16, 330, 150, 220, 3.63], ["E", 16, 330, 150, 240, 3.56], ["E", 16, 330, 150, 260, 3.51], ["E", 16, 330, 150, 300, 3.41], ["E", 16, 330, 180, 220, 3.81], ["E", 16, 330, 180, 240, 3.74], ["E", 16, 330, 180, 260, 3.68], ["E", 16, 330, 180, 300, 3.58], ["E", 16, 370, 70, 120, 2.77], ["E", 16, 370, 70, 140, 2.69], ["E", 16, 370, 70, 160, 2.62], ["E", 16, 370, 80, 120, 2.88], ["E", 16, 370, 80, 140, 2.81], ["E", 16, 370, 80, 160, 2.74], ["E", 16, 370, 80, 180, 2.68], ["E", 16, 370, 90, 120, 3.16], ["E", 16, 370, 90, 140, 3.07], ["E", 16, 370, 90, 160, 2.99], ["E", 16, 370, 90, 180, 2.92], ["E", 16, 370, 110, 140, 3.44], ["E", 16, 370, 110, 160, 3.35], ["E", 16, 370, 110, 180, 3.27], ["E", 16, 370, 110, 200, 3.2], ["E", 16, 370, 110, 220, 3.14], ["E", 16, 370, 110, 240, 3.08], ["E", 16, 370, 110, 260, 3.02], ["E", 16, 370, 110, 300, 2.93], ["E", 16, 370, 130, 160, 3.61], ["E", 16, 370, 130, 180, 3.52], ["E", 16, 370, 130, 200, 3.45], ["E", 16, 370, 130, 220, 3.37], ["E", 16, 370, 130, 240, 3.31], ["E", 16, 370, 130, 260, 3.25], ["E", 16, 370, 130, 300, 3.14], ["E", 16, 370, 150, 180, 3.69], ["E", 16, 370, 150, 200, 3.61], ["E", 16, 370, 150, 220, 3.54], ["E", 16, 370, 150, 240, 3.47], ["E", 16, 370, 150, 260, 3.41], ["E", 16, 370, 150, 300, 3.29], ["E", 16, 370, 180, 220, 3.71], ["E", 16, 370, 180, 240, 3.64], ["E", 16, 370, 180, 260, 3.58], ["E", 16, 370, 180, 300, 3.47], ["E", 16, 440, 70, 120, 2.64], ["E", 16, 440, 70, 140, 2.56], ["E", 16, 440, 70, 160, 2.48], ["E", 16, 440, 80, 120, 2.76], ["E", 16, 440, 80, 140, 2.68], ["E", 16, 440, 80, 160, 2.62], ["E", 16, 440, 80, 180, 2.56], ["E", 16, 440, 90, 120, 3.02], ["E", 16, 440, 90, 140, 2.93], ["E", 16, 440, 90, 160, 2.86], ["E", 16, 440, 90, 180, 2.79], ["E", 16, 440, 110, 140, 3.28], ["E", 16, 440, 110, 160, 3.2], ["E", 16, 440, 110, 180, 3.12], ["E", 16, 440, 110, 200, 3.05], ["E", 16, 440, 110, 220, 2.99], ["E", 16, 440, 110, 240, 2.93], ["E", 16, 440, 110, 260, 2.88], ["E", 16, 440, 110, 300, 2.79], ["E", 16, 440, 130, 160, 3.44], ["E", 16, 440, 130, 180, 3.36], ["E", 16, 440, 130, 200, 3.28], ["E", 16, 440, 130, 220, 3.21], ["E", 16, 440, 130, 240, 3.15], ["E", 16, 440, 130, 260, 3.09], ["E", 16, 440, 130, 300, 2.99], ["E", 16, 440, 150, 180, 3.52], ["E", 16, 440, 150, 200, 3.44], ["E", 16, 440, 150, 220, 3.37], ["E", 16, 440, 150, 240, 3.3], ["E", 16, 440, 150, 260, 3.24], ["E", 16, 440, 150, 300, 3.14], ["E", 16, 440, 180, 220, 3.54], ["E", 16, 440, 180, 240, 3.48], ["E", 16, 440, 180, 260, 3.42], ["E", 16, 440, 180, 300, 3.31], ["E", 16, 500, 70, 120, 2.54], ["E", 16, 500, 70, 140, 2.46], ["E", 16, 500, 70, 160, 2.39], ["E", 16, 500, 80, 120, 2.67], ["E", 16, 500, 80, 140, 2.59], ["E", 16, 500, 80, 160, 2.53], ["E", 16, 500, 80, 180, 2.47], ["E", 16, 500, 90, 120, 2.91], ["E", 16, 500, 90, 140, 2.83], ["E", 16, 500, 90, 160, 2.76], ["E", 16, 500, 90, 180, 2.7], ["E", 16, 500, 110, 140, 3.17], ["E", 16, 500, 110, 160, 3.09], ["E", 16, 500, 110, 180, 3.01], ["E", 16, 500, 110, 200, 2.95], ["E", 16, 500, 110, 220, 2.89], ["E", 16, 500, 110, 240, 2.83], ["E", 16, 500, 110, 260, 2.78], ["E", 16, 500, 110, 300, 2.69], ["E", 16, 500, 130, 160, 3.32], ["E", 16, 500, 130, 180, 3.24], ["E", 16, 500, 130, 200, 3.16], ["E", 16, 500, 130, 220, 3.1], ["E", 16, 500, 130, 240, 3.04], ["E", 16, 500, 130, 260, 2.98], ["E", 16, 500, 130, 300, 2.88], ["E", 16, 500, 150, 180, 3.39], ["E", 16, 500, 150, 200, 3.32], ["E", 16, 500, 150, 220, 3.25], ["E", 16, 500, 150, 240, 3.19], ["E", 16, 500, 150, 260, 3.13], ["E", 16, 500, 150, 300, 2.93], ["E", 16, 500, 180, 220, 3.43], ["E", 16, 500, 180, 240, 3.36], ["E", 16, 500, 180, 260, 3.3], ["E", 16, 500, 180, 300, 2.93], ["E", 16, 550, 70, 120, 2.47], ["E", 16, 550, 70, 140, 2.39], ["E", 16, 550, 70, 160, 2.32], ["E", 16, 550, 80, 120, 2.6], ["E", 16, 550, 80, 140, 2.53], ["E", 16, 550, 80, 160, 2.46], ["E", 16, 550, 80, 180, 2.41], ["E", 16, 550, 90, 120, 2.84], ["E", 16, 550, 90, 140, 2.76], ["E", 16, 550, 90, 160, 2.69], ["E", 16, 550, 90, 180, 2.63], ["E", 16, 550, 110, 140, 3.09], ["E", 16, 550, 110, 160, 3], ["E", 16, 550, 110, 180, 2.93], ["E", 16, 550, 110, 200, 2.87], ["E", 16, 550, 110, 220, 2.81], ["E", 16, 550, 110, 240, 2.75], ["E", 16, 550, 110, 260, 2.7], ["E", 16, 550, 110, 300, 2.62], ["E", 16, 550, 130, 160, 3.23], ["E", 16, 550, 130, 180, 3.15], ["E", 16, 550, 130, 200, 3.08], ["E", 16, 550, 130, 220, 3.02], ["E", 16, 550, 130, 240, 2.96], ["E", 16, 550, 130, 260, 2.9], ["E", 16, 550, 130, 300, 2.67], ["E", 16, 550, 150, 180, 3.3], ["E", 16, 550, 150, 200, 3.23], ["E", 16, 550, 150, 220, 3.16], ["E", 16, 550, 150, 240, 3.1], ["E", 16, 550, 150, 260, 3.05], ["E", 16, 550, 150, 300, 2.67], ["E", 16, 550, 180, 220, 3.34], ["E", 16, 550, 180, 240, 3.27], ["E", 16, 550, 180, 260, 3.08], ["E", 16, 550, 180, 300, 2.67], ["E", 16, 625, 70, 120, 2.37], ["E", 16, 625, 70, 140, 2.3], ["E", 16, 625, 70, 160, 2.23], ["E", 16, 625, 80, 120, 2.51], ["E", 16, 625, 80, 140, 2.44], ["E", 16, 625, 80, 160, 2.38], ["E", 16, 625, 80, 180, 2.33], ["E", 16, 625, 90, 120, 2.75], ["E", 16, 625, 90, 140, 2.67], ["E", 16, 625, 90, 160, 2.6], ["E", 16, 625, 90, 180, 2.54], ["E", 16, 625, 110, 140, 2.98], ["E", 16, 625, 110, 160, 2.9], ["E", 16, 625, 110, 180, 2.83], ["E", 16, 625, 110, 200, 2.77], ["E", 16, 625, 110, 220, 2.71], ["E", 16, 625, 110, 240, 2.66], ["E", 16, 625, 110, 260, 2.61], ["E", 16, 625, 110, 300, 2.35], ["E", 16, 625, 130, 160, 3.11], ["E", 16, 625, 130, 180, 3.04], ["E", 16, 625, 130, 200, 2.97], ["E", 16, 625, 130, 220, 2.91], ["E", 16, 625, 130, 240, 2.85], ["E", 16, 625, 130, 260, 2.71], ["E", 16, 625, 130, 300, 2.35], ["E", 16, 625, 150, 180, 3.19], ["E", 16, 625, 150, 200, 3.11], ["E", 16, 625, 150, 220, 3.05], ["E", 16, 625, 150, 240, 2.93], ["E", 16, 625, 150, 260, 2.71], ["E", 16, 625, 150, 300, 2.35], ["E", 16, 625, 180, 220, 3.2], ["E", 16, 625, 180, 240, 2.93], ["E", 16, 625, 180, 260, 2.71], ["E", 16, 625, 180, 300, 2.35], ["E", 16, 750, 70, 120, 2.24], ["E", 16, 750, 70, 140, 2.17], ["E", 16, 750, 70, 160, 2.1], ["E", 16, 750, 80, 120, 2.4], ["E", 16, 750, 80, 140, 2.33], ["E", 16, 750, 80, 160, 2.27], ["E", 16, 750, 80, 180, 2.21], ["E", 16, 750, 90, 120, 2.61], ["E", 16, 750, 90, 140, 2.54], ["E", 16, 750, 90, 160, 2.47], ["E", 16, 750, 90, 180, 2.41], ["E", 16, 750, 110, 140, 2.83], ["E", 16, 750, 110, 160, 2.75], ["E", 16, 750, 110, 180, 2.69], ["E", 16, 750, 110, 200, 2.63], ["E", 16, 750, 110, 220, 2.57], ["E", 16, 750, 110, 240, 2.44], ["E", 16, 750, 110, 260, 2.26], ["E", 16, 750, 110, 300, 1.96], ["E", 16, 750, 130, 160, 2.96], ["E", 16, 750, 130, 180, 2.88], ["E", 16, 750, 130, 200, 2.82], ["E", 16, 750, 130, 220, 2.67], ["E", 16, 750, 130, 240, 2.44], ["E", 16, 750, 130, 260, 2.26], ["E", 16, 750, 130, 300, 1.96], ["E", 16, 750, 150, 180, 3.03], ["E", 16, 750, 150, 200, 2.87], ["E", 16, 750, 150, 220, 2.67], ["E", 16, 750, 150, 240, 2.44], ["E", 16, 750, 150, 260, 2.26], ["E", 16, 750, 150, 300, 1.96], ["E", 16, 750, 180, 220, 2.67], ["E", 16, 750, 180, 240, 2.44], ["E", 16, 750, 180, 260, 2.26], ["E", 16, 750, 180, 300, 1.96], ["EV", 10, 100, 180, 220, 4.91], ["EV", 10, 100, 180, 240, 4.75], ["EV", 10, 100, 180, 260, 4.6], ["EV", 10, 100, 180, 280, 4.46], ["EV", 10, 100, 180, 300, 4.34], ["EV", 10, 100, 180, 320, 4.23], ["EV", 10, 100, 180, 340, 4.12], ["EV", 10, 100, 180, 360, 4.03], ["EV", 10, 100, 180, 380, 3.94], ["EV", 10, 100, 180, 400, 3.85], ["EV", 10, 100, 180, 450, 3.67], ["EV", 10, 100, 180, 500, 3.51], ["EV", 10, 100, 180, 550, 3.37], ["EV", 10, 100, 240, 300, 4.87], ["EV", 10, 100, 240, 320, 4.74], ["EV", 10, 100, 240, 340, 4.62], ["EV", 10, 100, 240, 360, 4.51], ["EV", 10, 100, 240, 380, 4.41], ["EV", 10, 100, 240, 400, 4.31], ["EV", 10, 100, 240, 450, 4.1], ["EV", 10, 100, 240, 500, 3.92], ["EV", 10, 100, 240, 550, 3.76], ["EV", 10, 100, 300, 340, 4.92], ["EV", 10, 100, 300, 360, 4.8], ["EV", 10, 100, 300, 380, 4.69], ["EV", 10, 100, 300, 400, 4.59], ["EV", 10, 100, 300, 450, 4.36], ["EV", 10, 100, 300, 500, 4.16], ["EV", 10, 100, 300, 550, 3.99], ["EV", 10, 330, 180, 220, 3], ["EV", 10, 330, 180, 240, 2.89], ["EV", 10, 330, 180, 260, 2.79], ["EV", 10, 330, 180, 280, 2.7], ["EV", 10, 330, 180, 300, 2.62], ["EV", 10, 330, 180, 320, 2.54], ["EV", 10, 330, 180, 340, 2.47], ["EV", 10, 330, 180, 360, 2.41], ["EV", 10, 330, 180, 380, 2.35], ["EV", 10, 330, 180, 400, 2.3], ["EV", 10, 330, 180, 450, 2.18], ["EV", 10, 330, 180, 500, 2.08], ["EV", 10, 330, 180, 550, 1.99], ["EV", 10, 330, 240, 300, 2.94], ["EV", 10, 330, 240, 320, 2.85], ["EV", 10, 330, 240, 340, 2.78], ["EV", 10, 330, 240, 360, 2.7], ["EV", 10, 330, 240, 380, 2.64], ["EV", 10, 330, 240, 400, 2.58], ["EV", 10, 330, 240, 450, 2.44], ["EV", 10, 330, 240, 500, 2.3], ["EV", 10, 330, 240, 550, 2.09], ["EV", 10, 330, 300, 340, 3], ["EV", 10, 330, 300, 360, 2.92], ["EV", 10, 330, 300, 380, 2.84], ["EV", 10, 330, 300, 400, 2.7], ["EV", 10, 330, 300, 450, 2.4], ["EV", 10, 330, 300, 500, 2.16], ["EV", 10, 330, 300, 550, 1.96], ["EV", 10, 330, 400, 450, 2.4], ["EV", 10, 330, 400, 500, 2.16], ["EV", 10, 330, 400, 550, 1.96], ["EV", 10, 625, 180, 220, 2.19], ["EV", 10, 625, 180, 240, 2.11], ["EV", 10, 625, 180, 260, 2.04], ["EV", 10, 625, 180, 280, 1.98], ["EV", 10, 625, 180, 300, 1.93], ["EV", 10, 625, 180, 320, 1.88], ["EV", 10, 625, 180, 340, 1.83], ["EV", 10, 625, 180, 360, 1.79], ["EV", 10, 625, 180, 380, 1.74], ["EV", 10, 625, 180, 400, 1.71], ["EV", 10, 625, 180, 450, 1.62], ["EV", 10, 625, 180, 500, 1.54], ["EV", 10, 625, 180, 550, 1.45], ["EV", 10, 625, 240, 300, 1.96], ["EV", 10, 625, 240, 320, 1.85], ["EV", 10, 625, 240, 340, 1.76], ["EV", 10, 625, 240, 360, 1.68], ["EV", 10, 625, 240, 380, 1.6], ["EV", 10, 625, 240, 400, 1.52], ["EV", 10, 625, 240, 450, 1.35], ["EV", 10, 625, 240, 500, 1.22], ["EV", 10, 625, 240, 550, 1.11], ["EV", 10, 625, 300, 340, 1.66], ["EV", 10, 625, 300, 360, 1.58], ["EV", 10, 625, 300, 380, 1.5], ["EV", 10, 625, 300, 400, 1.42], ["EV", 10, 625, 300, 450, 1.27], ["EV", 10, 625, 300, 500, 1.14], ["EV", 10, 625, 300, 550, 1.04], ["EV", 10, 625, 400, 450, 1.27], ["EV", 10, 625, 400, 500, 1.14], ["EV", 10, 625, 400, 550, 1.04], ["EV", 16, 100, 180, 220, 5.89], ["EV", 16, 100, 180, 240, 5.77], ["EV", 16, 100, 180, 260, 5.65], ["EV", 16, 100, 180, 280, 5.55], ["EV", 16, 100, 180, 300, 5.45], ["EV", 16, 100, 180, 320, 5.37], ["EV", 16, 100, 180, 340, 5.28], ["EV", 16, 100, 180, 360, 5.21], ["EV", 16, 100, 180, 380, 5.14], ["EV", 16, 100, 180, 400, 5.07], ["EV", 16, 100, 180, 450, 4.93], ["EV", 16, 100, 180, 500, 4.8], ["EV", 16, 100, 180, 550, 4.69], ["EV", 16, 100, 240, 300, 6.08], ["EV", 16, 100, 240, 320, 5.98], ["EV", 16, 100, 240, 340, 5.89], ["EV", 16, 100, 240, 360, 5.81], ["EV", 16, 100, 240, 380, 5.73], ["EV", 16, 100, 240, 400, 5.66], ["EV", 16, 100, 240, 450, 5.49], ["EV", 16, 100, 240, 500, 5.35], ["EV", 16, 100, 240, 550, 5.22], ["EV", 16, 100, 300, 340, 6.26], ["EV", 16, 100, 300, 360, 6.17], ["EV", 16, 100, 300, 380, 6.09], ["EV", 16, 100, 300, 400, 6.01], ["EV", 16, 100, 300, 450, 5.83], ["EV", 16, 100, 300, 500, 5.68], ["EV", 16, 100, 300, 550, 5.55], ["EV", 16, 100, 400, 450, 4.97], ["EV", 16, 100, 400, 500, 4.84], ["EV", 16, 100, 400, 550, 4.73], ["EV", 16, 330, 180, 220, 4.53], ["EV", 16, 330, 180, 240, 4.44], ["EV", 16, 330, 180, 260, 4.35], ["EV", 16, 330, 180, 280, 4.27], ["EV", 16, 330, 180, 300, 4.2], ["EV", 16, 330, 180, 320, 4.13], ["EV", 16, 330, 180, 340, 4.07], ["EV", 16, 330, 180, 360, 4.01], ["EV", 16, 330, 180, 380, 3.96], ["EV", 16, 330, 180, 400, 3.88], ["EV", 16, 330, 180, 450, 3.66], ["EV", 16, 330, 180, 500, 3.33], ["EV", 16, 330, 180, 550, 3.06], ["EV", 16, 330, 240, 300, 4.68], ["EV", 16, 330, 240, 320, 4.61], ["EV", 16, 330, 240, 340, 4.54], ["EV", 16, 330, 240, 360, 4.44], ["EV", 16, 330, 240, 380, 4.24], ["EV", 16, 330, 240, 400, 4.06], ["EV", 16, 330, 240, 450, 3.66], ["EV", 16, 330, 240, 500, 3.33], ["EV", 16, 330, 240, 550, 3.06], ["EV", 16, 330, 300, 340, 4.67], ["EV", 16, 330, 300, 360, 4.44], ["EV", 16, 330, 300, 380, 4.24], ["EV", 16, 330, 300, 400, 4.06], ["EV", 16, 330, 300, 450, 3.66], ["EV", 16, 330, 300, 500, 3.33], ["EV", 16, 330, 300, 550, 3.06], ["EV", 16, 330, 400, 450, 3.04], ["EV", 16, 330, 400, 500, 2.74], ["EV", 16, 330, 400, 550, 2.49], ["EV", 16, 625, 180, 220, 3.52], ["EV", 16, 625, 180, 240, 3.29], ["EV", 16, 625, 180, 260, 3.08], ["EV", 16, 625, 180, 280, 2.9], ["EV", 16, 625, 180, 300, 2.74], ["EV", 16, 625, 180, 320, 2.59], ["EV", 16, 625, 180, 340, 2.46], ["EV", 16, 625, 180, 360, 2.35], ["EV", 16, 625, 180, 380, 2.24], ["EV", 16, 625, 180, 400, 2.14], ["EV", 16, 625, 180, 450, 1.93], ["EV", 16, 625, 180, 500, 1.76], ["EV", 16, 625, 180, 550, 1.62], ["EV", 16, 625, 240, 300, 2.74], ["EV", 16, 625, 240, 320, 2.59], ["EV", 16, 625, 240, 340, 2.46], ["EV", 16, 625, 240, 360, 2.35], ["EV", 16, 625, 240, 380, 2.24], ["EV", 16, 625, 240, 400, 2.14], ["EV", 16, 625, 240, 450, 1.93], ["EV", 16, 625, 240, 500, 1.76], ["EV", 16, 625, 240, 550, 1.62], ["EV", 16, 625, 300, 340, 2.46], ["EV", 16, 625, 300, 360, 2.35], ["EV", 16, 625, 300, 380, 2.24], ["EV", 16, 625, 300, 400, 2.14], ["EV", 16, 625, 300, 450, 1.93], ["EV", 16, 625, 300, 500, 1.76], ["EV", 16, 625, 300, 550, 1.62], ["EV", 16, 625, 400, 450, 1.61], ["EV", 16, 625, 400, 500, 1.45], ["EV", 16, 625, 400, 550, 1.31]]};
+const CFG = { dcB:5, dcT:10, redB:2, redT:1, Tmin:50, Tmax:70, monoMin:60, hMin:100, hMax:350, edge:0.30, Lmax:8, Bmax:3,
+  gammaC:25, gammaF:26, qkZ:1.5, dq:0, Qk:1.5, Qshare:1, gF:1, gG:1.35, gQ:1.5, fyd:435, nodes:'≤ 20 cm', ugBase:80, kRow:1.1, axes:'vienaašė' };
+const ceil5=x=>Math.ceil(x/5-1e-9)*5;
+const bf=d=>DATA.bar[String(d)][1];            // faktinis Ø = nominalus + 2
+const bm=d=>DATA.bar[String(d)][0];
+function codeByL(L){if(L<=DATA.gird['06608'][3])return '06608';if(L<=DATA.gird['06610'][3])return '06610';return null;}
+/* 1–3 ir 5 žingsniai: c1, c2, T1, kopetėlė, išdėstymas */
+function slab(i,c=CFG){
+  const fck=DATA.fck[i.cls];
+  const S=(env,red)=>Math.max(1,Math.min(6,4+(i.life==100?2:0)-(fck>=DATA.flim[env]?1:0)-red));
+  const side=(env,red,cminb,dc)=>{const s=S(env,red),cdur=DATA.cdur[env][s-1],cmin=Math.max(cminb,cdur,10);return {env,S:s,cdur,cminb,cmin,dc,cnom:cmin+dc};};
+  const b=side(i.envB,c.redB,i.dsB,c.dcB), t=side(i.envT,c.redT,i.dlT,c.dcT);
+  const code=i.code||codeByL(i.L), g=code?DATA.gird[code]:null;
+  const dsBf=bf(i.dsB), dlBf=bf(i.dlB), dsTf=bf(i.dsT), dlTf=bf(i.dlT);
+  const Ta=b.cnom+dsBf+dlBf+15, Tb=g?b.cnom+dsBf+(g[2]+2)+15:0;
+  const Tcalc=ceil5(Math.max(Ta,Tb)), T1=Math.max(c.Tmin,Tcalc), T1ok=T1<=c.Tmax;
+  const mono=i.H-T1, monoOK=mono>=c.monoMin;
+  const hmax=i.H-b.cnom-dsBf-dsTf-dlTf-t.cnom;
+  const h=hmax<c.hMin?0:Math.min(c.hMax,Math.floor(hmax/10+1e-9)*10);
+  const top=i.H-b.cnom-dsBf-h-dsTf-dlTf, topOK=top>=t.cnom;
+  const mark=(h&&code)?`E-${Math.round(h/10)}_${code}`:'-';
+  const K=Math.max(1,Math.ceil((i.B-2*c.edge)/i.smax-1e-9))+1, s=(i.B-2*c.edge)*1000/Math.max(1,K-1);
+  const sOK=s>0&&s<=i.smax*1000+1e-9, dimOK=i.B<=c.Bmax&&i.L<=c.Lmax;
+  const a=b.cnom+dsBf+dlBf/2;
+  const kgm=g?0.006165*g[0]**2+2*0.006165*g[2]**2+2*(0.01*Math.sqrt(10000+h*h))*0.006165*g[1]**2:0;
+  const ok=!!code&&T1ok&&monoOK&&h>0&&topOK&&sOK&&dimOK;
+  return {fck,b,t,code,g,dsBf,dlBf,dsTf,dlTf,Ta,Tb,Tcalc,T1,T1ok,mono,monoOK,hmax,h,top,topOK,mark,K,s,sOK,dimOK,a,kgm,mass:T1/1000*2500,long:!code,ok};
+}
+/* 4 žingsnis: ugniaatsparumas EN 1992-1-2 lent. 5.8 */
+function fire58(i,c=CFG){const r=slab(i,c);const col={'1':1,'2':2,'3':3}[String(i.sch)]||1;
+  const rows=Object.keys(DATA.fire).map(k=>({rei:k,hs:DATA.fire[k][0],a:DATA.fire[k][col]}));
+  const need=DATA.fire[i.rei], hs=need[0], amin=need[col];
+  let best='nepasiekiama';rows.forEach(x=>{if(i.H>=x.hs&&r.a>=x.a)best=x.rei;});
+  return {r,hs,amin,hOK:i.H>=hs,aOK:r.a>=amin,ok:i.H>=hs&&r.a>=amin,best,rows};}
+/* Montavimo stadija (DIBt Z-15.1-147) */
+function t2aRow(og,h){let best=null;DATA.t2a.forEach(x=>{if(x[0]==og&&x[1]<=h&&(!best||x[1]>best[1]))best=x;});return best;}
+function zulM_E(og,h,b){const r=t2aRow(og,h);if(!r)return {M:0,diag:0,asmin:0};const m33=r[3]||0,m60=r[5]||0;
+  let M=m33===0?0:(b<=33?m33:(m60===0?m33:(b>=60?m60:m33+(m60-m33)*(b-33)/27)));return {M,diag:parseInt(String(r[2])[0]),asmin:r[7]||0};}
+function zulV_E(h,diag){let lim=null;DATA.t2b.forEach(x=>{if(x[0]>=h&&(lim===null||x[0]<lim[0]))lim=x;});if(!lim)return 0;const ix=diag<=5?1:(diag<=6?3:5);return lim[ix]||0;}
+function t2c(og,h,b){let r=null;DATA.t2c.forEach(x=>{if(x[0]==og&&x[1]<=h&&(!r||x[1]>r[1]))r=x;});if(!r)return {M:0,V:0,asmin:0};
+  const [m10,m33,m50,m62]=[r[3]||0,r[4]||0,r[5]||0,r[6]||0];let M;
+  if(m33===0)M=0;else if(b<=10)M=m10===0?m33:m10;else if(b<=33)M=m10===0?m33:m10+(m33-m10)*(b-10)/23;else if(b<=50)M=m33+(m50-m33)*(b-33)/17;else if(b<=62.5)M=m50+(m62-m50)*(b-50)/12.5;else M=m62;
+  return {M,V:r[7]||0,asmin:r[8]||0};}
+function appLM(type,og,s,h,H){const R=DATA.app.filter(x=>x[0]===type&&x[1]==og);if(!R.length)return 0;
+  const lim=(idx,v)=>{let lo=0,hi=99999;R.forEach(x=>{if(x[idx]<=v&&x[idx]>lo)lo=x[idx];if(x[idx]>=v&&x[idx]<hi)hi=x[idx];});const a1=lo===0?(hi>90000?0:hi):lo,a2=hi>90000?a1:hi;return [a1,a2];};
+  const [s1,s2]=lim(2,s),[h1,h2]=lim(3,h),[t1,t2]=lim(4,H);
+  const v=(a,b,c)=>{const x=R.find(z=>z[2]==a&&z[3]==b&&z[4]==c);return x?x[5]:0;};
+  const C=[v(s1,h1,t1),v(s1,h1,t2),v(s1,h2,t1),v(s1,h2,t2),v(s2,h1,t1),v(s2,h1,t2),v(s2,h2,t1),v(s2,h2,t2)];
+  const w=(v0,a,b)=>a===b?0:Math.min(1,Math.max(0,(v0-a)/(b-a)));const ws=w(s,s1,s2),wh=w(h,h1,h2),wt=w(H,t1,t2);
+  const interp=(1-ws)*((1-wh)*((1-wt)*C[0]+wt*C[1])+wh*((1-wt)*C[2]+wt*C[3]))+ws*((1-wh)*((1-wt)*C[4]+wt*C[5])+wh*((1-wt)*C[6]+wt*C[7]));
+  const cons=v(s2,h1,t2);return (type==='E'&&Math.min(...C)>0)?interp:cons;}
+function appCons12(s,h,H){const R=DATA.app.filter(x=>x[0]==='E'&&x[1]==12);let sm=99999,hm=0,Hm=99999;
+  R.forEach(x=>{if(x[2]>=s&&x[2]<sm)sm=x[2];if(x[3]<=h&&x[3]>hm)hm=x[3];if(x[4]>=H&&x[4]<Hm)Hm=x[4];});const x=R.find(z=>z[2]==sm&&z[3]==hm&&z[4]==Hm);return x?x[5]:0;}
+function mount(i,c=CFG){
+  // konfigūracija (prielaidos: XC1/XC1, skersinė Ø6, viršutinė išilginė Ø8, kodas – pasirinktas)
+  const r=slab({H:i.H,L:i.L,B:i.B,smax:(i.smax||600)/1000,cls:'C30/37',life:50,envB:'XC1',envT:'XC1',dsB:6,dlB:i.dl,dsT:6,dlT:8,code:i.code},c);
+  const hGT=r.h, g=DATA.gird[i.code], og=g[0], dg=g[1], ug=g[2], s=r.s, T1=i.T1, a=r.a;
+  const G=(T1*c.gammaC+(i.H-T1)*c.gammaF)/1000, gsv=(i.H-T1)*c.gammaF/1000, qk=Math.max(Math.min(1.5,Math.max(0.75,0.1*gsv)),c.qkZ);
+  const q1=(G+qk+c.dq)*s/1000*c.gF, q0=(G+c.dq)*s/1000*c.gF, Q=c.Qk*c.Qshare*c.gF, b=s/10;
+  let M,V,asmin,diagReq=0;
+  if(i.type==='E'){const e=zulM_E(og,hGT,b);M=e.M;diagReq=e.diag;asmin=e.asmin;V=zulV_E(hGT,dg);}else{const e=t2c(og,hGT,b);M=e.M;V=e.V;asmin=e.asmin;}
+  const asEx=2*Math.PI/4*ug*ug/100+(s/i.dlS)*Math.PI/4*i.dl*i.dl/100;
+  const lA=M&&q1>0?Math.sqrt(8*M/q1):null, lB=V&&q1>0?2*V/q1:null;
+  const lC=M&&q0>0?(-Q/4+Math.sqrt((Q/4)**2+q0*M/2))/(q0/4):null, lD=q0>0?(2*V-Q<=0?0:(2*V-Q)/q0):null;
+  let lE=null,lEtxt='';if(i.type==='E'&&og<12)lEtxt='netaikoma';else{const v=appLM(i.type,og,s,hGT,i.H);if(v===0)lEtxt='nėra lentelėje';else lE=v;}
+  const lM=Math.min(...[lA,lB,lC,lD,lE].map(x=>(x===null||x===undefined)?999:x));
+  const lOK=lM>=1;
+  const valid=lM>0&&lM<999;
+  const lfU=i.lfU>0?i.lfU:0, n=valid?Math.ceil(i.L/(lfU||lM)-1e-12):1, rows=valid?Math.max(0,n-1):null, lf=valid?i.L/n:i.L;
+  const A=Math.max(q1*lf/2,q0*lf/2+Q/2);
+  const edgeProps=i.depth>=35?'nereikalingos':'reikalingos', node=A<=5?'bent kas antrai kopetėlei':'ties kiekviena kopetėle';
+  const M1=(c.gG*G+c.gQ*(qk+c.dq))*s/1000*lf*lf/8, M2=(c.gG*G+c.gQ*c.dq)*s/1000*lf*lf/8+c.gQ*c.Qk*c.Qshare*lf/4, MEd=Math.max(M1,M2);
+  const z=hGT-og/2-a, asReq=z<=0?0:MEd*1e6/(z*c.fyd)/100, asUG=2*Math.PI/4*ug*ug/100;
+  const plReq=Math.max(0,asReq-asUG)*1000/s, plEx=Math.PI/4*i.dl*i.dl/i.dlS*1000/100;
+  const maxSp=plReq<=0?null:Math.min(300,Math.PI/4*i.dl*i.dl/(plReq*100)*1000);
+  const util=M?Math.max(q1*lf*lf/8,q0*lf*lf/8+Q*lf/4)/M:null;
+  const nGird=r.K, needGird=(i.type==='EV'||i.B*1000>375)?2:1;
+  const chk=[
+   ['Leistinas montavimo tarpatramis ≥ 1,0 m',lOK,'rinktis kopetėlę su storesne viršutine viela arba mažinti kopetėlių žingsnį'],
+   ['Kopetėlė yra Z-15.1-147 lentelėse',M>0&&V>0,'rinktis kitą kopetėlės kodą arba tipą'],
+   ['Armatūra klojimo stadijoje ≥ As,min',asmin===0||asEx>=asmin,'didinti apatinę išilginę armatūrą'],
+   ['Apatinės išilginės armatūros pakanka',plEx>=plReq,'tankinti apatinę išilginę armatūrą'],
+   ['Armatūros pakanka montavimo momentui',asEx>=asReq,'didinti apatinę armatūrą arba retinti ramsčius'],
+   ['Apatinės armatūros žingsnis',maxSp===null||i.dlS<=maxSp,`mažinti žingsnį iki ${maxSp?Math.floor(maxSp):''} mm arba didinti Ø`],
+   ['Momentas neviršija 2a/2c lentelės',util===null||util<=1,'mažinti ramsčių žingsnį'],
+   ['Filigrano storis T1 ≥ 40 mm',T1>=40,'didinti T1'],
+   ['Viršutinė viela Ø8/Ø10/Ø12',[8,10,12].includes(og),'rinktis kitą kodą'],
+   ['E kopetėlė: hGT ≤ 300 mm, OG ≥ 8 mm',i.type!=='E'||(hGT<=300&&og>=8),'mažinti perdangos storį arba rinktis EV'],
+   ['Įstrižainių Ø atitinka 2a lentelę',diagReq===0||dg>=diagReq,'rinktis kodą 06712 (įstrižainės Ø7)'],
+   ['Kopetėlių skaičius plokštėje',nGird>=needGird,'didinti kopetėlių skaičių'],
+   ['Pasirinktas ramsčių eilių žingsnis ≤ l_M',!(lfU>0)||!valid||lf<=lM+1e-9,`mažinti ramsčių eilių žingsnį iki ${valid?lM.toFixed(2).replace('.',','):''} m`],
+   ['Įlinkio sąlyga: apatinės vielos ≥ Ø6',og<12||ug>=6,''],
+   ['Įlinkio sąlyga: įstrižainės',og<12||dg>=((og===12&&hGT>=90&&hGT<=120)?6:7),'rinktis kodą 06712'],
+   ['Įlinkio sąlyga: tarpas tarp apatinių vielų',!(og===12&&hGT>180)||c.ugBase>=70,''],
+   ['Kopetėlės aukštis jungties armatūrai',hGT>=T1+20+og,'didinti perdangos storį arba mažinti T1'],
+  ];
+  const ok=chk.every(x=>x[1]);
+  // atramos
+  const qtot=G+qk+c.dq, nr=Math.max(2,Math.ceil(i.B/i.br-1e-9)+1), spr=i.B/(nr-1), ql=qtot*lf*c.kRow, F=ql*i.B/(nr-1);
+  const props=valid?rows*nr:null, Fok=valid&&(rows===0||F<=i.FR);
+  // palyginimas Ø8 / Ø10 / Ø12
+  const cmp=[8,10,12].map(o=>{const Mo=zulM_E(o,hGT,b).M;   // kaip „Montavimas“ 151–161 eil.: visada 2a lentelė
+    const la=Mo&&q1>0?Math.sqrt(8*Mo/q1):null, lc=Mo&&q0>0?(-Q/4+Math.sqrt((Q/4)**2+q0*Mo/2))/(q0/4):null, lv=V&&q1>0?Math.min(2*V/q1,(2*V-Q<=0?0:(2*V-Q)/q0)):null;
+    const ld=o===12?appCons12(s,hGT,i.H):null;
+    const l=Math.min(...[la,lc,lv,ld].map(x=>x===null?999:x));
+    return {o,M:Mo,l,rows:(l>0&&l<999)?Math.max(0,Math.ceil(i.L/l-1e-12)-1):null};});
+  return {valid,r,hGT,og,dg,ug,s,T1,a,G,qk,q1,q0,Q,b,M,V,asmin,asEx,lA,lB,lC,lD,lE,lEtxt,lM,lOK,n,rows,lf,A,edgeProps,node,MEd,z,asReq,plReq,plEx,util,chk,ok:ok&&Fok,
+    qtot,nr,spr,ql,F,Fok,props,cmp,lfU,long:i.L>8};
+}
+
+
+/* Perdangos pjūvis (skersai kopetėlių): 1 kopetėlė ir jos įtakos juosta */
+function svgSlab(el,r,H,opt={}){
+  const W=360,k=Math.min(0.7,170/H),x0=46,x1=282,yb=30+H*k,Y=mm=>yb-mm*k,ff='font-family="IBM Plex Mono,monospace"',w=x1-x0;
+  let s=`<defs><pattern id="hq${opt.id||''}" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#9CA3AF"/></pattern>
+   <marker id="aq${opt.id||''}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#C2410C"/></marker></defs>`;
+  const T1=r.T1;
+  s+=`<rect x="${x0}" y="${Y(H)}" width="${w}" height="${(H-T1)*k}" fill="#EEF3CF" stroke="#7E8F1E" stroke-dasharray="4 3"/>`;
+  s+=`<rect x="${x0}" y="${Y(T1)}" width="${w}" height="${T1*k}" fill="url(#hq${opt.id||''})" stroke="#262B33" stroke-width="1.5"/>`;
+  const ys=r.b.cnom+r.dsBf/2, yl=r.b.cnom+r.dsBf+r.dlBf/2;
+  s+=`<line x1="${x0+4}" x2="${x1-4}" y1="${Y(ys)}" y2="${Y(ys)}" stroke="#262B33" stroke-width="1.6"/>`;
+  for(let x=x0+14;x<x1;x+=26) s+=`<circle cx="${x}" cy="${Y(yl)}" r="2.6" fill="#262B33"/>`;
+  const cx=(x0+x1)/2, gb=r.b.cnom+r.dsBf+(r.g?r.g[2]+2:8)/2, gt=r.b.cnom+r.dsBf+r.h-(r.g?r.g[0]+2:10)/2;
+  if(r.h>0){s+=`<path d="M${cx-16} ${Y(gb)} L${cx} ${Y(gt)} L${cx+16} ${Y(gb)}" fill="none" stroke="#5F6F0E" stroke-width="1.6"/><circle cx="${cx-16}" cy="${Y(gb)}" r="3" fill="#5F6F0E"/><circle cx="${cx+16}" cy="${Y(gb)}" r="3" fill="#5F6F0E"/><circle cx="${cx}" cy="${Y(gt)}" r="3.4" fill="#5F6F0E"/>`;}
+  const yst=r.b.cnom+r.dsBf+r.h+r.dsTf/2, ylt=r.b.cnom+r.dsBf+r.h+r.dsTf+r.dlTf/2;
+  s+=`<line x1="${x0+4}" x2="${x1-4}" y1="${Y(yst)}" y2="${Y(yst)}" stroke="#262B33" stroke-width="1.4"/>`;
+  for(let x=x0+14;x<x1;x+=26) s+=`<circle cx="${x}" cy="${Y(ylt)}" r="2.4" fill="#262B33"/>`;
+  const vd=(a,b,x,lab,col='#262B33',left=false)=>`<line x1="${x}" x2="${x}" y1="${Y(a)}" y2="${Y(b)}" stroke="${col}"/><line x1="${x-4}" x2="${x+4}" y1="${Y(a)}" y2="${Y(a)}" stroke="${col}"/><line x1="${x-4}" x2="${x+4}" y1="${Y(b)}" y2="${Y(b)}" stroke="${col}"/><text x="${left?x-6:x+6}" y="${(Y(a)+Y(b))/2+4}" font-size="10" fill="${col}" text-anchor="${left?'end':'start'}" ${ff}>${lab}</text>`;
+  s+=vd(0,H,x1+40,'H '+H)+vd(0,T1,x1+8,'T1 '+T1);
+  if(opt.fire){s+=vd(0,yl,x0-6,'a '+f0(r.a),'#9A3412',true);for(const x of [x0+50,cx,x1-50])s+=`<line x1="${x}" x2="${x}" y1="${yb+30}" y2="${yb+6}" stroke="#C2410C" stroke-width="2" marker-end="url(#aq${opt.id||''})"/>`;s+=`<text x="${cx}" y="${yb+44}" font-size="10" fill="#C2410C" text-anchor="middle" ${ff}>ugnis iš apačios</text>`;}
+  else{s+=vd(0,r.b.cnom,x0-6,'c1 '+r.b.cnom,'#5F6F0E',true)+vd(H-r.t.cnom,H,x0-6,'c2 '+r.t.cnom,'#5F6F0E',true);
+   if(r.h>0)s+=vd(r.b.cnom+r.dsBf,r.b.cnom+r.dsBf+r.h,cx+26,'h '+r.h,'#5F6F0E');
+   s+=`<text x="${x0}" y="${yb+18}" font-size="10" fill="#6B7280" ${ff}>filigranas T1 · gamykla</text><text x="${x0}" y="${Y(H)-6}" font-size="10" fill="#5F6F0E" ${ff}>monolitinė dalis · aikštelė</text>`;}
+  el.setAttribute('viewBox',`0 0 ${W} ${yb+(opt.fire?52:28)}`);el.innerHTML=s;
+}
+const IDS=['rei','sch','H','cls','envB','dsB','dlB'];
+const todo=(H,a,hs,am)=>{const x=[];if(H<hs)x.push(`storinti perdangą iki ${hs} mm`);if(a<am)x.push(`didinti apsauginį sluoksnį +${ceil5(am-a)} mm arba armatūros Ø`);return x.length?`<span style="font-family:var(--f);font-weight:500;color:#B45309">${x.join('; ')}</span>`:'<span class="okb">TINKA</span>';};
+function render(){const i=read();const err=$('#err');if(!i){err.hidden=false;err.textContent='Patikrinkite pažymėtas reikšmes: jos už leidžiamų ribų.';return;}err.hidden=true;
+  Object.assign(i,{life:50,envT:'XC1',dsT:6,dlT:8,L:5,B:1.2,smax:0.6});
+  const f=fire58(i),r=f.r;svgSlab($('#svg'),r,i.H,{fire:true,id:'f'});
+  $('#kp').innerHTML=kp('',`${i.rei} patikra`,f.ok?'TINKA':'REIKIA KEISTI',$('#i-sch').selectedOptions[0].text,'st'+(f.ok?'':' bad'))+kp('','Perdangos storis',`${i.H} / ${f.hs} mm`,'esamas / reikalaujamas h<sub>s</sub>')+
+   kp('','Ašinis atstumas a',`${f0(r.a)} / ${f.amin} mm`,'esamas / reikalaujamas')+kp('','Didžiausia klasė',f.best,'su šiuo storiu ir danga');
+  const R=(a,b,c,d,e,cls='')=>`<tr class="${cls}"><td>${a}</td><td class="v">${b}</td><td class="v">${c}</td><td class="v">${d}</td><td class="src">${e}</td></tr>`;
+  $('#t1').innerHTML='<thead><tr><th>Rodiklis</th><th class="v">Reikalaujama</th><th class="v">Esama</th><th class="v">Šiai perdangai</th><th>Šaltinis</th></tr></thead><tbody>'+
+   R('Perdangos storis h<sub>s</sub>, mm',f.hs,i.H,i.H>=f.hs?OK(1):`<span style="color:#B45309;font-family:var(--f)">storinti iki ${f.hs} mm</span>`,'lent. 5.8')+R('Ašinis atstumas a, mm',f.amin,f1(r.a),r.a>=f.amin?OK(1):`<span style="color:#B45309;font-family:var(--f)">danga +${ceil5(f.amin-r.a)} mm</span>`,'apatinė armatūra')+
+   `<tr class="key"><td>${i.rei}</td><td colspan="3" class="v">${todo(i.H,r.a,f.hs,f.amin)}</td><td class="src">EN 1992-1-2</td></tr></tbody>`;
+  $('#t2').innerHTML='<thead><tr><th>Rodiklis</th><th class="v" colspan="3">Reikšmė</th><th>Pastaba</th></tr></thead><tbody>'+
+   `<tr><td>c1 (c<sub>nom</sub> apačioje), mm</td><td class="v" colspan="3">${r.b.cnom}</td><td class="src">${r.b.env}, EC2 4.4.1</td></tr>`+
+   `<tr class="key"><td>a = c1 + Ø<sub>skers.</sub> + Ø<sub>išilg.</sub>/2, mm</td><td class="v" colspan="3">${f1(r.a)}</td><td class="src">faktiniai Ø</td></tr></tbody>`;
+  $('#t3').innerHTML='<thead><tr><th>Klasė</th><th class="v">h<sub>s</sub>, mm</th><th class="v">a, mm</th><th class="v">Šiai perdangai</th></tr></thead><tbody>'+
+   f.rows.map(x=>{const ok=i.H>=x.hs&&r.a>=x.a;return `<tr${x.rei===i.rei?' class="key"':''}><td>${x.rei}</td><td class="v">${x.hs}</td><td class="v">${x.a}</td><td class="${ok?'hit':''}" style="text-align:right">${todo(i.H,r.a,x.hs,x.a)}</td></tr>`}).join('')+'</tbody>';
+  $('#nt').innerHTML='Lentelinis metodas – laikančiosioms plokštėms; grindų dangos storis į h<sub>s</sub> neįskaitomas.';
+}
+
+
+const $=s=>document.querySelector(s);
+const f0=n=>Number(n).toLocaleString('lt-LT',{maximumFractionDigits:0});
+const f1=n=>Number(n).toLocaleString('lt-LT',{minimumFractionDigits:1,maximumFractionDigits:1});
+const f2=n=>Number(n).toLocaleString('lt-LT',{minimumFractionDigits:2,maximumFractionDigits:2});
+const OK=b=>b?'<span class="okb">TINKA</span>':'<span class="nok">NETINKA</span>';
+$('#s-dt').textContent=new Date().toISOString().slice(0,10);
+function read(){const i={};let ok=true;
+  IDS.forEach(k=>{const el=$('#i-'+k);if(el.tagName==='SELECT'){const v=el.value;i[k]=isNaN(+v)?v:+v;return;}
+    const v=parseFloat(el.value);const bad=!(v>=parseFloat(el.min)&&v<=parseFloat(el.max));el.classList.toggle('bad',bad);if(bad)ok=false;i[k]=v;});
+  return ok?i:null;}
+function kp(id,lab,val,sub,cls=''){return `<div class="${cls}"><div class="k">${lab}</div><div class="v">${val}</div><div class="s">${sub}</div></div>`;}
+/* Sienos pjūvis (horizontalus): 1 pusė kairėje, 2 pusė dešinėje */
+function svgSec(el,t,r,mode){
+  const W=360,k=Math.min(0.62,250/t),x0=(W-t*k)/2,y0=52,h=150,X=mm=>x0+mm*k,ff='font-family="IBM Plex Mono,monospace"';
+  const T1=r.T1.T,T2=r.T2.T;
+  let s=`<defs><pattern id="hp${mode}" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#9CA3AF"/></pattern>
+  <marker id="ar${mode}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#C2410C"/></marker></defs>`;
+  s+=`<rect x="${X(T1)}" y="${y0}" width="${(t-T1-T2)*k}" height="${h}" fill="#EEF3CF" stroke="#7E8F1E" stroke-dasharray="4 3"/>`;
+  s+=`<rect x="${X(0)}" y="${y0}" width="${T1*k}" height="${h}" fill="url(#hp${mode})" stroke="#262B33" stroke-width="1.5"/><rect x="${X(t-T2)}" y="${y0}" width="${T2*k}" height="${h}" fill="url(#hp${mode})" stroke="#262B33" stroke-width="1.5"/>`;
+  // armatūra: horizontalūs strypai (linijos) ir vertikalūs (taškai)
+  const xh1=r.cef1+r.dhf/2, xv1=r.cef1+r.dhf+r.dvf/2, xh2=t-r.cef2-r.dhf/2, xv2=t-r.cef2-r.dhf-r.dvf/2;
+  s+=`<line x1="${X(xh1)}" x2="${X(xh1)}" y1="${y0+4}" y2="${y0+h-4}" stroke="#262B33" stroke-width="1.6"/><line x1="${X(xh2)}" x2="${X(xh2)}" y1="${y0+4}" y2="${y0+h-4}" stroke="#262B33" stroke-width="1.6"/>`;
+  for(let y=y0+16;y<y0+h;y+=26) s+=`<circle cx="${X(xv1)}" cy="${y}" r="3" fill="#262B33"/><circle cx="${X(xv2)}" cy="${y}" r="3" fill="#262B33"/>`;
+  // girderis
+  if(r.h>0){const gb=r.cef1+r.dhf+r.botf/2-1, gt=gb+r.h-r.botf/2-r.topf/2;
+    s+=`<line x1="${X(gb)}" x2="${X(gb)}" y1="${y0}" y2="${y0+h}" stroke="#5F6F0E" stroke-width="2"/><line x1="${X(gt)}" x2="${X(gt)}" y1="${y0}" y2="${y0+h}" stroke="#5F6F0E" stroke-width="2.4"/>`;
+    let p=`M${X(gb)} ${y0}`;for(let y=y0,j=0;y<y0+h;y+=22,j++)p+=` L${j%2?X(gb):X(gt)} ${Math.min(y+22,y0+h)}`;s+=`<path d="${p}" fill="none" stroke="#5F6F0E" stroke-width="1.3"/>`;}
+  const dim=(a,b,y,lab,col='#262B33')=>`<line x1="${X(a)}" x2="${X(b)}" y1="${y}" y2="${y}" stroke="${col}"/><line x1="${X(a)}" x2="${X(a)}" y1="${y-5}" y2="${y+5}" stroke="${col}"/><line x1="${X(b)}" x2="${X(b)}" y1="${y-5}" y2="${y+5}" stroke="${col}"/><text x="${(X(a)+X(b))/2}" y="${y-4}" font-size="10" text-anchor="middle" fill="${col}" ${ff}>${lab}</text>`;
+  s+=dim(0,T1,30,T1)+dim(T1,t-T2,30,t-T1-T2)+dim(t-T2,t,30,T2)+dim(0,t,y0+h+22,'t = '+t);
+  if(mode==='fire'){s+=dim(0,xv1,y0+h+40,'a₁ '+f0(r._a1),'#9A3412')+dim(xv2,t,y0+h+40,'a₂ '+f0(r._a2),'#9A3412');
+    const arr=x=>`<line x1="${x}" x2="${x+(x<W/2?22:-22)}" y1="${y0+h/2}" y2="${y0+h/2}" stroke="#C2410C" stroke-width="2" marker-end="url(#ar${mode})"/><text x="${x+(x<W/2?0:0)}" y="${y0+h/2-8}" font-size="10" fill="#C2410C" text-anchor="${x<W/2?'start':'end'}" ${ff}>ugnis</text>`;
+    s+=arr(4);if(r._sides==2)s+=arr(W-4);}
+  else {s+=dim(0,r.cef1,y0+h+40,'c '+r.cef1,'#5F6F0E')+dim(t-r.cef2,t,y0+h+40,'c '+r.cef2,'#5F6F0E');
+    if(r.h>0){const gb=r.cef1+r.dhf;s+=dim(gb,gb+r.h,y0-8,'girderis h = '+r.h,'#5F6F0E');}}
+  s+=`<text x="${X(0)}" y="${y0+h+(mode==='fire'?58:58)}" font-size="10" fill="#6B7280" ${ff}>1 pusė · ${r.s1.env}</text><text x="${X(t)}" y="${y0+h+58}" font-size="10" fill="#6B7280" text-anchor="end" ${ff}>2 pusė · ${r.s2.env}</text>`;
+  el.innerHTML=s;
+}
+$('#gate').addEventListener('submit',e=>{e.preventDefault();
+  const req=['r-fn','r-ln','r-co','r-em','r-pr'].map(id=>$('#'+id));
+  const ok=req.every(x=>x.value.trim())&&/\S+@\S+\.\S+/.test($('#r-em').value)&&$('#r-ok').checked;
+  $('#gerr').hidden=ok; if(!ok)return;
+  unlock($('#r-pr').value.trim(),`${$('#r-co').value.trim()} · ${$('#r-fn').value.trim()[0]}. ${$('#r-ln').value.trim()}`);
+});
+function unlock(pr,co){$('#lockwrap').classList.remove('locked');$('#gate').hidden=true;
+  $('#proj').textContent='Projektas: '+pr;$('#s-pr').textContent=pr;$('#s-co').textContent=co;}
+$('#a-pdf').addEventListener('click',e=>{if(!$('#lockwrap').classList.contains('locked')){e.preventDefault();window.print();}});
+function boot(){IDS.forEach(k=>{const el=$('#i-'+k);el.addEventListener('input',render);el.addEventListener('change',render);});render();
+  if(location.hash==='#atrakinta')unlock('Daugiabutis, Žirmūnų g. 12, Vilnius','UAB Projektas · J. Jonaitis');}
+
+boot();
+</script>

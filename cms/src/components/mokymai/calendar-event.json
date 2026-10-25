@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_mokymai_calendar_events",
+  "info": {
+    "displayName": "Mokymų data",
+    "description": "Filigran akademijos kalendoriaus eilutė",
+    "icon": "calendar"
+  },
+  "options": {},
+  "attributes": {
+    "dateLabel": { "type": "string", "required": true },
+    "dateNote": { "type": "string" },
+    "program": { "type": "string", "required": true },
+    "audience": { "type": "string" },
+    "audienceTone": {
+      "type": "enumeration",
+      "enum": ["lime", "blue"],
+      "default": "lime"
+    },
+    "place": { "type": "string" },
+    "seatsLeft": { "type": "integer", "default": 0 },
+    "seatsTotal": { "type": "integer", "default": 0 }
+  }
+}

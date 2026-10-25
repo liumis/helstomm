@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_mokymai_form_topics",
+  "info": {
+    "displayName": "Registracijos tema",
+    "description": "Mokymų tema registracijos formoje",
+    "icon": "bulletList"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_product_tiles",
+  "info": {
+    "displayName": "Sprendimas / apdaila",
+    "description": "Konstrukcinio sprendimo arba apdailos plytelė",
+    "icon": "grid"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "tileKey": {
+      "type": "string"
+    },
+    "imageUrl": {
+      "type": "text"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}
