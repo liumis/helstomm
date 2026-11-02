@@ -56,9 +56,23 @@ export const TrainingRegisterModal: React.FC<Props> = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="bg-white rounded-2xl max-w-2xl w-full p-6 md:p-8 shadow-2xl overflow-y-auto max-h-[92vh] border border-slate-100">
-        <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"
+      onClick={onClose}
+    >
+      <div
+        className="relative bg-white rounded-2xl max-w-2xl w-full p-6 md:p-8 shadow-2xl overflow-y-auto max-h-[92vh] border border-slate-100"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Uždaryti"
+          className="absolute top-4 right-4 z-10 p-2 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors"
+        >
+          <X className="w-5 h-5" />
+        </button>
+        <div className="pr-10 pb-4 border-b border-slate-100 mb-6">
           <div className="flex items-center space-x-3">
             <div className="p-2.5 rounded-xl bg-sky-500 text-white font-bold">
               <GraduationCap className="w-6 h-6" />
@@ -70,12 +84,6 @@ export const TrainingRegisterModal: React.FC<Props> = ({ isOpen, onClose }) => {
               </p>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
         </div>
 
         {submitted ? (

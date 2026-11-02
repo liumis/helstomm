@@ -54,9 +54,9 @@ export const PerdangosView: React.FC<Props> = ({ onOpenAnalysisModal }) => {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4">
           {perdangosTypes.map((item, idx) => (
-            <div key={idx} className="bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-md transition-all text-center group">
+            <div key={idx} className="bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden shadow-xs text-center">
               <div className="h-36 overflow-hidden">
-                <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                <img src={item.img} alt={item.title} className="w-full h-full object-cover" />
               </div>
               <div className="p-3">
                 <h3 className="font-bold text-slate-900 text-xs sm:text-sm">{item.title}</h3>

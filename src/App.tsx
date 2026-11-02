@@ -127,8 +127,12 @@ export default function App() {
 
         {activeView === 'dokumentai' && (
           <DokumentaiView
+            documentSlug={route.documentSlug}
+            onOpenDocument={(slug) => navigate(pathForView('dokumentai', slug))}
+            onCloseDocument={() => navigate(pathForView('dokumentai'))}
+            onOpenCalculator={(to) => navigate(to)}
             onOpenAnalysisModal={() => setAnalysisModalOpen(true)}
-            onOpenRoiCalculator={() => setActiveView('skaiciuokles')}
+            onOpenSkaiciuokles={() => setActiveView('skaiciuokles')}
           />
         )}
 

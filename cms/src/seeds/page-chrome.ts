@@ -61,18 +61,20 @@ export const TINKLARASTIS_SETTING_SEED = {
 };
 
 export const DOKUMENTAI_SETTING_SEED = {
-  badge: 'Biblioteka ir Atsisiuntimai',
-  title: 'DOKUMENTAI IR MAZGAI',
-  intro: 'Atsisiųskite Filigran® montavimo instrukcijas, CAD/BIM mazgus (IFC/DWG) bei skaičiuokles',
-  searchPlaceholder: 'Ieškoti dokumentų, mazgų ar kodų...',
-  roiCta: 'ROI Skaičiuoklė',
-  analysisCta: 'Užsakyti Analizę',
+  badge: 'DOKUMENTAI IR MAZGAI',
+  title: 'Projektavimo medžiaga',
+  highlight: 'vienoje vietoje',
+  intro:
+    'Filigran dvigubų sienų ir HalfSlab perdangų projektavimo vadovas, tipiniai mazgai, montavimo, logistikos ir kokybės instrukcijos. Visada naujausios versijos.',
+  searchPlaceholder: 'Ieškoti dokumento, kodo ar temos (pvz. „išramstymas“, „HG-HS“)…',
+  roiCta: 'Skaičiuoklės',
+  analysisCta: 'Gauti projekto analizę',
   emptyTitle: 'Pagal paiešką dokumentų nerasta',
-  emptyIntro: 'Pabandykite kitą pavadinimą, kategoriją arba mazgo kodą (pvz. M-01).',
+  emptyIntro: 'Pabandykite kitą pavadinimą, kodą arba temą.',
   emptyCta: 'Rodyti visus dokumentus',
-  manualsHeading: 'Montavimo Instrukcijos & Vadovai',
-  mazgaiHeading: 'Standartiniai CAD / BIM Mazgai (IFC / DWG / PDF)',
-  downloadLabel: 'Parsisiųsti',
+  manualsHeading: 'Dokumentai ir mazgai',
+  mazgaiHeading: 'Mazgai ir detalės',
+  downloadLabel: 'Atsisiųsti PDF',
   missingFileLabel: 'Nėra failo',
-  sizeLabel: 'Dydis:',
+  sizeLabel: 'PDF',
 };

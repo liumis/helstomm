@@ -13,6 +13,7 @@ export async function fetchDokumentaiSettings(): Promise<DokumentaiSettings> {
     return {
       badge: pick(data.badge, FALLBACK_DOKUMENTAI.badge),
       title: pick(data.title, FALLBACK_DOKUMENTAI.title),
+      highlight: pick(data.highlight, FALLBACK_DOKUMENTAI.highlight),
       intro: pick(data.intro, FALLBACK_DOKUMENTAI.intro),
       searchPlaceholder: pick(data.searchPlaceholder, FALLBACK_DOKUMENTAI.searchPlaceholder),
       roiCta: pick(data.roiCta, FALLBACK_DOKUMENTAI.roiCta),

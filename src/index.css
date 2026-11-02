@@ -18,3 +18,33 @@ h1, h2 {
   font-weight: 700;
 }
 
+a,
+a[href],
+button,
+[type='button'],
+[type='submit'],
+[type='reset'],
+[role='button'],
+[role='link'],
+summary,
+label[for],
+label:has(input[type='checkbox']),
+label:has(input[type='radio']),
+label:has(input[type='file']),
+input[type='checkbox'],
+input[type='radio'],
+input[type='file'],
+select,
+.sbtn,
+.filters span {
+  cursor: pointer !important;
+}
+
+button:disabled,
+[type='button']:disabled,
+[type='submit']:disabled,
+[type='reset']:disabled,
+a[aria-disabled='true'] {
+  cursor: not-allowed !important;
+}
+

@@ -105,13 +105,13 @@ export const ProductPageView: React.FC<Props> = ({ slug, onOpenAnalysisModal, on
               return (
                 <div
                   key={`${tile.title}-${idx}`}
-                  className="bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-md transition-all text-center group"
+                  className="bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden shadow-xs text-center"
                 >
                   <div className={`${tileImageHeight} overflow-hidden`}>
                     <img
                       src={tile.imageUrl}
                       alt={tile.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                      className="w-full h-full object-cover"
                     />
                   </div>
                   <div className="p-3">

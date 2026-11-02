@@ -227,6 +227,18 @@ export async function seedArticles(strapi: Core.Strapi) {
     });
 
     if (existing) {
+      const current = String(existing.imageUrl || '');
+      const stale =
+        !current || current.includes('unsplash.com') || current.startsWith('/src/');
+      const documentId = existing.documentId || existing.document_id;
+      if (stale && documentId && current !== article.imageUrl) {
+        await strapi.documents('api::article.article').update({
+          documentId,
+          data: { imageUrl: article.imageUrl },
+          status: 'published',
+        });
+        strapi.log.info(`Updated article image: ${article.slug}`);
+      }
       continue;
     }
 
@@ -259,44 +271,42 @@ export async function seedArticles(strapi: Core.Strapi) {
 }
 
 export async function seedDocuments(strapi: Core.Strapi) {
-  for (const document of DOCUMENT_SEEDS) {
-    const existing = await strapi.db.query('api::dokumentas.dokumentas').findOne({
-      where: { slug: document.slug },
+  const keep = new Set(DOCUMENT_SEEDS.map((document) => document.slug));
+  const existingRows = await strapi.db.query('api::dokumentas.dokumentas').findMany({});
+
+  for (const row of existingRows) {
+    if (keep.has(row.slug) || !row.documentId) continue;
+    await strapi.documents('api::dokumentas.dokumentas').delete({
+      documentId: row.documentId,
     });
+    strapi.log.info(`Removed old document: ${row.slug}`);
+  }
 
-    if (existing) {
-      const documentId = existing.documentId || existing.document_id;
-      const patch: Record<string, unknown> = {};
-      if (document.pdfUrl && !existing.pdfUrl) patch.pdfUrl = document.pdfUrl;
-      if (document.fileSize && !existing.fileSize) patch.fileSize = document.fileSize;
-      if (document.acronym && !existing.acronym) patch.acronym = document.acronym;
-      if (documentId && Object.keys(patch).length) {
-        await strapi.documents('api::dokumentas.dokumentas').update({
-          documentId,
-          data: patch,
-          status: 'published',
-        });
-        strapi.log.info(`Updated document: ${document.slug}`);
-      }
-      continue;
-    }
-
-    await strapi.documents('api::dokumentas.dokumentas').create({
-      data: {
+  for (const document of DOCUMENT_SEEDS) {
+    await forceUpdateBySlug(
+      strapi,
+      'api::dokumentas.dokumentas',
+      document.slug,
+      {
         name: document.name,
-        slug: document.slug,
         category: document.category,
+        section: document.section,
         subcategory: document.subcategory,
         acronym: document.acronym,
+        description: document.description,
+        version: document.version,
+        publishedOn: document.publishedOn,
+        pages: document.pages,
         imageUrl: document.imageUrl,
         fileSize: document.fileSize,
         pdfUrl: document.pdfUrl,
+        tags: document.tags,
+        relatedCodes: document.relatedCodes,
+        featured: Boolean(document.featured),
         sortOrder: document.sortOrder,
       },
-      status: 'published',
-    });
-
-    strapi.log.info(`Seeded document: ${document.slug}`);
+      'document'
+    );
   }
 }
 
@@ -672,7 +682,7 @@ export async function seedPageChrome(strapi: Core.Strapi) {
     TINKLARASTIS_SETTING_SEED,
     'tinklarastis settings'
   );
-  await upsertSingleType(
+  await forceUpdateSingleType(
     strapi,
     'api::dokumentai-setting.dokumentai-setting',
     DOKUMENTAI_SETTING_SEED,

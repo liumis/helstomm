@@ -255,18 +255,37 @@ export interface ManualDownload {
 }
 
 export type DocumentCategory = 'manual' | 'mazgas';
+export type DocumentSection = 'projektavimas' | 'montavimas' | 'kokybe';
+export type DocumentBadge = 'nauja' | 'atnaujinta';
+
+export interface DocumentTocItem {
+  title: string;
+  page: number;
+}
 
 export interface LibraryDocument {
   id: string;
   name: string;
   category: DocumentCategory;
+  section: DocumentSection;
+  audience: string;
   subcategory: string;
   acronym: string;
+  description: string;
+  version: string;
+  publishedOn: string;
+  pages: number;
   image: string;
+  portraitImage: string;
   fileSize: string;
   dwgUrl: string;
   svgUrl: string;
   pdfUrl: string;
+  tags: string[];
+  relatedCodes: string[];
+  featured: boolean;
+  badge: DocumentBadge | '';
+  toc: DocumentTocItem[];
 }
 
 export type ArticleCategorySlug =
@@ -448,6 +467,7 @@ export interface TinklarastisSettings {
 export interface DokumentaiSettings {
   badge: string;
   title: string;
+  highlight: string;
   intro: string;
   searchPlaceholder: string;
   roiCta: string;

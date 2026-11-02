@@ -157,7 +157,7 @@ export const Footer: React.FC = () => {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="w-full sm:w-auto px-8 py-3 bg-[#b8cd33] hover:bg-[#a6ba2a] disabled:opacity-60 text-slate-950 font-black rounded-xl text-sm transition-all shadow-md"
+                    className="w-full sm:w-auto px-8 py-3 bg-[#b8cd33] hover:bg-[#a6ba2a] disabled:opacity-60 text-slate-950 font-black rounded-xl text-sm transition-all shadow-md cursor-pointer"
                   >
                     {submitting ? settings.submittingLabel : settings.submitLabel}
                   </button>

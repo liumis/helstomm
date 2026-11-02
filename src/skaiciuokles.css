@@ -142,7 +142,7 @@
 .skaiciuokles-page .fl .in{border:1px solid var(--rule);border-radius:3px;padding:8px 10px;font-size:14px;color:var(--muted);background:#fff}
 .skaiciuokles-page .fl .in.req::after{content:" *";color:var(--warn)}
 .skaiciuokles-page .gate .row{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:14px;flex-wrap:wrap}
-.skaiciuokles-page .btn{border-radius:4px;padding:11px 18px;font-weight:600;font-size:14.5px;display:inline-flex;gap:8px;align-items:center;white-space:nowrap}
+.skaiciuokles-page .btn{border-radius:4px;padding:11px 18px;font-weight:600;font-size:14.5px;display:inline-flex;gap:8px;align-items:center;white-space:nowrap;cursor:pointer}
 .skaiciuokles-page .btn.dark{background:var(--ink);color:#fff}
 .skaiciuokles-page .btn.line{border:1px solid var(--ink);color:var(--ink);background:#fff}
 .skaiciuokles-page .btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
@@ -178,7 +178,9 @@
 .skaiciuokles-page .dl{display:flex;flex-direction:column;gap:9px;align-items:flex-start}
 .skaiciuokles-page .dl span{background:var(--sheet);border-radius:12px;padding:9px 14px;font-weight:600;font-size:14px}
 .skaiciuokles-page .dl span.new{background:var(--lime-soft);border:1.5px solid var(--lime)}
-.skaiciuokles-page .sbtn{border-radius:16px;padding:14px 22px;font-weight:800;font-size:15px;display:inline-flex;justify-content:center}
+.skaiciuokles-page .sbtn{border-radius:16px;padding:14px 22px;font-weight:800;font-size:15px;display:inline-flex;justify-content:center;cursor:pointer}
+.skaiciuokles-page .sc{cursor:pointer}
+.skaiciuokles-page a{cursor:pointer}
 .skaiciuokles-page .sbtn.lime{background:var(--lime);color:var(--navy)}.sbtn.out{border:1.5px solid var(--navy-line);color:#fff}
 .skaiciuokles-page .note{font-size:13px;color:var(--muted);padding:0 22px 18px}
 

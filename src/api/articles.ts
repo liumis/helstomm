@@ -1,5 +1,5 @@
 import type { Article } from '../types';
-import { FALLBACK_ARTICLES } from '../data/blogArticles';
+import { articleLinkedInPost, FALLBACK_ARTICLES, resolveArticleImage } from '../data/blogArticles';
 
 const STRAPI_URL = (import.meta.env.VITE_STRAPI_URL as string | undefined)?.replace(/\/$/, '') || '';
 
@@ -54,10 +54,10 @@ function mapArticle(row: StrapiArticle): Article | null {
     readTime: row.readTime || '',
     author: row.author || 'HELSTOMM GROUP',
     authorRole: row.authorRole || '',
-    image: cover || row.imageUrl || '',
+    image: resolveArticleImage(row.slug, cover || row.imageUrl),
     excerpt: row.excerpt || '',
     featured: Boolean(row.featured),
-    linkedinUrl: row.linkedinUrl || 'https://www.linkedin.com/company/helstomm-group/',
+    linkedinUrl: articleLinkedInPost(row.linkedinUrl),
     content: {
       intro: row.intro || '',
       keyPoints: Array.isArray(row.keyPoints) ? row.keyPoints : [],

@@ -27,6 +27,7 @@ const PATH_ALIASES: Record<string, PageView> = {
   '/': 'home',
   '/mokymai': 'mokymai',
   '/dokumentai': 'dokumentai',
+  '/dokumentai-ir-mazgai': 'dokumentai',
   '/skaiciuokles': 'skaiciuokles',
   '/tinklarastis': 'tinklarastis',
   '/projektai': 'igyyvendinti-projektai',
@@ -40,12 +41,16 @@ export type AppRoute = {
   view: PageView;
   articleSlug?: string;
   calculatorSlug?: string;
+  documentSlug?: string;
   path: string;
 };
 
 export function pathForView(view: PageView, articleSlug?: string) {
   if (view === 'tinklarastis' && articleSlug) {
     return `/tinklarastis/${articleSlug}`;
+  }
+  if (view === 'dokumentai' && articleSlug) {
+    return `/dokumentai/${articleSlug}`;
   }
   return VIEW_PATHS[view] || `/${view}`;
 }
@@ -60,6 +65,10 @@ export function parseAppPath(pathname: string): AppRoute {
 
   if (parts[0] === 'skaiciuokles' && parts[1]) {
     return { view: 'skaiciuokles', calculatorSlug: parts.slice(1).join('/'), path };
+  }
+
+  if ((parts[0] === 'dokumentai' || parts[0] === 'dokumentai-ir-mazgai') && parts[1]) {
+    return { view: 'dokumentai', documentSlug: parts[1], path };
   }
 
   const aliased = PATH_ALIASES[path];

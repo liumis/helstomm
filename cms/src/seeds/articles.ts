@@ -31,10 +31,10 @@ export const ARTICLE_SEEDS: ArticleSeed[] = [
     author: 'Mindaugas Dagys',
     authorRole: 'Technikos direktorius (CTO)',
     featured: true,
-    imageUrl: '/src/assets/images/metu_gaminys_gold_medal_1786110722204.jpg',
+    imageUrl: '/Concrete_Vision_2018_pastatai.jpeg',
     excerpt:
       'Lietuvos pramonininkų konfederacija (LPK) prestižiniu aukso medaliu įvertino „Helstomm Group“ gaminamas surenkamąsias-monolitines Filigran plokštes ir DoubleWall sienas statybų sektoriuje.',
-    linkedinUrl: 'https://www.linkedin.com/company/helstomm-group/',
+    linkedinUrl: '',
     intro:
       'Lietuvos pramonininkų konfederacijos (LPK) rengiamuose kasmetiniuose apdovanojimuose „Lietuvos metų gaminys 2024“ aukso medaliu Statybos ir statybinių medžiagų pramonės grupėje buvo įvertintos UAB „Helstomm Group“ surenkamosios-monolitinės Filigran konstrukcijos.',
     keyPoints: [
@@ -62,10 +62,10 @@ export const ARTICLE_SEEDS: ArticleSeed[] = [
     readTime: '5 min.',
     author: 'Paulius Vasiliauskas',
     authorRole: 'Inžinerinių projektų vadovas',
-    imageUrl: 'https://images.unsplash.com/photo-1590069261209-f8e9b8642343?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/pastatai_building.jpg',
     excerpt:
       'Po Viršuliškių daugiabučio gaisro ir sprogimo „Helstomm Group“ inžinieriai operatyviai pateikė specializuotus surenkamojo gelžbetonio elementų sprendimus saugiam perdangų atstatymui.',
-    linkedinUrl: 'https://www.linkedin.com/company/helstomm-group/',
+    linkedinUrl: '',
     intro:
       'Sudėtingose avarinės būklės pastatų rekonstrukcijose sprendimų greitis ir konstrukcinis saugumas yra kritiniai veiksniai. „Helstomm Group“ komanda aktyviai prisidėjo rengiant ir tiekiant Filigran gelžbetonio konstrukcijas pažeistam Viršuliškių daugiabučiui Vilniuje.',
     keyPoints: [
@@ -93,10 +93,10 @@ export const ARTICLE_SEEDS: ArticleSeed[] = [
     readTime: '4 min.',
     author: 'HELSTOMM GROUP',
     authorRole: 'Gamybos komanda',
-    imageUrl: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/construction_steel_site.jpg',
     excerpt:
       'Augant tvarios statybos paklausai Baltijos šalyse, „Helstomm Group“ plečia gamybinius pajėgumus ir diegia vokišką automatizuotą gamybos liniją su lazeriniu pozicionavimu.',
-    linkedinUrl: 'https://www.linkedin.com/company/helstomm-group/',
+    linkedinUrl: '',
     intro:
       'Atsliepdama į sparčiai augančią Filigran perdangos plokščių ir DoubleWall dvigubų sienų paklausą, UAB „Helstomm Group“ įgyvendino stambų gamybos pajėgumų plėtros etaptą.',
     keyPoints: [
@@ -121,10 +121,10 @@ export const ARTICLE_SEEDS: ArticleSeed[] = [
     readTime: '6 min.',
     author: 'Mindaugas Dagys',
     authorRole: 'Technikos direktorius',
-    imageUrl: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/perdanga.png',
     excerpt:
       'Apžvalginis straipsnis portale 15min.lt ir LinkedIn: kaip Filigran technologija padeda NT vystytojams išspręsti akustikos, gaisrinės saugos bei sandarumo iššūkius.',
-    linkedinUrl: 'https://www.linkedin.com/company/helstomm-group/',
+    linkedinUrl: '',
     intro:
       'Tradicinė statyba susiduria su dviem kraštutinumais: klasikinė monolitinė statyba garantuoja sandarumą, bet reikalauja milžiniško darbo jėgos kiekio; paprastos surenkamosios plokštės montuojamos greitai, tačiau riboja architektūrines formas bei reikalauja papildomų sandarinimo siūlių.',
     keyPoints: [
@@ -149,10 +149,10 @@ export const ARTICLE_SEEDS: ArticleSeed[] = [
     readTime: '5 min.',
     author: 'Inžinerijos Skyrius',
     authorRole: 'HELSTOMM BIM Team',
-    imageUrl: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/mazgai_jungtys.jpg',
     excerpt:
       'Kiekvienas „Helstomm Group“ gaminys prasideda tiksliame 3D skaitmeniniame modelyje. Sužinokite, kaip BIM modeliai perduodami tiesiai į robotizuotas stakles.',
-    linkedinUrl: 'https://www.linkedin.com/company/helstomm-group/',
+    linkedinUrl: '',
     intro:
       'Statybos skaitmenizacija nėra ateities vizija – tai kasdienis „Helstomm Group“ inžinierių darbo standartas. Visos Filigran perdangos ir DoubleWall sienos detalizuojamos naudojant pažangią „Tekla Structures“ programinę įrangą.',
     keyPoints: [
@@ -176,10 +176,10 @@ export const ARTICLE_SEEDS: ArticleSeed[] = [
     readTime: '4 min.',
     author: 'HELSTOMM GROUP',
     authorRole: 'Tvarumo komanda',
-    imageUrl: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80',
+    imageUrl: '/Eko_perdanga.png',
     excerpt:
       'Kaip optimizuotas betono tūris, mažesnis transportavimo skaičius ir surenkamas gamyklinis karkasas padeda NT vystytojams gauti BREEAM ir LEED sertifikatus.',
-    linkedinUrl: 'https://www.linkedin.com/company/helstomm-group/',
+    linkedinUrl: '',
     intro:
       'Europos Sąjungos žaliasis kursas ir BREEAM/LEED sertifikavimo reikalavimai skatina statybų sektorių ieškoti mažesnį CO2 pėdsaką paliekančių technologijų. Gelžbetonis atlieka pagrindinį vaidmenį šiame viršsme.',
     keyPoints: [

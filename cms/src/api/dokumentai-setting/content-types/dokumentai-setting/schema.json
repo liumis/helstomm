@@ -14,6 +14,7 @@
   "attributes": {
     "badge": { "type": "string" },
     "title": { "type": "string" },
+    "highlight": { "type": "string" },
     "intro": { "type": "text" },
     "searchPlaceholder": { "type": "string" },
     "roiCta": { "type": "string" },

@@ -5,7 +5,7 @@
     "singularName": "dokumentas",
     "pluralName": "dokumentai",
     "displayName": "Dokumentai",
-    "description": "Montavimo vadovai ir CAD / BIM mazgai"
+    "description": "Projektavimo vadovai, mazgai, montavimo ir kokybės instrukcijos"
   },
   "options": {
     "draftAndPublish": true
@@ -26,11 +26,37 @@
       "enum": ["manual", "mazgas"],
       "required": true
     },
+    "section": {
+      "type": "enumeration",
+      "enum": ["projektavimas", "montavimas", "kokybe"]
+    },
     "subcategory": {
       "type": "string"
     },
     "acronym": {
       "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "version": {
+      "type": "string"
+    },
+    "publishedOn": {
+      "type": "string"
+    },
+    "pages": {
+      "type": "integer"
+    },
+    "tags": {
+      "type": "text"
+    },
+    "relatedCodes": {
+      "type": "text"
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false
     },
     "image": {
       "type": "media",

@@ -66,7 +66,7 @@ export const ProjectsSection: React.FC<Props> = ({ onOpenAnalysisModal }) => {
             <button
               key={cat.slug}
               onClick={() => setSelectedCategory(cat.slug)}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 selectedCategory === cat.slug
                   ? 'bg-slate-900 text-[#b8cd33] shadow-md'
                   : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100'
@@ -88,7 +88,7 @@ export const ProjectsSection: React.FC<Props> = ({ onOpenAnalysisModal }) => {
             <h3 className="text-lg font-bold text-slate-900">{page.emptyTitle}</h3>
             <button
               onClick={() => setSelectedCategory(page.filters[0]?.slug || 'visi')}
-              className="mt-4 px-4 py-2 bg-[#b8cd33] text-slate-950 font-bold text-xs rounded-xl"
+              className="mt-4 px-4 py-2 bg-[#b8cd33] text-slate-950 font-bold text-xs rounded-xl cursor-pointer"
             >
               {page.emptyCta}
             </button>
@@ -100,7 +100,8 @@ export const ProjectsSection: React.FC<Props> = ({ onOpenAnalysisModal }) => {
           {filteredProjects.map((project) => (
             <div 
               key={project.id}
-              className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-xl transition-all flex flex-col justify-between group"
+              className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-xl transition-all flex flex-col justify-between group cursor-pointer"
+              onClick={onOpenAnalysisModal}
             >
               <div>
                 <div className="h-36 sm:h-52 overflow-hidden relative">
@@ -140,7 +141,7 @@ export const ProjectsSection: React.FC<Props> = ({ onOpenAnalysisModal }) => {
               <div className="p-3 pt-0 sm:p-6 sm:pt-0">
                 <button
                   onClick={onOpenAnalysisModal}
-                  className="w-full py-2 sm:py-2.5 bg-slate-100 hover:bg-[#b8cd33] hover:text-slate-950 text-slate-800 font-bold rounded-xl text-[10px] sm:text-xs transition-colors flex items-center justify-center space-x-1 sm:space-x-1.5"
+                  className="w-full py-2 sm:py-2.5 bg-slate-100 hover:bg-[#b8cd33] hover:text-slate-950 text-slate-800 font-bold rounded-xl text-[10px] sm:text-xs transition-colors cursor-pointer flex items-center justify-center space-x-1 sm:space-x-1.5"
                 >
                   <span className="truncate">{page.analysisCta}</span>
                   <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />

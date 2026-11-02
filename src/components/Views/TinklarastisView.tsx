@@ -22,8 +22,16 @@ import {
 
 import { fetchArticles } from '../../api/articles';
 import { fetchTinklarastisSettings } from '../../api/tinklarastis';
+import { articleLinkedInPost, resolveArticleImage } from '../../data/blogArticles';
 import { FALLBACK_TINKLARASTIS } from '../../data/pageChrome';
 import { Article } from '../../types';
+
+function handleArticleImageError(event: React.SyntheticEvent<HTMLImageElement>, slug: string) {
+  const img = event.currentTarget;
+  if (img.dataset.fallbackApplied === '1') return;
+  img.dataset.fallbackApplied = '1';
+  img.src = resolveArticleImage(slug);
+}
 
 interface Props {
   onOpenAnalysisModal: () => void;
@@ -176,6 +184,7 @@ export function TinklarastisView({
               src={featuredArticle.image} 
               alt={featuredArticle.title} 
               className="w-full h-full object-cover"
+              onError={(event) => handleArticleImageError(event, featuredArticle.id)}
             />
             <div className="absolute top-4 left-4 bg-[#b8cd33] text-slate-950 text-xs font-extrabold px-3 py-1.5 rounded-lg shadow-md flex items-center space-x-1">
               <Award className="w-4 h-4" />
@@ -290,7 +299,7 @@ export function TinklarastisView({
               <button
                 key={cat.slug}
                 onClick={() => setSelectedCategory(cat.slug)}
-                className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+                className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                   selectedCategory === cat.slug
                     ? 'bg-slate-950 text-[#b8cd33] shadow-sm'
                     : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
@@ -315,6 +324,7 @@ export function TinklarastisView({
                     src={article.image}
                     alt={article.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    onError={(event) => handleArticleImageError(event, article.id)}
                   />
                   <div className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-slate-900/90 backdrop-blur-md text-[#b8cd33] text-[9px] sm:text-[11px] font-bold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md">
                     {article.category}
@@ -438,8 +448,14 @@ export function TinklarastisView({
 
       {/* Article Detail Modal */}
       {activeArticleModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto">
-          <div className="bg-white rounded-3xl max-w-3xl w-full my-8 overflow-hidden shadow-2xl border border-slate-200 relative animate-in zoom-in-95 duration-200">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto"
+          onClick={closeArticle}
+        >
+          <div
+            className="bg-white rounded-3xl max-w-3xl w-full my-8 overflow-hidden shadow-2xl border border-slate-200 relative animate-in zoom-in-95 duration-200"
+            onClick={(event) => event.stopPropagation()}
+          >
             
             {/* Modal Header Image */}
             <div className="relative h-64 md:h-80 bg-slate-900">
@@ -447,6 +463,7 @@ export function TinklarastisView({
                 src={activeArticleModal.image} 
                 alt={activeArticleModal.title}
                 className="w-full h-full object-cover opacity-90"
+                onError={(event) => handleArticleImageError(event, activeArticleModal.id)}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
               
@@ -485,16 +502,18 @@ export function TinklarastisView({
                   </div>
                 </div>
 
-                <a
-                  href={activeArticleModal.linkedinUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center space-x-1.5 text-sky-700 bg-sky-50 border border-sky-200 px-3 py-1.5 rounded-lg font-bold hover:bg-sky-100 transition-colors"
-                >
-                  <Linkedin className="w-3.5 h-3.5 text-sky-600" />
-                  <span>LinkedIn įrašas</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </a>
+                {articleLinkedInPost(activeArticleModal.linkedinUrl) && (
+                  <a
+                    href={activeArticleModal.linkedinUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center space-x-1.5 text-sky-700 bg-sky-50 border border-sky-200 px-3 py-1.5 rounded-lg font-bold hover:bg-sky-100 transition-colors"
+                  >
+                    <Linkedin className="w-3.5 h-3.5 text-sky-600" />
+                    <span>LinkedIn įrašas</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
+                )}
               </div>
 
               {/* Content Intro */}

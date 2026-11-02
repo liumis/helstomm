@@ -149,7 +149,8 @@ export const ProductCarousel: React.FC<Props> = ({ setActiveView, onOpenAnalysis
               return (
                 <div
                   key={card.slug}
-                  className={`${idx === 2 && homeCards.length === 3 ? 'col-span-2 md:col-span-1 ' : ''}bg-white rounded-2xl border border-slate-200 overflow-visible shadow-xs hover:shadow-xl transition-all flex flex-col justify-between group`}
+                  className={`${idx === 2 && homeCards.length === 3 ? 'col-span-2 md:col-span-1 ' : ''}bg-white rounded-2xl border border-slate-200 overflow-visible shadow-xs hover:shadow-xl transition-all flex flex-col justify-between group cursor-pointer`}
+                  onClick={() => setActiveView((card.cardTargetSlug || card.slug) as PageView)}
                 >
                   <div>
                     <div className="relative">
@@ -184,8 +185,12 @@ export const ProductCarousel: React.FC<Props> = ({ setActiveView, onOpenAnalysis
                   </div>
                   <div className="p-3 pt-0 sm:p-6 sm:pt-0">
                     <button
-                      onClick={() => setActiveView((card.cardTargetSlug || card.slug) as PageView)}
-                      className={`w-full py-2 sm:py-2.5 bg-slate-100 text-slate-800 font-bold rounded-xl text-[10px] sm:text-xs transition-colors flex items-center justify-center space-x-1 sm:space-x-1.5 ${
+                      type="button"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        setActiveView((card.cardTargetSlug || card.slug) as PageView);
+                      }}
+                      className={`w-full py-2 sm:py-2.5 bg-slate-100 text-slate-800 font-bold rounded-xl text-[10px] sm:text-xs transition-colors cursor-pointer flex items-center justify-center space-x-1 sm:space-x-1.5 ${
                         eco ? 'hover:bg-emerald-600 hover:text-white' : 'hover:bg-[#b8cd33] hover:text-slate-950'
                       }`}
                     >
@@ -317,7 +322,7 @@ export const ProductCarousel: React.FC<Props> = ({ setActiveView, onOpenAnalysis
                     <button
                       type="button"
                       onClick={() => setActiveView('skaiciuokles')}
-                      className="px-3 py-1.5 bg-white border border-slate-200 hover:border-[#b8cd33] text-slate-800 rounded-lg text-xs font-semibold transition-colors"
+                      className="px-3 py-1.5 bg-white border border-slate-200 hover:border-[#b8cd33] text-slate-800 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
                     >
                       {current.calculatorLabel}
                     </button>
@@ -329,7 +334,7 @@ export const ProductCarousel: React.FC<Props> = ({ setActiveView, onOpenAnalysis
                         if (current.ctaAction === 'analysis') onOpenAnalysisModal();
                         else setActiveView(current.targetSlug as PageView);
                       }}
-                      className="px-6 py-3 bg-[#b8cd33] hover:bg-[#a6ba2a] text-slate-950 font-bold rounded-xl text-sm transition-all shadow-xs"
+                      className="px-6 py-3 bg-[#b8cd33] hover:bg-[#a6ba2a] text-slate-950 font-bold rounded-xl text-sm transition-all shadow-xs cursor-pointer"
                     >
                       {current.ctaLabel}
                     </button>
@@ -337,7 +342,7 @@ export const ProductCarousel: React.FC<Props> = ({ setActiveView, onOpenAnalysis
                       <button
                         type="button"
                         onClick={onOpenAnalysisModal}
-                        className="px-6 py-3 bg-white border border-slate-200 hover:border-slate-400 text-slate-800 font-bold rounded-xl text-sm transition-all"
+                        className="px-6 py-3 bg-white border border-slate-200 hover:border-slate-400 text-slate-800 font-bold rounded-xl text-sm transition-all cursor-pointer"
                       >
                         {current.analysisCtaLabel}
                       </button>
@@ -353,7 +358,7 @@ export const ProductCarousel: React.FC<Props> = ({ setActiveView, onOpenAnalysis
               <button
                 key={slide.id}
                 onClick={() => setActiveSlideIndex(idx)}
-                className={`p-3 rounded-xl text-left border transition-all text-xs font-bold ${
+                className={`p-3 rounded-xl text-left border transition-all text-xs font-bold cursor-pointer ${
                   activeSlideIndex === idx
                     ? 'bg-slate-900 text-[#b8cd33] border-slate-900 shadow-md'
                     : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'

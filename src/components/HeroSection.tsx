@@ -111,10 +111,12 @@ export const HeroSection: React.FC<Props> = ({
               };
 
               return (
-                <div
+                <button
+                  type="button"
                   key={card.id}
-                  className={`bg-[#b8cd33] text-slate-950 p-3.5 sm:p-6 rounded-xl sm:rounded-2xl shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1 relative group flex flex-col justify-between items-center text-center ${
-                    isLastOdd ? 'col-span-2 lg:col-span-1 max-w-md mx-auto w-full' : ''
+                  onClick={onCardClick}
+                  className={`w-full bg-[#b8cd33] text-slate-950 p-3.5 sm:p-6 rounded-xl sm:rounded-2xl shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1 relative group flex flex-col justify-between items-center text-center cursor-pointer ${
+                    isLastOdd ? 'col-span-2 lg:col-span-1 max-w-md mx-auto' : ''
                   }`}
                 >
                   <div className="w-full flex flex-col items-center">
@@ -132,15 +134,12 @@ export const HeroSection: React.FC<Props> = ({
                     )}
                   </div>
                   {card.ctaLabel && (
-                    <button
-                      onClick={onCardClick}
-                      className="mt-3 sm:mt-6 pt-2.5 sm:pt-4 border-t border-slate-950/10 w-full flex items-center justify-center space-x-1 sm:space-x-2 font-bold text-[10px] sm:text-xs hover:underline"
-                    >
+                    <span className="mt-3 sm:mt-6 pt-2.5 sm:pt-4 border-t border-slate-950/10 w-full flex items-center justify-center space-x-1 sm:space-x-2 font-bold text-[10px] sm:text-xs group-hover:underline">
                       <span>{card.ctaLabel}</span>
                       <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
-                    </button>
+                    </span>
                   )}
-                </div>
+                </button>
               );
             })}
           </div>
