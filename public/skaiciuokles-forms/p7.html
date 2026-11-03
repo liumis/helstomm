@@ -64,8 +64,8 @@ details.adv summary{cursor:pointer;padding:10px 12px;font-size:13px;font-weight:
 details.adv summary::after{content:"+";font-family:var(--m)}
 details.adv[open] summary::after{content:"−"}
 details.adv .body{padding:0 12px 10px}
-.fixed{font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6}
-.fixed b{color:var(--ink);font-weight:600}
+.prielaidos{font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6}
+.prielaidos b{color:var(--ink);font-weight:600}
 
 /* Rezultatai */
 .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--rule);margin:14px 0 6px}
@@ -251,7 +251,7 @@ details.guide>summary small{font-weight:400;color:#6B7280;font-size:12px}
 <tr><td class="sym">a<sub>0</sub></td><td><label for="i-depth">Plokštės atrėmimo gylis ant sienos</label><span class="hi" tabindex="0" role="note" aria-label="Paaiškinimas" data-h="Kiek plokštė užeina ant sienos ar sijos. 0 – plokštė atremta tik ant ramsčių.">i</span></td><td class="v"><input class="in" id="i-depth" type="number" inputmode="decimal" min="0" max="150" step="5" value="40"></td><td class="u">mm</td></tr>
     </tbody></table>
     <div class="err" id="err" hidden></div>
-    <p class="fixed">Paslėpta: kopetėlės aukštis – kaip P5 (XC1, Ø6/Ø8, C30/37); didesnis kopetėlių žingsnis didina apkrovą vienai kopetėlei (q<sub>1</sub> = q·s), todėl leistinas tarpatramis mažėja; montavimo apkrova max(1,5; EN 1991-1-6) kN/m², sutelktoji 1,5 kN, γ<sub>F</sub> = 1,0; armavimo patikra γ<sub>G</sub> = 1,35, γ<sub>Q</sub> = 1,5; tolydumo koef. 1,1; suvirinimo mazgai ≤ 20 cm. Kodas XYZ: X – 2 apatinės vielos, Y – įstrižainės, Z – viršutinė viela.</p>
+    <p class="prielaidos">Paslėpta: kopetėlės aukštis – kaip P5 (XC1, Ø6/Ø8, C30/37); didesnis kopetėlių žingsnis didina apkrovą vienai kopetėlei (q<sub>1</sub> = q·s), todėl leistinas tarpatramis mažėja; montavimo apkrova max(1,5; EN 1991-1-6) kN/m², sutelktoji 1,5 kN, γ<sub>F</sub> = 1,0; armavimo patikra γ<sub>G</sub> = 1,35, γ<sub>Q</sub> = 1,5; tolydumo koef. 1,1; suvirinimo mazgai ≤ 20 cm. Kodas XYZ: X – 2 apatinės vielos, Y – įstrižainės, Z – viršutinė viela.</p>
     <div class="sub">Pjūvis</div>
 <div class="fig2"><h4>Ramstymo schema – planas</h4><svg id="svg" viewBox="0 0 360 240" role="img" aria-label="Ramstymo schema planas"></svg><p>Ramsčių eilės statomos statmenai tarpatramiui, po ištisine sija; sija remia visas kopetėles.</p></div>
 <div class="fig2"><h4>Montavimo pjūvis išilgai tarpatramio</h4><svg id="svg2" viewBox="0 0 360 150" role="img" aria-label="Montavimo pjūvis"></svg></div>

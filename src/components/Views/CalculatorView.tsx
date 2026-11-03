@@ -108,7 +108,10 @@ export const CalculatorView: React.FC<Props> = ({ calculator, onClose }) => {
 
   return createPortal(
     <div className="calc-modal-root fixed inset-0 z-[200] bg-[#F6F7F9]">
-      <style>{`@media (max-width:640px){.calc-fs .tstrip,.calc-fs .crumb{padding-right:52px}}`}</style>
+      <style>{`
+        .calc-fs .fixed{position:static!important;inset:auto!important}
+        @media (max-width:640px){.calc-fs .tstrip,.calc-fs .crumb{padding-right:52px}}
+      `}</style>
       <button
         type="button"
         onClick={onClose}
