@@ -6,7 +6,7 @@ export const GAMYBOS_PROCESAS_SEED = {
   tagline: 'PRECAST CONCRETE | DESIGN | MANUFACTURE | BUILD | MANAGEMENT',
   videoCaption:
     'Žiūrėkite vaizdo įrašą apie „Filigran“ plokščių gamybos linijas ir kokybės patikrą gamykloje',
-  videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+  videoUrl: 'https://www.youtube.com/embed/HkNmohAUXdc',
   posterUrl:
     'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&q=80&w=1200',
   certificatesCtaLabel: 'Atsisiųsti gamybos sertifikatus (CE / ISO)',

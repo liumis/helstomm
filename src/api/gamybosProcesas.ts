@@ -38,10 +38,23 @@ function mediaUrl(file?: StrapiMedia | StrapiMedia[] | null) {
   return `${STRAPI_URL}${url}`;
 }
 
+const PLACEHOLDER_VIDEO_ID = 'dQw4w9WgXcQ';
+const MANUFACTURING_VIDEO_ID = 'HkNmohAUXdc';
+
+function youtubeId(url: string) {
+  const match = url.match(
+    /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{6,})/,
+  );
+  return match?.[1] || '';
+}
+
 function toEmbedUrl(url: string) {
-  const watch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{6,})/);
-  if (watch?.[1]) return `https://www.youtube.com/embed/${watch[1]}`;
-  return url;
+  if (!url || url.includes(PLACEHOLDER_VIDEO_ID)) {
+    return `https://www.youtube.com/embed/${MANUFACTURING_VIDEO_ID}`;
+  }
+  const id = youtubeId(url);
+  if (!id) return `https://www.youtube.com/embed/${MANUFACTURING_VIDEO_ID}`;
+  return `https://www.youtube.com/embed/${id}`;
 }
 
 function splitLines(value?: string) {
@@ -77,6 +90,9 @@ export async function fetchManufacturingBlock(): Promise<ManufacturingBlock> {
     };
   } catch (error) {
     console.warn('Gamybos procesas: using local block because CMS is unavailable.', error);
-    return FALLBACK_MANUFACTURING_BLOCK;
+    return {
+      ...FALLBACK_MANUFACTURING_BLOCK,
+      videoUrl: toEmbedUrl(FALLBACK_MANUFACTURING_BLOCK.videoUrl),
+    };
   }
 }

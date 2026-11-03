@@ -591,14 +591,12 @@ export async function seedInzinerinePagalba(strapi: Core.Strapi) {
 }
 
 export async function seedGamybosProcesas(strapi: Core.Strapi) {
-  const existing = await strapi.db.query('api::gamybos-procesas.gamybos-procesas').findOne({});
-  if (existing) return;
-
-  await strapi.documents('api::gamybos-procesas.gamybos-procesas').create({
-    data: GAMYBOS_PROCESAS_SEED,
-    status: 'published',
-  });
-  strapi.log.info('Seeded gamybos procesas block.');
+  await forceUpdateSingleType(
+    strapi,
+    'api::gamybos-procesas.gamybos-procesas',
+    GAMYBOS_PROCESAS_SEED,
+    'gamybos procesas block'
+  );
 }
 
 export async function seedHero(strapi: Core.Strapi) {
