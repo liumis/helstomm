@@ -89,6 +89,7 @@ export interface DesignHotspot {
   xPct: number;
   yPct: number;
   fileUrl?: string;
+  productSlug?: string;
 }
 
 export interface DesignCategoryItem {

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { calculatorPathForCode } from '../../data/calculators';
 import { SKAICIUOKLES_LISTS } from '../../data/skaiciuoklesMarkup';
+import { attributionPayload } from '../../lib/attribution';
 import '../../skaiciuokles.css';
 
 type Audience = keyof typeof SKAICIUOKLES_LISTS;
@@ -198,6 +199,7 @@ export const SkaiciuoklesView: React.FC<Props> = ({ onOpenAnalysisModal, onOpenC
           name: 'Praneškite man',
           email,
           pageUrl: window.location.href,
+          ...attributionPayload(),
         }),
       });
       if (!res.ok) throw new Error('fail');

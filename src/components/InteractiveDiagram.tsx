@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Info, FileCode } from 'lucide-react';
+import { Info, FileCode, ArrowRight } from 'lucide-react';
 import { isOpenableFile } from '../lib/files';
 
 interface Hotspot {
@@ -10,6 +10,7 @@ interface Hotspot {
   description: string;
   techDetail: string;
   fileUrl?: string;
+  productSlug?: string;
 }
 
 interface Props {
@@ -17,9 +18,22 @@ interface Props {
   subtitle: string;
   imageUrl: string;
   hotspots: Hotspot[];
+  navigate?: (to: string) => void;
 }
 
-export const InteractiveDiagram: React.FC<Props> = ({ title, subtitle, imageUrl, hotspots }) => {
+function productPathForHotspot(hs: Hotspot) {
+  if (hs.productSlug) {
+    return hs.productSlug.startsWith('/') ? hs.productSlug : `/${hs.productSlug}`;
+  }
+  const title = hs.title.toLowerCase();
+  if (title.includes('perdang')) return '/perdangos';
+  if (title.includes('balkon') || title.includes('termoizoliacin')) return '/balkonai';
+  if (title.includes('thermal')) return '/thermal-siena';
+  if (title.includes('berlyn') || title.includes('rezervuar') || title.includes('vandeni')) return '/inzineriniai';
+  return '/dviguba-siena';
+}
+
+export const InteractiveDiagram: React.FC<Props> = ({ title, subtitle, imageUrl, hotspots, navigate }) => {
   const [activeHotspot, setActiveHotspot] = useState<Hotspot>(hotspots[0] || null);
 
   return (
@@ -110,10 +124,18 @@ export const InteractiveDiagram: React.FC<Props> = ({ title, subtitle, imageUrl,
                   <span>Atsisiųsti Mazgo DWG / PDF</span>
                 </a>
               ) : (
-                <span className="w-full py-2.5 bg-slate-700 text-slate-400 font-bold rounded-xl text-xs flex items-center justify-center space-x-1.5">
-                  <FileCode className="w-4 h-4" />
-                  <span>Failas netrukus</span>
-                </span>
+                <a
+                  href={productPathForHotspot(activeHotspot)}
+                  onClick={(event) => {
+                    if (!navigate) return;
+                    event.preventDefault();
+                    navigate(productPathForHotspot(activeHotspot));
+                  }}
+                  className="w-full py-2.5 bg-[#b8cd33] hover:bg-[#a6ba2a] text-slate-950 font-bold rounded-xl text-xs transition-colors flex items-center justify-center space-x-1.5"
+                >
+                  <span>Žiūrėti produktą</span>
+                  <ArrowRight className="w-4 h-4" />
+                </a>
               )}
             </div>
           )}

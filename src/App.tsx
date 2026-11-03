@@ -24,6 +24,7 @@ import { TinklarastisView } from './components/Views/TinklarastisView';
 import { TrainingRegisterModal } from './components/Modals/TrainingRegisterModal';
 import { ProjectAnalysisModal } from './components/Modals/ProjectAnalysisModal';
 import { fetchSeoPages } from './api/seo';
+import { captureAttribution } from './lib/attribution';
 import { CORE_VIEWS, pathForView, useAppRoute } from './routing';
 
 const DESIGN_SLUGS = FALLBACK_DESIGN_CATEGORIES.map((item) => item.slug);
@@ -36,6 +37,7 @@ export default function App() {
   const [analysisModalOpen, setAnalysisModalOpen] = useState(false);
 
   useEffect(() => {
+    captureAttribution();
     fetchSeoPages().then(setSeoPages);
   }, []);
 
@@ -74,7 +76,7 @@ export default function App() {
             <HeroSection
               onOpenAnalysisModal={() => setAnalysisModalOpen(true)}
               onOpenRoiCalculator={() => setActiveView('skaiciuokles')}
-              setActiveView={setActiveView}
+              navigate={navigate}
             />
             <ProductCarousel
               setActiveView={setActiveView}
@@ -108,6 +110,7 @@ export default function App() {
           <DesignPageView
             slug={activeView}
             onOpenAnalysisModal={() => setAnalysisModalOpen(true)}
+            navigate={navigate}
           />
         )}
 

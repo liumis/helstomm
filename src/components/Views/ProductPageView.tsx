@@ -95,7 +95,13 @@ export const ProductPageView: React.FC<Props> = ({ slug, onOpenAnalysisModal, on
                     }`}
                   >
                     <div className={`${tileImageHeight} rounded-xl overflow-hidden`}>
-                      <img src={tile.imageUrl} alt={tile.title} className="w-full h-full object-cover" />
+                      <img
+                        src={tile.imageUrl}
+                        alt={tile.title}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                     <h3 className="font-bold text-slate-900 text-xs">{tile.title}</h3>
                   </button>
@@ -111,6 +117,8 @@ export const ProductPageView: React.FC<Props> = ({ slug, onOpenAnalysisModal, on
                     <img
                       src={tile.imageUrl}
                       alt={tile.title}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -139,6 +147,8 @@ export const ProductPageView: React.FC<Props> = ({ slug, onOpenAnalysisModal, on
                   <img
                     src={product.schemaImageUrl}
                     alt={product.pageTitle}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-auto object-contain max-h-[350px]"
                   />
                 </div>
@@ -224,6 +234,8 @@ export const ProductPageView: React.FC<Props> = ({ slug, onOpenAnalysisModal, on
                   <img
                     src={advantage.iconUrl}
                     alt={advantage.title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-16 h-16 sm:w-24 sm:h-24 object-contain hover:scale-105 transition-transform"
                   />
                 )}
@@ -252,7 +264,13 @@ export const ProductPageView: React.FC<Props> = ({ slug, onOpenAnalysisModal, on
                 className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs hover:shadow-md transition-shadow text-left space-y-3"
               >
                 <div className="h-36 rounded-xl bg-slate-100 overflow-hidden relative">
-                  <img src={joint.imageUrl} alt={joint.title} className="w-full h-full object-cover" />
+                  <img
+                    src={joint.imageUrl}
+                    alt={joint.title}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover"
+                  />
                   {joint.acronym && (
                     <span className="absolute top-2 left-2 bg-slate-900 text-[#b8cd33] px-2 py-0.5 rounded text-[10px] font-bold">
                       {joint.acronym}

@@ -1,10 +1,12 @@
 import { factories } from '@strapi/strapi';
 import {
+  attributionFromBody,
   getClientMeta,
   getMailSettings,
   notifyEmailsFor,
   sendFormNotification,
 } from '../../../utils/form-intake';
+import { syncWebsiteEventToNotion } from '../../../utils/notion-crm';
 
 const ALLOWED_CODES = new Set([
   'P1',
@@ -103,6 +105,7 @@ export default factories.createCoreController(
       }
 
       const meta = getClientMeta(ctx);
+      const attribution = attributionFromBody(body);
       const mail = await getMailSettings(strapi);
       const recipients = notifyEmailsFor('calculator', mail);
 
@@ -122,6 +125,7 @@ export default factories.createCoreController(
           summary,
           inputs,
           results,
+          ...attribution,
           notifyEmails: recipients.join(', '),
           ipAddress: meta.ipAddress,
           userAgent: meta.userAgent,
@@ -129,6 +133,25 @@ export default factories.createCoreController(
           submittedAt: meta.submittedAt,
         } as any,
       });
+
+      void syncWebsiteEventToNotion(
+        {
+          action: kind === 'ask' ? 'ask' : kind === 'notify' ? 'notify' : 'calculation',
+          code,
+          title: title || code,
+          name,
+          firstName,
+          lastName,
+          email,
+          company,
+          projectName,
+          pageUrl,
+          consent: kind !== 'notify',
+          summary,
+          ...attribution,
+        },
+        strapi.log
+      );
 
       try {
         await sendFormNotification(strapi, {

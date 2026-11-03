@@ -1,0 +1,90 @@
+{
+  "kind": "collectionType",
+  "collectionName": "document_activities",
+  "info": {
+    "singularName": "document-activity",
+    "pluralName": "document-activities",
+    "displayName": "Dokumentų veiksmai",
+    "description": "Dokumentų registracijos, peržiūros ir PDF atsisiuntimai"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "action": {
+      "type": "enumeration",
+      "enum": ["register", "view", "download"],
+      "required": true
+    },
+    "slug": {
+      "type": "string"
+    },
+    "code": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "company": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "pageUrl": {
+      "type": "string"
+    },
+    "utmSource": {
+      "type": "string"
+    },
+    "utmMedium": {
+      "type": "string"
+    },
+    "utmCampaign": {
+      "type": "string"
+    },
+    "utmContent": {
+      "type": "string"
+    },
+    "utmTerm": {
+      "type": "string"
+    },
+    "referrer": {
+      "type": "string"
+    },
+    "landingPath": {
+      "type": "string"
+    },
+    "ipAddress": {
+      "type": "string"
+    },
+    "userAgent": {
+      "type": "text"
+    },
+    "deviceType": {
+      "type": "enumeration",
+      "enum": ["desktop", "mobile"]
+    },
+    "submittedAt": {
+      "type": "datetime"
+    }
+  }
+}

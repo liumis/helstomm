@@ -51,7 +51,7 @@ export const ManufacturingSection: React.FC = () => {
               backgroundImage: `linear-gradient(to bottom, rgba(15,23,42,0.85), rgba(15,23,42,0.95)), url('${block.posterUrl}')`
             }}>
               <div className="mb-6 flex flex-col items-center">
-                <HelstommLogo lightText={true} className="h-16 md:h-20 w-auto mb-2" />
+                <HelstommLogo compact lightText={true} className="h-16 md:h-20 w-auto mb-2" />
                 {block.tagline && (
                   <div className="text-xs md:text-sm font-bold uppercase tracking-widest text-[#b8cd33]">
                     {block.tagline}

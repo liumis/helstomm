@@ -52,6 +52,27 @@
     "pageUrl": {
       "type": "string"
     },
+    "utmSource": {
+      "type": "string"
+    },
+    "utmMedium": {
+      "type": "string"
+    },
+    "utmCampaign": {
+      "type": "string"
+    },
+    "utmContent": {
+      "type": "string"
+    },
+    "utmTerm": {
+      "type": "string"
+    },
+    "referrer": {
+      "type": "string"
+    },
+    "landingPath": {
+      "type": "string"
+    },
     "summary": {
       "type": "text"
     },

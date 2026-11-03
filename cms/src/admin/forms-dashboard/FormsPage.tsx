@@ -15,7 +15,7 @@ const FormsPage = () => {
               Užklausos
             </Typography>
             <Typography variant="omega" textColor="neutral600">
-              Visos svetainės formos vienoje vietoje: kontaktai, analizė, mokymai ir skaičiuoklės.
+              Visos svetainės formos vienoje vietoje: kontaktai, analizė, mokymai, skaičiuoklės ir dokumentai.
             </Typography>
           </Box>
 

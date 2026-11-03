@@ -91,15 +91,21 @@ function mapCategory(row: StrapiDesignCategory): DesignCategoryItem | null {
     sortOrder: Number(row.sortOrder) || 0,
     hotspots: (row.hotspots || [])
       .filter((item) => item.title)
-      .map((item, index) => ({
-        id: `${row.slug}-${index}`,
-        title: item.title as string,
-        description: item.description || '',
-        techDetail: item.techDetail || '',
-        xPct: Number(item.xPct) || 0,
-        yPct: Number(item.yPct) || 0,
-        fileUrl: mediaUrl(item.file) || '',
-      })),
+      .map((item, index) => {
+        const fallbackHotspot = FALLBACK_DESIGN_CATEGORIES.find((category) => category.slug === row.slug)?.hotspots.find(
+          (hotspot) => hotspot.title === item.title
+        );
+        return {
+          id: `${row.slug}-${index}`,
+          title: item.title as string,
+          description: item.description || '',
+          techDetail: item.techDetail || '',
+          xPct: Number(item.xPct) || 0,
+          yPct: Number(item.yPct) || 0,
+          fileUrl: mediaUrl(item.file) || '',
+          productSlug: fallbackHotspot?.productSlug,
+        };
+      }),
   };
 }
 

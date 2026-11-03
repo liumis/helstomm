@@ -58,6 +58,17 @@ function asIconKey(value?: string): HeroIconKey {
   return 'custom';
 }
 
+function resolveTargetSlug(row: StrapiCard) {
+  const target = row.targetSlug || '';
+  if (row.slug === 'projektavimas-bim' && target === 'pastatai') {
+    return 'dokumentai/projektavimo-vadovas';
+  }
+  if (row.slug === 'statybos-darbai' && target === 'mokymai') {
+    return 'dokumentai/hg-cw-inst-001';
+  }
+  return target;
+}
+
 function mapCard(row: StrapiCard): HeroCard | null {
   if (!row.title || row.enabled === false) return null;
   return {
@@ -66,7 +77,7 @@ function mapCard(row: StrapiCard): HeroCard | null {
     description: row.description || '',
     ctaLabel: row.ctaLabel || '',
     action: asAction(row.action),
-    targetSlug: row.targetSlug || '',
+    targetSlug: resolveTargetSlug(row),
     iconKey: asIconKey(row.iconKey),
     iconUrl: mediaUrl(row.icon) || row.iconUrl || '',
   };

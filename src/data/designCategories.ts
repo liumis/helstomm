@@ -37,5 +37,6 @@ export const FALLBACK_DESIGN_CATEGORIES: DesignCategoryItem[] = DESIGN_CATEGORY_
     techDetail: hotspot.techDetail,
     xPct: hotspot.xPct,
     yPct: hotspot.yPct,
+    productSlug: hotspot.productSlug,
   })),
 }));

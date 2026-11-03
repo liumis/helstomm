@@ -221,13 +221,13 @@
 .skaiciuokles-page .sc{background:#fff;border:1px solid var(--lime-line);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;min-width:0;transition:box-shadow .2s}
 .skaiciuokles-page .sc:hover{box-shadow:0 10px 26px rgba(15,26,46,.10)}
 .skaiciuokles-page .sc[data-calc]{cursor:pointer}
-.skaiciuokles-page .sc .th{background:#F7F8F3;border-bottom:1px solid var(--lime-line);position:relative;aspect-ratio:16/8}
-.skaiciuokles-page .sc .th svg{width:100%;height:100%;display:block}
+.skaiciuokles-page .sc .th{background:#F7F8F3;border-bottom:1px solid var(--lime-line);position:relative;aspect-ratio:16/10;padding:22px 20px 16px;box-sizing:border-box;display:flex;align-items:center;justify-content:center}
+.skaiciuokles-page .sc .th svg{width:72%;height:72%;max-height:68px;max-width:78%;display:block;margin:auto}
 .skaiciuokles-page .sc .code{position:absolute;left:14px;top:12px;font-family:var(--m);font-weight:600;font-size:12.5px;background:var(--navy);color:var(--lime);border-radius:6px;padding:3px 9px;letter-spacing:.04em}
 .skaiciuokles-page .sc .tg{position:absolute;right:12px;top:12px}
-.skaiciuokles-page .sc .bd{padding:16px 20px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.skaiciuokles-page .sc .bd{padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
 .skaiciuokles-page .sc .k{font-size:11.5px;font-weight:700;letter-spacing:.12em;color:var(--lime-ink);text-transform:uppercase}
-.skaiciuokles-page .sc h4{font-size:18px;font-weight:700;line-height:1.25}
+.skaiciuokles-page .sc h4{font-size:15.5px;font-weight:700;line-height:1.25}
 .skaiciuokles-page .sc p{margin:0;color:var(--muted);font-size:13.5px}
 .skaiciuokles-page .gets{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
 .skaiciuokles-page .gets span{font-size:12px;background:var(--sheet);border:1px solid var(--rule-2);border-radius:6px;padding:3px 8px;color:#3B475C}
@@ -244,8 +244,8 @@
 .skaiciuokles-page .notify-err{color:#b91c1c;font-size:13px;margin:-6px 0 12px}
 .skaiciuokles-page .notify-submit{border:0;background:var(--navy);color:#fff;font:inherit;font-weight:700;border-radius:10px;padding:11px 16px;cursor:pointer}
 .skaiciuokles-page .notify-close{position:absolute;top:10px;right:14px;border:0;background:transparent;font-size:24px;line-height:1;cursor:pointer;color:var(--muted)}
-.skaiciuokles-page .cards4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
-.skaiciuokles-page .cards3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.skaiciuokles-page .cards4,
+.skaiciuokles-page .cards3{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
 .skaiciuokles-page .help{margin-top:34px;background:var(--navy);color:#fff;border-radius:20px;padding:24px 28px;display:flex;justify-content:space-between;align-items:center;gap:20px}
 .skaiciuokles-page .help h4{font-size:20px;font-weight:800}
 .skaiciuokles-page .help p{margin:4px 0 0;color:#C9D2E0;font-size:14px}
@@ -270,7 +270,7 @@
 /* telefonas */
 .skaiciuokles-page .mob .cards4,.mob .cards3{grid-template-columns:1fr;gap:10px}
 .skaiciuokles-page .mob .sc{flex-direction:row;border-radius:14px}
-.skaiciuokles-page .mob .sc .th{aspect-ratio:auto;width:104px;flex:none;border-bottom:0;border-right:1px solid var(--lime-line)}
+.skaiciuokles-page .mob .sc .th{aspect-ratio:auto;width:88px;flex:none;border-bottom:0;border-right:1px solid var(--lime-line);padding:12px 8px}
 .skaiciuokles-page .mob .sc .code{left:8px;top:8px;font-size:11px;padding:2px 6px}
 .skaiciuokles-page .mob .sc .tg,.mob .gets,.mob .sc .go,.mob .sc .k{display:none}
 .skaiciuokles-page .mob .sc .bd{padding:10px 12px;gap:3px}
@@ -281,6 +281,11 @@
 .skaiciuokles-page .mob .help{flex-direction:column;align-items:flex-start;padding:18px}
 .skaiciuokles-page .mob .path{display:none}
 
+
+@media (max-width: 1280px) {
+  .skaiciuokles-page .cards4,
+  .skaiciuokles-page .cards3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
 
 @media (max-width: 900px) {
   .skaiciuokles-page .w { padding-inline: 16px; }
@@ -295,7 +300,8 @@
   .skaiciuokles-page .cards3,
   .skaiciuokles-page .trust { grid-template-columns: 1fr; }
   .skaiciuokles-page .sc { flex-direction: row; border-radius: 14px; }
-  .skaiciuokles-page .sc .th { aspect-ratio: auto; width: 104px; flex: none; border-bottom: 0; border-right: 1px solid var(--lime-line); }
+  .skaiciuokles-page .sc .th { aspect-ratio: auto; width: 88px; flex: none; border-bottom: 0; border-right: 1px solid var(--lime-line); padding: 12px 8px; }
+  .skaiciuokles-page .sc .th svg { width: 78%; height: 78%; max-height: 48px; }
   .skaiciuokles-page .sc .tg,
   .skaiciuokles-page .gets,
   .skaiciuokles-page .sc .go,

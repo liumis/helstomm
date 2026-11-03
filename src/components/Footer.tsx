@@ -220,7 +220,7 @@ export const Footer: React.FC = () => {
             {header.logoUrl ? (
               <img src={header.logoUrl} alt={header.brandName} className="h-12 w-auto mb-2" />
             ) : (
-              <HelstommLogo className="h-12 w-auto mb-2" />
+              <HelstommLogo compact className="h-14 w-auto mb-2" />
             )}
             <p className="font-semibold text-slate-900">{settings.companyName}</p>
             {settings.address && <p>{settings.addressLabel} {settings.address}</p>}

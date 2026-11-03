@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { ArrowRight, ShieldCheck, Zap } from 'lucide-react';
-import { PageView } from '../types';
 import { fetchHeroBlock } from '../api/hero';
 import { FALLBACK_HERO_BLOCK } from '../data/hero';
 import { HeroCardIcon } from './heroIcons';
@@ -8,13 +7,13 @@ import { HeroCardIcon } from './heroIcons';
 interface Props {
   onOpenAnalysisModal: () => void;
   onOpenRoiCalculator: () => void;
-  setActiveView: (view: PageView) => void;
+  navigate: (to: string) => void;
 }
 
 export const HeroSection: React.FC<Props> = ({
   onOpenAnalysisModal,
   onOpenRoiCalculator,
-  setActiveView,
+  navigate,
 }) => {
   const heroTopRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
@@ -107,7 +106,10 @@ export const HeroSection: React.FC<Props> = ({
               const onCardClick = () => {
                 if (card.action === 'analysis') onOpenAnalysisModal();
                 else if (card.action === 'roi') onOpenRoiCalculator();
-                else if (card.targetSlug) setActiveView(card.targetSlug as PageView);
+                else if (card.targetSlug) {
+                  const to = card.targetSlug.startsWith('/') ? card.targetSlug : `/${card.targetSlug}`;
+                  navigate(to);
+                }
               };
 
               return (

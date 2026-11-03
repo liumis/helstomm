@@ -142,7 +142,7 @@ export const Header: React.FC<Props> = ({
             {labels.logoUrl ? (
               <img src={labels.logoUrl} alt={labels.brandName} className="h-10 sm:h-12 w-auto" />
             ) : (
-              <HelstommLogo className="h-10 sm:h-12 w-auto" />
+              <HelstommLogo compact className="h-11 sm:h-14 w-auto" />
             )}
           </a>
 

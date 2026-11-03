@@ -107,7 +107,9 @@ export const ProjectsSection: React.FC<Props> = ({ onOpenAnalysisModal }) => {
                 <div className="h-36 sm:h-52 overflow-hidden relative">
                   <img 
                     src={project.image} 
-                    alt={project.title} 
+                    alt={project.title}
+                    loading="lazy"
+                    decoding="async"
                     referrerPolicy="no-referrer"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />

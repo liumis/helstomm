@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useFetchClient } from '@strapi/strapi/admin';
 
-export type FormKind = 'contact' | 'analysis' | 'training' | 'calculator';
+export type FormKind = 'contact' | 'analysis' | 'training' | 'calculator' | 'document';
 
 export type FormSource = {
   kind: FormKind;
@@ -57,6 +57,12 @@ export const FORM_SOURCES: FormSource[] = [
     label: 'Skaičiuoklių pateikimai',
     href: '/content-manager/collection-types/api::calculator-submission.calculator-submission',
   },
+  {
+    kind: 'document',
+    uid: 'api::document-activity.document-activity',
+    label: 'Dokumentų veiksmai',
+    href: '/content-manager/collection-types/api::document-activity.document-activity',
+  },
 ];
 
 type CollectionResponse = {
@@ -81,7 +87,11 @@ function mapRow(source: FormSource, row: Record<string, unknown>): FormRow {
   const detail =
     source.kind === 'calculator'
       ? calculatorDetail(row)
-      : asString(row.topic) || asString(row.company) || asString(row.details);
+      : source.kind === 'document'
+        ? [asString(row.action), asString(row.code) || asString(row.title), asString(row.company)]
+            .filter(Boolean)
+            .join(' · ')
+        : asString(row.topic) || asString(row.company) || asString(row.details);
 
   return {
     id: `${source.kind}-${documentId}`,

@@ -9,9 +9,10 @@ import type { DesignCategoryItem, HeaderSettings } from '../../types';
 interface Props {
   slug: string;
   onOpenAnalysisModal: () => void;
+  navigate: (to: string) => void;
 }
 
-export const DesignPageView: React.FC<Props> = ({ slug, onOpenAnalysisModal }) => {
+export const DesignPageView: React.FC<Props> = ({ slug, onOpenAnalysisModal, navigate }) => {
   const [item, setItem] = useState<DesignCategoryItem | null>(null);
   const [brand, setBrand] = useState<HeaderSettings>(FALLBACK_HEADER);
 
@@ -67,6 +68,7 @@ export const DesignPageView: React.FC<Props> = ({ slug, onOpenAnalysisModal }) =
           subtitle={item.diagramSubtitle}
           imageUrl={item.diagramImageUrl}
           hotspots={item.hotspots}
+          navigate={navigate}
         />
       </div>
 

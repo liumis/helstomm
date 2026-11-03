@@ -143,11 +143,46 @@
     }
   }
 
+  function attribution() {
+    var KEY = 'helstomm-utm';
+    try {
+      var stored = sessionStorage.getItem(KEY);
+      if (stored) return JSON.parse(stored);
+    } catch (e) {}
+    var search = '';
+    var path = location.pathname + location.search;
+    var ref = document.referrer || '';
+    try {
+      if (window.top && window.top.location) {
+        search = window.top.location.search || '';
+        path = window.top.location.pathname + window.top.location.search;
+      }
+      if (window.top && window.top.document && window.top.document.referrer) {
+        ref = window.top.document.referrer;
+      }
+    } catch (e2) {}
+    var params = new URLSearchParams(search || location.search);
+    var data = {
+      utmSource: params.get('utm_source') || '',
+      utmMedium: params.get('utm_medium') || '',
+      utmCampaign: params.get('utm_campaign') || '',
+      utmContent: params.get('utm_content') || '',
+      utmTerm: params.get('utm_term') || '',
+      referrer: ref,
+      landingPath: path,
+    };
+    try {
+      sessionStorage.setItem(KEY, JSON.stringify(data));
+    } catch (e3) {}
+    return data;
+  }
+
   function postPayload(payload) {
+    var track = attribution();
     return fetch('/api/calculator-form', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(Object.assign({}, payload, track)),
     });
   }
 

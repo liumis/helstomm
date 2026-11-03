@@ -4,6 +4,7 @@ export type DesignHotspotSeed = {
   techDetail: string;
   xPct: number;
   yPct: number;
+  productSlug?: string;
 };
 
 export type DesignCategorySeed = {
@@ -45,6 +46,7 @@ const BUILDING_HOTSPOTS: DesignHotspotSeed[] = [
     techDetail: 'Sienos storis iki 50 cm | Betono klasė C30/37',
     xPct: 22,
     yPct: 35,
+    productSlug: 'dviguba-siena',
   },
   {
     title: 'Monolitinis Šerdis (Betonavimas)',
@@ -53,6 +55,7 @@ const BUILDING_HOTSPOTS: DesignHotspotSeed[] = [
     techDetail: '100% Monolitinis vientisumas ir akustinė izoliacija',
     xPct: 55,
     yPct: 65,
+    productSlug: 'dviguba-siena',
   },
   {
     title: 'Filigran Perdangų Plokštė',
@@ -60,6 +63,7 @@ const BUILDING_HOTSPOTS: DesignHotspotSeed[] = [
     techDetail: 'Projektuojamas storis 200-250 mm',
     xPct: 75,
     yPct: 25,
+    productSlug: 'perdangos',
   },
   {
     title: 'Termoizoliacinė Jungtis (Balkonai)',
@@ -67,6 +71,7 @@ const BUILDING_HOTSPOTS: DesignHotspotSeed[] = [
     techDetail: 'A++ Energetinė klasė ir Pasyvus standartas',
     xPct: 30,
     yPct: 80,
+    productSlug: 'balkonai',
   },
 ];
 
@@ -78,6 +83,7 @@ const ENGINEERING_HOTSPOTS: DesignHotspotSeed[] = [
     techDetail: 'Aukštas atsparumas gruntiniams vandenims',
     xPct: 25,
     yPct: 30,
+    productSlug: 'inzineriniai',
   },
   {
     title: 'Berlyno Sienelės Sulaikymo Karkasas',
@@ -86,6 +92,7 @@ const ENGINEERING_HOTSPOTS: DesignHotspotSeed[] = [
     techDetail: 'Didelė laikomoji galia lenkimui ir šlyčiai',
     xPct: 65,
     yPct: 40,
+    productSlug: 'inzineriniai',
   },
   {
     title: 'Surenkamas Rezervuaro Dugno & Sienų Mazgas',
@@ -93,6 +100,7 @@ const ENGINEERING_HOTSPOTS: DesignHotspotSeed[] = [
     techDetail: 'Ilgaamžis betonas C35/45 XF2/XD3',
     xPct: 50,
     yPct: 75,
+    productSlug: 'inzineriniai',
   },
 ];
 

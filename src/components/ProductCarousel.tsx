@@ -158,6 +158,8 @@ export const ProductCarousel: React.FC<Props> = ({ setActiveView, onOpenAnalysis
                         <img
                           src={card.cardImageUrl}
                           alt={card.cardTitle}
+                          loading="lazy"
+                          decoding="async"
                           referrerPolicy="no-referrer"
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
@@ -245,7 +247,9 @@ export const ProductCarousel: React.FC<Props> = ({ setActiveView, onOpenAnalysis
                 <div className="lg:col-span-5 h-64 lg:h-80 rounded-xl overflow-hidden relative flex items-center justify-center">
                   <img 
                     src={current.image} 
-                    alt={current.title} 
+                    alt={current.title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-contain"
                   />
                   <div className="absolute top-4 left-4 bg-slate-950 text-[#b8cd33] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">

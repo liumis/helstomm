@@ -4,6 +4,7 @@ import { fetchDokumentaiSettings } from '../../api/dokumentai';
 import { calculatorPathForCode } from '../../data/calculators';
 import { FALLBACK_DOKUMENTAI } from '../../data/pageChrome';
 import { LIBRARY_UPDATED_ON } from '../../data/libraryDocuments';
+import { postDocumentActivity } from '../../api/websiteEvents';
 import {
   isHelstommRegistered,
   readHelstommReg,
@@ -124,7 +125,8 @@ const DocumentActions: React.FC<{
 
 const RegisterBox: React.FC<{
   onDone: () => void;
-}> = ({ onDone }) => {
+  doc?: LibraryDocument;
+}> = ({ onDone, doc }) => {
   const stored = readHelstommReg();
   const returning = isHelstommRegistered();
   const [fullName, setFullName] = useState(
@@ -162,6 +164,20 @@ const RegisterBox: React.FC<{
       phone: phone.trim(),
       email: email.trim(),
     });
+    if (doc) {
+      void postDocumentActivity({
+        action: 'register',
+        slug: doc.id,
+        code: doc.acronym,
+        title: doc.name,
+        firstName,
+        lastName,
+        email: email.trim(),
+        company: company.trim(),
+        role,
+        phone: phone.trim(),
+      });
+    }
     onDone();
   };
 
@@ -294,7 +310,7 @@ const DocumentPage: React.FC<{
           ) : (
             <div className="vlock">
               <div className="vpage" style={{ backgroundImage: cover ? `url(${cover})` : undefined }} />
-              <RegisterBox onDone={onRegistered} />
+              <RegisterBox doc={doc} onDone={onRegistered} />
             </div>
           )}
         </div>
@@ -413,6 +429,12 @@ export const DokumentaiView: React.FC<Props> = ({
     document.body.appendChild(link);
     link.click();
     link.remove();
+    void postDocumentActivity({
+      action: 'download',
+      slug: doc.id,
+      code: doc.acronym,
+      title: doc.name,
+    });
   };
 
   const filters: { key: FilterKey; label: string }[] = [

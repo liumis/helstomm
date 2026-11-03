@@ -61,6 +61,7 @@ const PUBLIC_CONTENT_ACTIONS = [
   'api::analysis-submission.analysis-submission.submit',
   'api::training-submission.training-submission.submit',
   'api::calculator-submission.calculator-submission.submit',
+  'api::document-activity.document-activity.submit',
   'api::seo-page.seo-page.find',
   'api::seo-page.seo-page.findOne',
 ];

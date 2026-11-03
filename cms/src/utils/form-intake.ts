@@ -13,6 +13,32 @@ export type ClientMeta = {
   submittedAt: Date;
 };
 
+export type Attribution = {
+  utmSource: string;
+  utmMedium: string;
+  utmCampaign: string;
+  utmContent: string;
+  utmTerm: string;
+  referrer: string;
+  landingPath: string;
+};
+
+function asClipped(value: unknown, max: number) {
+  return String(value || '').trim().slice(0, max);
+}
+
+export function attributionFromBody(body: Record<string, unknown> = {}): Attribution {
+  return {
+    utmSource: asClipped(body.utmSource, 80),
+    utmMedium: asClipped(body.utmMedium, 80),
+    utmCampaign: asClipped(body.utmCampaign, 120),
+    utmContent: asClipped(body.utmContent, 120),
+    utmTerm: asClipped(body.utmTerm, 80),
+    referrer: asClipped(body.referrer, 500),
+    landingPath: asClipped(body.landingPath, 500),
+  };
+}
+
 export type EmailField = {
   label: string;
   value: string;
