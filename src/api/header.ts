@@ -41,14 +41,20 @@ export async function fetchHeaderSettings(): Promise<HeaderSettings> {
       designDropdownFooter: data.designDropdownFooter || FALLBACK_HEADER.designDropdownFooter,
       productsDropdownLabel: data.productsDropdownLabel || FALLBACK_HEADER.productsDropdownLabel,
       productsDropdownFooter: data.productsDropdownFooter || FALLBACK_HEADER.productsDropdownFooter,
-      roiCtaLabel: data.roiCtaLabel || FALLBACK_HEADER.roiCtaLabel,
+      roiCtaLabel:
+        data.roiCtaLabel === 'ROI Skaičiuoklė'
+          ? 'ROI skaičiuoklė'
+          : data.roiCtaLabel || FALLBACK_HEADER.roiCtaLabel,
       mobileNavLabel: data.mobileNavLabel || FALLBACK_HEADER.mobileNavLabel,
       mobileHome: data.mobileHome || FALLBACK_HEADER.mobileHome,
       mobilePastatai: data.mobilePastatai || FALLBACK_HEADER.mobilePastatai,
       mobileDokumentai: data.mobileDokumentai || FALLBACK_HEADER.mobileDokumentai,
       mobileTinklarastis: data.mobileTinklarastis || FALLBACK_HEADER.mobileTinklarastis,
       mobileMokymaiCta: data.mobileMokymaiCta || FALLBACK_HEADER.mobileMokymaiCta,
-      mobileAnalysisCta: data.mobileAnalysisCta || FALLBACK_HEADER.mobileAnalysisCta,
+      mobileAnalysisCta:
+        data.mobileAnalysisCta === 'Gauti Projektų Analizę'
+          ? 'Gauti projektų analizę'
+          : data.mobileAnalysisCta || FALLBACK_HEADER.mobileAnalysisCta,
       logoUrl: mediaUrl(data.logo) || data.logoUrl || FALLBACK_HEADER.logoUrl,
       brandName: data.brandName || FALLBACK_HEADER.brandName,
       brandHighlight: data.brandHighlight || FALLBACK_HEADER.brandHighlight,

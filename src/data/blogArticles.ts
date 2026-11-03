@@ -2,7 +2,7 @@ import type { Article } from '../types';
 
 export const ARTICLE_COVERS: Record<string, string> = {
   'metu-gaminys-2024': '/Concrete_Vision_2018_pastatai.jpeg',
-  'virsuliskiu-daugiabutis': '/pastatai_building.jpg',
+  'virsuliskiu-daugiabutis': '/Aukstuminis_gyvenamuju.jpeg',
   'gamybos-pletra-kaisiadoryse': '/construction_steel_site.jpg',
   'kodel-filigran-hibridas': '/perdanga.png',
   '3d-bim-tekla-structures': '/mazgai_jungtys.jpg',
@@ -20,7 +20,13 @@ export function articleLinkedInPost(url?: string | null) {
 export function resolveArticleImage(slug: string, url?: string | null) {
   const local = ARTICLE_COVERS[slug] || DEFAULT_ARTICLE_COVER;
   if (!url) return local;
-  if (url.includes('unsplash.com') || url.startsWith('/src/')) return local;
+  if (
+    url.includes('unsplash.com') ||
+    url.startsWith('/src/') ||
+    url.includes('pastatai_building.jpg')
+  ) {
+    return local;
+  }
   return url;
 }
 

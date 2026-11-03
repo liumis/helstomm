@@ -1,33 +1,30 @@
-export type PageView = 
-  | 'home'
-  | 'pastatai'
-  | 'gyvenamieji-namai'
-  | 'industriniai-pastatai'
-  | 'komerciniai-pastatai'
-  | 'viesieji-pastatai'
-  | 'individuali-statyba'
-  | 'tvarus-pastatas'
-  | 'inzineriniai'
-  | 'dviguba-siena'
-  | 'thermal-siena'
-  | 'perdangos'
-  | 'balkonai'
-  | 'mokymai'
-  | 'dokumentai'
-  | 'skaiciuokles'
-  | 'tinklarastis'
-  | 'igyyvendinti-projektai'
-  | 'gamyba'
-  | 'privatumas';
-
-export type CarouselDownloadIcon = 'download' | 'code' | 'check';
-
+export type PageView =
+  | "home"
+  | "pastatai"
+  | "gyvenamieji-namai"
+  | "industriniai-pastatai"
+  | "komerciniai-pastatai"
+  | "viesieji-pastatai"
+  | "individuali-statyba"
+  | "tvarus-pastatas"
+  | "inzineriniai"
+  | "dviguba-siena"
+  | "thermal-siena"
+  | "perdangos"
+  | "balkonai"
+  | "mokymai"
+  | "dokumentai"
+  | "skaiciuokles"
+  | "tinklarastis"
+  | "igyyvendinti-projektai"
+  | "gamyba"
+  | "privatumas";
+export type CarouselDownloadIcon = "download" | "code" | "check";
 export interface CarouselDownload {
   label: string;
   url: string;
   icon: CarouselDownloadIcon;
 }
-
 export interface CarouselSlide {
   id: string;
   slug: string;
@@ -40,14 +37,13 @@ export interface CarouselSlide {
   image: string;
   targetSlug: string;
   ctaLabel: string;
-  ctaAction?: 'view' | 'analysis';
+  ctaAction?: "view" | "analysis";
   analysisCtaLabel?: string;
   calculatorLabel?: string;
   highlights?: string[];
   downloadsTitle: string;
   downloads: CarouselDownload[];
 }
-
 export interface ProductItem {
   id: string;
   title: string;
@@ -55,32 +51,23 @@ export interface ProductItem {
   description: string;
   image: string;
   viewKey: PageView;
-  downloads: {
-    guidePdf?: string;
-    detailsCad?: string;
-    bimModel?: string;
-  };
+  downloads: { guidePdf?: string; detailsCad?: string; bimModel?: string };
 }
-
-export type ProductLayout = 'standard' | 'engineering';
-
+export type ProductLayout = "standard" | "engineering";
 export interface ProductAdvantage {
   title: string;
   description: string;
   iconUrl: string;
 }
-
 export interface ProductSpec {
   label: string;
   value: string;
 }
-
 export interface ProductTile {
   title: string;
   imageUrl: string;
   tileKey?: string;
 }
-
 export interface DesignHotspot {
   id: string;
   title: string;
@@ -91,7 +78,6 @@ export interface DesignHotspot {
   fileUrl?: string;
   productSlug?: string;
 }
-
 export interface DesignCategoryItem {
   id: string;
   slug: string;
@@ -115,27 +101,24 @@ export interface DesignCategoryItem {
   cardTitle: string;
   cardDescription: string;
   cardImageUrl: string;
-  cardBadgeIcon: 'Building' | 'Shield' | 'Leaf';
-  cardTheme: 'standard' | 'eco';
+  cardBadgeIcon: "Building" | "Shield" | "Leaf";
+  cardTheme: "standard" | "eco";
   cardTargetSlug: string;
   cardCtaLabel: string;
-  cardIconKey: 'pastatai' | 'inzineriniai' | 'tvarus';
+  cardIconKey: "pastatai" | "inzineriniai" | "tvarus";
   sortOrder: number;
   hotspots: DesignHotspot[];
 }
-
 export interface ProductJoint {
   title: string;
   acronym: string;
   imageUrl: string;
   fileUrl?: string;
 }
-
 export interface ProductParagraph {
   highlight?: string;
   text: string;
 }
-
 export interface ProductCatalogItem {
   id: string;
   slug: string;
@@ -170,23 +153,26 @@ export interface ProductCatalogItem {
   joints: ProductJoint[];
   schemaParagraphs: ProductParagraph[];
 }
-
 export interface AdvantageItem {
   id: string;
   title: string;
   description: string;
   iconName: string;
 }
-
 export interface TechnicalSpec {
   label: string;
   value: string;
 }
-
 export interface ProjectItem {
   id: string;
   title: string;
-  category: 'gyvenamieji' | 'industriniai' | 'komerciniai' | 'viesieji' | 'individualūs' | 'inzineriniai';
+  category:
+    | "gyvenamieji"
+    | "industriniai"
+    | "komerciniai"
+    | "viesieji"
+    | "individualūs"
+    | "inzineriniai";
   categoryLabel: string;
   image: string;
   location: string;
@@ -194,7 +180,6 @@ export interface ProjectItem {
   completionYear: string;
   savedTimeWeeks: number;
 }
-
 export interface NodeBlueprint {
   id: string;
   title: string;
@@ -203,7 +188,6 @@ export interface NodeBlueprint {
   pdfUrl: string;
   dwgUrl: string;
 }
-
 export interface TeamMember {
   name: string;
   role: string;
@@ -211,16 +195,18 @@ export interface TeamMember {
   email: string;
   avatar: string;
 }
-
-export type SocialPlatform = 'facebook' | 'instagram' | 'linkedin' | 'youtube' | 'other';
-
+export type SocialPlatform =
+  | "facebook"
+  | "instagram"
+  | "linkedin"
+  | "youtube"
+  | "other";
 export interface SocialLinkItem {
   id: string;
   platform: SocialPlatform;
   label: string;
   url: string;
 }
-
 export interface ContactSettings {
   heading: string;
   subtitle: string;
@@ -246,7 +232,6 @@ export interface ContactSettings {
   phoneLabel: string;
   emailLabel: string;
 }
-
 export interface ManualDownload {
   id: string;
   title: string;
@@ -254,16 +239,13 @@ export interface ManualDownload {
   fileSize: string;
   downloadUrl: string;
 }
-
-export type DocumentCategory = 'manual' | 'mazgas';
-export type DocumentSection = 'projektavimas' | 'montavimas' | 'kokybe';
-export type DocumentBadge = 'nauja' | 'atnaujinta';
-
+export type DocumentCategory = "manual" | "mazgas";
+export type DocumentSection = "projektavimas" | "montavimas" | "kokybe";
+export type DocumentBadge = "nauja" | "atnaujinta";
 export interface DocumentTocItem {
   title: string;
   page: number;
 }
-
 export interface LibraryDocument {
   id: string;
   name: string;
@@ -285,17 +267,15 @@ export interface LibraryDocument {
   tags: string[];
   relatedCodes: string[];
   featured: boolean;
-  badge: DocumentBadge | '';
+  badge: DocumentBadge | "";
   toc: DocumentTocItem[];
 }
-
 export type ArticleCategorySlug =
-  | 'apdovanojimai'
-  | 'projektai'
-  | 'gamyba'
-  | 'bim'
-  | 'tvarumas';
-
+  | "apdovanojimai"
+  | "projektai"
+  | "gamyba"
+  | "bim"
+  | "tvarumas";
 export interface Article {
   id: string;
   title: string;
@@ -313,13 +293,9 @@ export interface Article {
     intro: string;
     keyPoints: string[];
     paragraphs: string[];
-    quote?: {
-      text: string;
-      author: string;
-    };
+    quote?: { text: string; author: string };
   };
 }
-
 export interface DeveloperBenefit {
   id: string;
   title: string;
@@ -327,7 +303,6 @@ export interface DeveloperBenefit {
   description: string;
   iconUrl: string;
 }
-
 export interface DeveloperBlock {
   badge: string;
   title: string;
@@ -336,7 +311,6 @@ export interface DeveloperBlock {
   analysisCtaLabel: string;
   benefits: DeveloperBenefit[];
 }
-
 export interface EngineeringHelpBanner {
   enabled: boolean;
   title: string;
@@ -345,7 +319,6 @@ export interface EngineeringHelpBanner {
   phone?: string;
   phoneLabel?: string;
 }
-
 export interface ManufacturingBlock {
   enabled: boolean;
   badge: string;
@@ -359,10 +332,13 @@ export interface ManufacturingBlock {
   certificatesFileUrl?: string;
   certificates: string[];
 }
-
-export type HeroCardAction = 'analysis' | 'roi' | 'view';
-export type HeroIconKey = 'konsultacija' | 'projektavimas' | 'gamyba' | 'montavimas' | 'custom';
-
+export type HeroCardAction = "analysis" | "roi" | "view";
+export type HeroIconKey =
+  | "konsultacija"
+  | "projektavimas"
+  | "gamyba"
+  | "montavimas"
+  | "custom";
 export interface HeroCard {
   id: string;
   title: string;
@@ -373,7 +349,6 @@ export interface HeroCard {
   iconKey: HeroIconKey;
   iconUrl: string;
 }
-
 export interface HeroBlock {
   enabled: boolean;
   badge: string;
@@ -385,7 +360,6 @@ export interface HeroBlock {
   backgroundUrl: string;
   cards: HeroCard[];
 }
-
 export interface HeaderSettings {
   companyLine: string;
   phone: string;
@@ -416,12 +390,10 @@ export interface HeaderSettings {
   brandHighlight: string;
   brandTagline: string;
 }
-
 export interface FilterOption {
   slug: string;
   label: string;
 }
-
 export interface HomepageSettings {
   processBadge: string;
   processTitle: string;
@@ -430,7 +402,6 @@ export interface HomepageSettings {
   carouselTitle: string;
   carouselIntro: string;
 }
-
 export interface ProjektaiSettings {
   badge: string;
   title: string;
@@ -441,7 +412,6 @@ export interface ProjektaiSettings {
   analysisCta: string;
   filters: FilterOption[];
 }
-
 export interface TinklarastisSettings {
   badge: string;
   title: string;
@@ -464,7 +434,6 @@ export interface TinklarastisSettings {
   backgroundUrl: string;
   categories: FilterOption[];
 }
-
 export interface DokumentaiSettings {
   badge: string;
   title: string;
@@ -482,23 +451,19 @@ export interface DokumentaiSettings {
   missingFileLabel: string;
   sizeLabel: string;
 }
-
 export interface MokymaiTopic {
   title: string;
   description: string;
 }
-
 export interface MokymaiFormTopic {
   title: string;
 }
-
 export interface MokymaiManual {
   id: string;
   title: string;
   url: string;
   fileSize: string;
 }
-
 export interface SeoPage {
   id: string;
   slug: string;
@@ -510,18 +475,16 @@ export interface SeoPage {
   ogImageUrl: string;
   indexable: boolean;
 }
-
 export interface MokymaiCalendarEvent {
   dateLabel: string;
   dateNote: string;
   program: string;
   audience: string;
-  audienceTone: 'lime' | 'blue';
+  audienceTone: "lime" | "blue";
   place: string;
   seatsLeft: number;
   seatsTotal: number;
 }
-
 export interface MokymaiBlock {
   enabled: boolean;
   badge: string;

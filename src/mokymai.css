@@ -46,14 +46,14 @@
   font-weight: 800;
   text-transform: uppercase;
   line-height: 1.1;
-  margin-top: 14px;
+  margin-top: 24px;
 }
 .mokymai-page .sh h2 em { font-style: normal; color: var(--lime); }
 .mokymai-page .sh p {
   font-size: 17px;
   color: var(--muted);
   line-height: 1.6;
-  margin: 14px 0 0;
+  margin: 20px 0 0;
 }
 .mokymai-page .btn {
   display: inline-flex;
@@ -62,7 +62,7 @@
   justify-content: center;
   border-radius: 14px;
   padding: 16px 26px;
-  font-weight: 800;
+  font-weight: 500;
   font-size: 15.5px;
   border: 0;
   cursor: pointer;
@@ -93,7 +93,7 @@
   font-size: 58px;
   font-weight: 800;
   line-height: 1.05;
-  margin-top: 20px;
+  margin-top: 32px;
   text-transform: uppercase;
 }
 .mokymai-page .hero h1 em { font-style: normal; color: var(--lime); display: block; }
@@ -102,7 +102,7 @@
   color: #c5cedc;
   line-height: 1.6;
   max-width: 820px;
-  margin: 20px auto 0;
+  margin: 28px auto 0;
 }
 .mokymai-page .hero .ctas {
   display: flex;
@@ -405,7 +405,7 @@
 }
 .mokymai-page .pill.b { background: #e7f5fe; border-color: #bee3fa; color: #036a9b; }
 .mokymai-page .row .reg {
-  font-weight: 800;
+  font-weight: 500;
   font-size: 14px;
   text-align: center;
   border-radius: 10px;
@@ -430,10 +430,20 @@
   margin-top: 40px;
   align-items: start;
 }
-.mokymai-page .faq details { border-bottom: 1px solid var(--line); padding: 16px 0; }
+.mokymai-page .faq details {
+  border-bottom: 1px solid var(--line);
+  padding: 14px 12px;
+  margin-inline: -12px;
+  border-radius: 4px;
+  transition: background-color 0.15s ease;
+}
+.mokymai-page .faq details:hover,
+.mokymai-page .faq details[open] {
+  background: #F6F7F9;
+}
 .mokymai-page .faq summary {
   font-size: 15.5px;
-  font-weight: 700;
+  font-weight: 500;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -442,6 +452,8 @@
 }
 .mokymai-page .faq summary::-webkit-details-marker { display: none; }
 .mokymai-page .faq summary::after { content: "+"; color: var(--lime-ink); font-size: 20px; }
+.mokymai-page .faq details:hover summary::after,
+.mokymai-page .faq details[open] summary::after { color: #B7CC34; }
 .mokymai-page .faq details[open] summary::after { content: "–"; }
 .mokymai-page .faq p { font-size: 14px; color: var(--text); margin: 6px 0 0; line-height: 1.55; }
 .mokymai-page .form {
@@ -464,6 +476,14 @@
   font-size: 14px;
   color: var(--ink);
   font-family: inherit;
+}
+.mokymai-page .fl select {
+  appearance: none;
+  padding-right: 38px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23262B33' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 12px 8px;
 }
 .mokymai-page .fl.full { grid-column: 1 / -1; }
 .mokymai-page .form .btn { margin-top: 16px; width: 100%; }

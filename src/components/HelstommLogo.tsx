@@ -1,18 +1,13 @@
-import React from 'react';
-
+import React from "react";
 interface Props {
   className?: string;
-  /** White HELSTOMM + lime GROUP — for dark backgrounds. */
-  lightText?: boolean;
-  /** Official lockup has no slogan; kept so existing callers still compile. */
-  compact?: boolean;
+  /** White HELSTOMM + lime GROUP — for dark backgrounds. */ lightText?: boolean;
+  /** Official lockup has no slogan; kept so existing callers still compile. */ compact?: boolean;
 }
-
-const SRC_LIGHT = '/brand/helstomm-group.png';
-const SRC_DARK = '/brand/helstomm-group-on-dark.png';
-
+const SRC_LIGHT = "/brand/helstomm-group.png";
+const SRC_DARK = "/brand/helstomm-group-on-dark.png";
 export const HelstommLogo: React.FC<Props> = ({
-  className = 'h-10 w-auto',
+  className = "h-10 w-auto",
   lightText = false,
 }) => (
   <img

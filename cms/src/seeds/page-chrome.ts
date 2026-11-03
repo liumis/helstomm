@@ -33,9 +33,9 @@ export const TINKLARASTIS_SETTING_SEED = {
   title: 'Tinklaraštis ir Inžinerinės Įžvalgos',
   intro:
     'Skaitykite naujausius straipsnius apie surenkamo-monolitinio gelžbetonio technologiją, Filigran sprendimus, BIM modeliavimą ir įgyvendintus objektus tiesiai iš mūsų komandos bei LinkedIn ir Instagram paskyrų.',
-  linkedinLabel: 'Sekite mus LinkedIn',
+  linkedinLabel: 'LinkedIn',
   linkedinUrl: 'https://www.linkedin.com/company/helstomm-group/',
-  instagramLabel: 'Sekite mus Instagram',
+  instagramLabel: 'Instagram',
   instagramUrl: 'https://www.instagram.com/helstomm_group/',
   analysisCta: 'Pateikti brėžinius analizei',
   featuredBadge: 'SVARBIAUSIA NAUJIENA',

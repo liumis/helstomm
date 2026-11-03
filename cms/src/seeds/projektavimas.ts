@@ -40,7 +40,7 @@ export type DesignCategorySeed = {
 
 const BUILDING_HOTSPOTS: DesignHotspotSeed[] = [
   {
-    title: 'Filigran Dvigubos Sienos Plokštės',
+    title: 'Filigran dvigubos sienos plokštės',
     description:
       'Gamykloje pagamintos dvi lygiagrečios 50-70 mm sienutės su erdviniu karkasu. Užtikrina idealų paviršių be tinkavimo.',
     techDetail: 'Sienos storis iki 50 cm | Betono klasė C30/37',
@@ -49,7 +49,7 @@ const BUILDING_HOTSPOTS: DesignHotspotSeed[] = [
     productSlug: 'dviguba-siena',
   },
   {
-    title: 'Monolitinis Šerdis (Betonavimas)',
+    title: 'Monolitinis šerdis (betonavimas)',
     description:
       'Objekte užpilamas prekinis betonas sujungia elementus į vientisą monolitinę karkaso struktūrą be jokių tradicinių klojinių.',
     techDetail: '100% Monolitinis vientisumas ir akustinė izoliacija',
@@ -58,7 +58,7 @@ const BUILDING_HOTSPOTS: DesignHotspotSeed[] = [
     productSlug: 'dviguba-siena',
   },
   {
-    title: 'Filigran Perdangų Plokštė',
+    title: 'Filigran perdangų plokštė',
     description: 'Surenkama-monolitinė perdanga su integruota armatūra. Sutrumpina karkaso rengimo laiką iki 50%.',
     techDetail: 'Projektuojamas storis 200-250 mm',
     xPct: 75,
@@ -66,7 +66,7 @@ const BUILDING_HOTSPOTS: DesignHotspotSeed[] = [
     productSlug: 'perdangos',
   },
   {
-    title: 'Termoizoliacinė Jungtis (Balkonai)',
+    title: 'Termoizoliacinė jungtis (balkonai)',
     description: 'Isokorb tipo nerūdijančio plieno armavimo karkasas, visiškai eliminuojantis šalčio tiltelius.',
     techDetail: 'A++ Energetinė klasė ir Pasyvus standartas',
     xPct: 30,
@@ -77,7 +77,7 @@ const BUILDING_HOTSPOTS: DesignHotspotSeed[] = [
 
 const ENGINEERING_HOTSPOTS: DesignHotspotSeed[] = [
   {
-    title: 'Vandeniui Neprataki Sienos Jungtis',
+    title: 'Vandeniui nepralaidi sienos jungtis',
     description:
       'Surenkamų sienų sujungimas su monolitinio užpildo branduoliu, garantuojantis 100% hidroizoliacinį sandarumą pagal W-4/W-8 standartus.',
     techDetail: 'Aukštas atsparumas gruntiniams vandenims',
@@ -86,7 +86,7 @@ const ENGINEERING_HOTSPOTS: DesignHotspotSeed[] = [
     productSlug: 'inzineriniai',
   },
   {
-    title: 'Berlyno Sienelės Sulaikymo Karkasas',
+    title: 'Berlyno sienelės sulaikymo karkasas',
     description:
       'Aukšto atsparumo gruntų sulaikymo sienos, tinkamos atviroms iškasoms bei šalia esantiems pamatams apsaugoti.',
     techDetail: 'Didelė laikomoji galia lenkimui ir šlyčiai',
@@ -95,7 +95,7 @@ const ENGINEERING_HOTSPOTS: DesignHotspotSeed[] = [
     productSlug: 'inzineriniai',
   },
   {
-    title: 'Surenkamas Rezervuaro Dugno & Sienų Mazgas',
+    title: 'Surenkamas rezervuaro dugno ir sienų mazgas',
     description: 'Rezervuarams ir valymo įrenginiams skirti kompozitiniai mazgai be tradicinių sunkiųjų klojinių.',
     techDetail: 'Ilgaamžis betonas C35/45 XF2/XD3',
     xPct: 50,
@@ -122,7 +122,7 @@ export const DESIGN_CATEGORY_SEEDS: DesignCategorySeed[] = [
     assemblyCaption:
       'Animacinis 3D karkaso montavimo gidas: nuo pirmojo aukšto dvigubų sienų iki stogo Filigran perdangų užpylimo.',
     assemblyBackgroundUrl: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=80&w=1200',
-    ctaLabel: 'Užsakyti Pastato Karkaso Analizę',
+    ctaLabel: 'Užsakyti pastato karkaso analizę',
     showInMenu: true,
     showOnHome: true,
     cardBadge: 'Surenkamas gelžbetonis',
@@ -154,7 +154,7 @@ export const DESIGN_CATEGORY_SEEDS: DesignCategorySeed[] = [
     assemblyTitle: 'LENGVAS SURINKIMAS KIEKVIENAM MONTUOTOJUI',
     assemblyCaption: 'Inžinerinių atraminių sienelių ir požeminių statinių Filigran karkaso montavimo instrukcija.',
     assemblyBackgroundUrl: 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&q=80&w=1200',
-    ctaLabel: 'Gauti Inžinerinio Statinio Analizę',
+    ctaLabel: 'Gauti inžinerinio statinio analizę',
     showInMenu: true,
     showOnHome: true,
     cardBadge: 'Specialioji inžinerija',
@@ -187,7 +187,7 @@ export const DESIGN_CATEGORY_SEEDS: DesignCategorySeed[] = [
     assemblyCaption:
       'Animacinis 3D karkaso montavimo gidas: nuo pirmojo aukšto dvigubų sienų iki stogo Filigran perdangų užpylimo.',
     assemblyBackgroundUrl: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=80&w=1200',
-    ctaLabel: 'Užsakyti Projekto Analizę',
+    ctaLabel: 'Užsakyti projekto analizę',
     showInMenu: true,
     showOnHome: true,
     cardBadge: 'Žalioji linija',
@@ -220,7 +220,7 @@ export const DESIGN_CATEGORY_SEEDS: DesignCategorySeed[] = [
     assemblyCaption:
       'Animacinis 3D karkaso montavimo gidas: nuo pirmojo aukšto dvigubų sienų iki stogo Filigran perdangų užpylimo.',
     assemblyBackgroundUrl: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=80&w=1200',
-    ctaLabel: 'Užsakyti Projekto Analizę',
+    ctaLabel: 'Užsakyti projekto analizę',
     showInMenu: false,
     sortOrder: 10,
     hotspots: BUILDING_HOTSPOTS,
@@ -242,7 +242,7 @@ export const DESIGN_CATEGORY_SEEDS: DesignCategorySeed[] = [
     assemblyCaption:
       'Animacinis 3D karkaso montavimo gidas: nuo pirmojo aukšto dvigubų sienų iki stogo Filigran perdangų užpylimo.',
     assemblyBackgroundUrl: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=80&w=1200',
-    ctaLabel: 'Užsakyti Projekto Analizę',
+    ctaLabel: 'Užsakyti projekto analizę',
     showInMenu: false,
     sortOrder: 11,
     hotspots: BUILDING_HOTSPOTS,
@@ -264,7 +264,7 @@ export const DESIGN_CATEGORY_SEEDS: DesignCategorySeed[] = [
     assemblyCaption:
       'Animacinis 3D karkaso montavimo gidas: nuo pirmojo aukšto dvigubų sienų iki stogo Filigran perdangų užpylimo.',
     assemblyBackgroundUrl: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=80&w=1200',
-    ctaLabel: 'Užsakyti Projekto Analizę',
+    ctaLabel: 'Užsakyti projekto analizę',
     showInMenu: false,
     sortOrder: 12,
     hotspots: BUILDING_HOTSPOTS,
@@ -286,7 +286,7 @@ export const DESIGN_CATEGORY_SEEDS: DesignCategorySeed[] = [
     assemblyCaption:
       'Animacinis 3D karkaso montavimo gidas: nuo pirmojo aukšto dvigubų sienų iki stogo Filigran perdangų užpylimo.',
     assemblyBackgroundUrl: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=80&w=1200',
-    ctaLabel: 'Užsakyti Projekto Analizę',
+    ctaLabel: 'Užsakyti projekto analizę',
     showInMenu: false,
     sortOrder: 13,
     hotspots: BUILDING_HOTSPOTS,
@@ -308,7 +308,7 @@ export const DESIGN_CATEGORY_SEEDS: DesignCategorySeed[] = [
     assemblyCaption:
       'Animacinis 3D karkaso montavimo gidas: nuo pirmojo aukšto dvigubų sienų iki stogo Filigran perdangų užpylimo.',
     assemblyBackgroundUrl: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=80&w=1200',
-    ctaLabel: 'Užsakyti Projekto Analizę',
+    ctaLabel: 'Užsakyti projekto analizę',
     showInMenu: false,
     sortOrder: 14,
     hotspots: BUILDING_HOTSPOTS,

@@ -5,7 +5,7 @@ export const HERO_SETTING_SEED = {
   highlight: 'STATYBOS PROCESĄ',
   intro:
     'Nuo sprendimo iki įgyvendinimo – 4 žingsniai, vienas partneris ir viena atsakomybė už visas konstrukcijas.',
-  primaryCtaLabel: 'Gauti Projektų Analizę',
+  primaryCtaLabel: 'Gauti projektų analizę',
   secondaryCtaLabel: 'Palyginti kainą',
   backgroundUrl: '/construction_steel_site.jpg',
 };

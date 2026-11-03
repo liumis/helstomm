@@ -76,6 +76,21 @@ type StrapiProduct = {
   schemaParagraphs?: StrapiParagraph[] | null;
 };
 
+const CTA_LABEL_FIXES: Record<string, string> = {
+  'Atsisiųsti Techninį Katalogą': 'Atsisiųsti techninį katalogą',
+  'Atsisiųsti THERMAL Katalogą': 'Atsisiųsti THERMAL katalogą',
+  'Užsakyti THERMAL Sienų Analizę': 'Užsakyti THERMAL sienų analizę',
+  'Atsisiųsti Perdangų Katalogą': 'Atsisiųsti perdangų katalogą',
+  'Užsakyti Perdangų Inžinerinį Projektą': 'Užsakyti perdangų inžinerinį projektą',
+  'Atsisiųsti Balkonų Katalogą': 'Atsisiųsti balkonų katalogą',
+  'Užsakyti Balkonų Jungčių Skaičiavimą': 'Užsakyti balkonų jungčių skaičiavimą',
+  'Užsakyti Individualų Mazgų Projektavimą': 'Užsakyti individualų mazgų projektavimą',
+};
+
+function remapLabel(value: string) {
+  return CTA_LABEL_FIXES[value] || value;
+}
+
 function mediaUrl(file?: StrapiMedia | StrapiMedia[] | null) {
   const item = Array.isArray(file) ? file[0] : file;
   const url = item?.url;
@@ -104,10 +119,10 @@ function mapProduct(row: StrapiProduct): ProductCatalogItem | null {
     tilesColumns: row.tilesColumns || 4,
     schemaTitle: row.schemaTitle || '',
     schemaImageUrl: mediaUrl(row.schemaImage) || row.schemaImageUrl || row.imageUrl || '',
-    catalogLabel: row.catalogLabel || '',
+    catalogLabel: remapLabel(row.catalogLabel || ''),
     catalogFileUrl: mediaUrl(row.catalogFile) || '',
     jointsTitle: row.jointsTitle || '',
-    jointsCtaLabel: row.jointsCtaLabel || '',
+    jointsCtaLabel: remapLabel(row.jointsCtaLabel || ''),
     showInMenu: row.showInMenu !== false,
     showInCarousel: row.showInCarousel !== false,
     sortOrder: Number(row.sortOrder) || 0,

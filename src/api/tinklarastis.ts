@@ -4,6 +4,11 @@ import { mapFilters, pick } from './utils';
 
 const STRAPI_URL = (import.meta.env.VITE_STRAPI_URL as string | undefined)?.replace(/\/$/, '') || '';
 
+function socialLabel(value: string | undefined, fallback: string) {
+  const raw = pick(value, fallback).replace(/^sekite mus\s+/i, '').trim();
+  return raw || fallback;
+}
+
 export async function fetchTinklarastisSettings(): Promise<TinklarastisSettings> {
   try {
     const res = await fetch(`${STRAPI_URL}/api/tinklarastis-setting?populate=*`);
@@ -15,9 +20,9 @@ export async function fetchTinklarastisSettings(): Promise<TinklarastisSettings>
       badge: pick(data.badge, FALLBACK_TINKLARASTIS.badge),
       title: pick(data.title, FALLBACK_TINKLARASTIS.title),
       intro: pick(data.intro, FALLBACK_TINKLARASTIS.intro),
-      linkedinLabel: pick(data.linkedinLabel, FALLBACK_TINKLARASTIS.linkedinLabel),
+      linkedinLabel: socialLabel(data.linkedinLabel, FALLBACK_TINKLARASTIS.linkedinLabel),
       linkedinUrl: pick(data.linkedinUrl, FALLBACK_TINKLARASTIS.linkedinUrl),
-      instagramLabel: pick(data.instagramLabel, FALLBACK_TINKLARASTIS.instagramLabel),
+      instagramLabel: socialLabel(data.instagramLabel, FALLBACK_TINKLARASTIS.instagramLabel),
       instagramUrl: pick(data.instagramUrl, FALLBACK_TINKLARASTIS.instagramUrl),
       analysisCta: pick(data.analysisCta, FALLBACK_TINKLARASTIS.analysisCta),
       featuredBadge: pick(data.featuredBadge, FALLBACK_TINKLARASTIS.featuredBadge),

@@ -62,7 +62,7 @@ export const ARTICLE_SEEDS: ArticleSeed[] = [
     readTime: '5 min.',
     author: 'Paulius Vasiliauskas',
     authorRole: 'Inžinerinių projektų vadovas',
-    imageUrl: '/pastatai_building.jpg',
+    imageUrl: '/Aukstuminis_gyvenamuju.jpeg',
     excerpt:
       'Po Viršuliškių daugiabučio gaisro ir sprogimo „Helstomm Group“ inžinieriai operatyviai pateikė specializuotus surenkamojo gelžbetonio elementų sprendimus saugiam perdangų atstatymui.',
     linkedinUrl: '',

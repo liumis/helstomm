@@ -22,6 +22,14 @@ type StrapiBlock = {
   certificates?: string;
 };
 
+const CTA_LABEL_FIXES: Record<string, string> = {
+  'Atsisiųsti Gamybos Sertifikatus (CE / ISO)': 'Atsisiųsti gamybos sertifikatus (CE / ISO)',
+};
+
+function remapLabel(value: string) {
+  return CTA_LABEL_FIXES[value] || value;
+}
+
 function mediaUrl(file?: StrapiMedia | StrapiMedia[] | null) {
   const item = Array.isArray(file) ? file[0] : file;
   const url = item?.url;
@@ -61,7 +69,9 @@ export async function fetchManufacturingBlock(): Promise<ManufacturingBlock> {
       videoCaption: row.videoCaption || FALLBACK_MANUFACTURING_BLOCK.videoCaption,
       videoUrl: toEmbedUrl(row.videoUrl || FALLBACK_MANUFACTURING_BLOCK.videoUrl),
       posterUrl: mediaUrl(row.poster) || row.posterUrl || FALLBACK_MANUFACTURING_BLOCK.posterUrl,
-      certificatesCtaLabel: row.certificatesCtaLabel || FALLBACK_MANUFACTURING_BLOCK.certificatesCtaLabel,
+      certificatesCtaLabel: remapLabel(
+        row.certificatesCtaLabel || FALLBACK_MANUFACTURING_BLOCK.certificatesCtaLabel,
+      ),
       certificatesFileUrl: mediaUrl(row.certificatesFile) || FALLBACK_MANUFACTURING_BLOCK.certificatesFileUrl || '',
       certificates: certificates.length > 0 ? certificates : FALLBACK_MANUFACTURING_BLOCK.certificates,
     };

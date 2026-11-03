@@ -1,6 +1,6 @@
-import React from 'react';
-import { InteractiveDiagram } from '../InteractiveDiagram';
-import { Play, Building, CheckCircle2, Shield, Download } from 'lucide-react';
+import React from "react";
+import { InteractiveDiagram } from "../InteractiveDiagram";
+import { Play, Building, CheckCircle2, Shield, Download } from "lucide-react";
 
 interface Props {
   onOpenAnalysisModal: () => void;
@@ -9,61 +9,66 @@ interface Props {
 export const PastataiView: React.FC<Props> = ({ onOpenAnalysisModal }) => {
   const buildingHotspots = [
     {
-      id: 'hs1',
-      title: 'Filigran Dvigubos Sienos Plokštės',
+      id: "hs1",
+      title: "Filigran dvigubos sienos plokštės",
       xPct: 22,
       yPct: 35,
-      description: 'Gamykloje pagamintos dvi lygiagrečios 50-70 mm sienutės su erdviniu karkasu. Užtikrina idealų paviršių be tinkavimo.',
-      techDetail: 'Sienos storis iki 50 cm | Betono klasė C30/37'
+      description:
+        "Gamykloje pagamintos dvi lygiagrečios 50-70 mm sienutės su erdviniu karkasu. Užtikrina idealų paviršių be tinkavimo.",
+      techDetail: "Sienos storis iki 50 cm | Betono klasė C30/37",
     },
     {
-      id: 'hs2',
-      title: 'Monolitinis Šerdis (Betonavimas)',
+      id: "hs2",
+      title: "Monolitinis šerdis (betonavimas)",
       xPct: 55,
       yPct: 65,
-      description: 'Objekte užpilamas prekinis betonas sujungia elementus į vientisą monolitinę karkaso struktūrą be jokių tradicinių klojinių.',
-      techDetail: '100% Monolitinis vientisumas ir akustinė izoliacija'
+      description:
+        "Objekte užpilamas prekinis betonas sujungia elementus į vientisą monolitinę karkaso struktūrą be jokių tradicinių klojinių.",
+      techDetail: "100% Monolitinis vientisumas ir akustinė izoliacija",
     },
     {
-      id: 'hs3',
-      title: 'Filigran Perdangų Plokštė',
+      id: "hs3",
+      title: "Filigran perdangų plokštė",
       xPct: 75,
       yPct: 25,
-      description: 'Surenkama-monolitinė perdanga su integruota armatūra. Sutrumpina karkaso rengimo laiką iki 50%.',
-      techDetail: 'Projektuojamas storis 200-250 mm'
+      description:
+        "Surenkama-monolitinė perdanga su integruota armatūra. Sutrumpina karkaso rengimo laiką iki 50%.",
+      techDetail: "Projektuojamas storis 200-250 mm",
     },
     {
-      id: 'hs4',
-      title: 'Termoizoliacinė Jungtis (Balkonai)',
+      id: "hs4",
+      title: "Termoizoliacinė jungtis (balkonai)",
       xPct: 30,
       yPct: 80,
-      description: 'Isokorb tipo nerūdijančio plieno armavimo karkasas, visiškai eliminuojantis šalčio tiltelius.',
-      techDetail: 'A++ Energetinė klasė ir Pasyvus standartas'
-    }
+      description:
+        "Isokorb tipo nerūdijančio plieno armavimo karkasas, visiškai eliminuojantis šalčio tiltelius.",
+      techDetail: "A++ Energetinė klasė ir Pasyvus standartas",
+    },
   ];
 
   return (
     <div className="py-12 bg-white space-y-20">
-      
       {/* Header Banner matching mockup Page 3 */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <span className="text-[#b8cd33] font-black uppercase text-xs tracking-widest bg-[#b8cd33]/20 px-3 py-1 rounded-full inline-block mb-3">
+        <span className="text-[#b8cd33] font-medium uppercase text-xs tracking-widest bg-[#b8cd33]/20 px-3 py-1 rounded-sm inline-block mb-8">
           Surenkama-monolitinė Karkaso Sistema
         </span>
-        <h1 className="text-3xl sm:text-5xl font-bold text-slate-900 uppercase tracking-tight mb-4">
+        <h1 className="text-3xl sm:text-5xl font-bold text-slate-900 uppercase tracking-tight mb-12">
           PASTATAI
         </h1>
         <p className="text-slate-900 font-bold text-lg sm:text-xl mb-3">
           Monolito tvirtumas. Gamyklos greitis.
         </p>
         <p className="text-slate-600 max-w-4xl mx-auto font-medium text-sm sm:text-base leading-relaxed">
-          Viena sistema. Pilnai suderinti „Filigran“ sienų ir perdangų sprendimai visam pastato karkasui nuo pamatų iki stogo, garantuojantys greitą montavimą bei neribotą pritaikymo laisvę.
+          Viena sistema. Pilnai suderinti „Filigran“ sienų ir perdangų
+          sprendimai visam pastato karkasui nuo pamatų iki stogo, garantuojantys
+          greitą montavimą bei neribotą pritaikymo laisvę.
         </p>
       </div>
 
       {/* Interactive Diagram Component */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <InteractiveDiagram 
+        <InteractiveDiagram
           title="PASTATO KONSTRUKCINIS MODELIS"
           subtitle="Spustelėkite aktyvias nuorodas, kad pamatytumėte Filigran sienų ir perdangų jungtis"
           imageUrl="/80456-16320159.webp"
@@ -73,43 +78,46 @@ export const PastataiView: React.FC<Props> = ({ onOpenAnalysisModal }) => {
 
       {/* Video & Assembly Walkthrough Section matching mockup Page 3 */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
-        <h2 className="text-2xl md:text-4xl font-bold text-slate-900 uppercase tracking-tight">
+        <h2 className="text-2xl md:text-4xl font-bold text-slate-900 uppercase tracking-tight mb-10">
           GREITAS KONSTRUKCIJŲ SURINKIMAS
         </h2>
 
-        <div className="max-w-4xl mx-auto bg-slate-950 rounded-2xl overflow-hidden shadow-2xl border-4 border-slate-800 relative p-8 md:p-12 text-center text-white bg-cover bg-center" style={{
-          backgroundImage: `linear-gradient(to bottom, rgba(15,23,42,0.9), rgba(15,23,42,0.95)), url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=80&w=1200')`
-        }}>
+        <div
+          className="max-w-4xl mx-auto bg-slate-950 rounded-sm overflow-hidden border border-[#C9CED6] relative p-8 md:p-12 text-center text-white bg-cover bg-center"
+          style={{
+            backgroundImage: `linear-gradient(to bottom, rgba(15, 23, 42, 0.40), rgba(15, 23, 42, 0.55)), url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=80&w=1200')`,
+          }}
+        >
           <div className="mb-6 space-y-2">
-            <div className="text-3xl md:text-5xl font-black tracking-wider text-white">
+            <div className="text-3xl md:text-5xl font-bold tracking-wider text-white">
               HELSTOMM <span className="text-[#b8cd33]">GROUP</span>
             </div>
-            <p className="text-xs md:text-sm font-bold uppercase tracking-widest text-[#b8cd33]">
+            <p className="text-xs md:text-sm font-medium uppercase tracking-widest text-[#b8cd33]">
               PRECAST CONCRETE | DESIGN | MANUFACTURE | BUILD | MANAGEMENT
             </p>
           </div>
 
           <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 bg-[#b8cd33] text-slate-950 rounded-full flex items-center justify-center shadow-lg">
+            <div className="w-16 h-16 bg-[#b8cd33] text-slate-950 rounded-sm flex items-center justify-center">
               <Play className="w-8 h-8 fill-slate-950 ml-1" />
             </div>
           </div>
 
           <p className="text-slate-300 font-medium text-sm max-w-xl mx-auto">
-            Animacinis 3D karkaso montavimo gidas: nuo pirmojo aukšto dvigubų sienų iki stogo Filigran perdangų užpylimo.
+            Animacinis 3D karkaso montavimo gidas: nuo pirmojo aukšto dvigubų
+            sienų iki stogo Filigran perdangų užpylimo.
           </p>
         </div>
 
         <div>
           <button
             onClick={onOpenAnalysisModal}
-            className="px-8 py-3.5 bg-[#b8cd33] hover:bg-[#a6ba2a] text-slate-950 font-black rounded-xl text-sm transition-all shadow-md inline-flex items-center space-x-2"
+            className="px-8 py-3.5 bg-[#b8cd33] hover:bg-[#a6ba2a] text-slate-950 font-medium rounded-sm text-sm transition-all inline-flex items-center space-x-2"
           >
-            <span>Užsakyti Pastato Karkaso Analizę</span>
+            <span>Užsakyti pastato karkaso analizę</span>
           </button>
         </div>
       </div>
-
     </div>
   );
 };

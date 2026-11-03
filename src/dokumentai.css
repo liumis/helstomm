@@ -42,7 +42,7 @@
   border-radius: 14px;
   padding: 12px 16px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   white-space: nowrap;
 }
 .dokumentai-page a,
@@ -60,7 +60,7 @@
 .dokumentai-page .grp-h .aside {
   font-size: 13px;
   color: var(--lime-ink);
-  font-weight: 600;
+  font-weight: 500;
   white-space: nowrap;
   background: none;
   border: 0;
@@ -161,7 +161,7 @@
   border-radius: 99px;
   padding: 3px 10px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 400;
   color: var(--lime-ink);
 }
 .dokumentai-page .acts {
@@ -179,7 +179,7 @@
   gap: 8px;
   border-radius: 12px;
   padding: 10px 16px;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 14px;
   white-space: nowrap;
   border: 0;
@@ -238,7 +238,7 @@
   border-radius: 6px;
   padding: 1px 6px;
   margin-right: 3px;
-  font-weight: 600;
+  font-weight: 500;
   border: 0;
   cursor: pointer;
 }
@@ -271,9 +271,11 @@
   font-weight: 700;
   line-height: 1.25;
 }
-.dokumentai-page .dc .acts {
+.dokumentai-page .dc .acts,
+.dokumentai-page .fd .acts {
   padding-top: 10px;
   gap: 8px;
+  flex-wrap: nowrap;
 }
 .dokumentai-page .dc .btn {
   padding: 8px 12px;
@@ -299,12 +301,12 @@
 }
 .dokumentai-page .dpage {
   background: var(--sheet);
-  padding-block: 22px 40px;
+  padding-block: 28px 40px;
 }
 .dokumentai-page .crumbs {
   font-size: 13px;
   color: var(--muted);
-  margin-bottom: 14px;
+  margin-bottom: 20px;
 }
 .dokumentai-page .crumbs button {
   background: none;
@@ -320,14 +322,36 @@
 .dokumentai-page .dhead {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  gap: 20px;
-  margin-bottom: 18px;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 36px;
+}
+.dokumentai-page .dhead .acts {
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+}
+.dokumentai-page .dhead .code {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.dokumentai-page .dhead .code b {
+  padding: 4px 10px;
+  margin-right: 0;
 }
 .dokumentai-page .dhead h2 {
   font-size: 30px;
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1.15;
+  margin: 0 0 16px;
+}
+.dokumentai-page .dhead p {
+  margin: 0;
+  max-width: 720px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.55;
 }
 .dokumentai-page .dgrid {
   display: grid;
@@ -358,7 +382,7 @@
   justify-content: space-between;
 }
 .dokumentai-page .toc div.on {
-  font-weight: 700;
+  font-weight: 500;
   color: var(--lime-ink);
 }
 .dokumentai-page .toc div i {
@@ -385,24 +409,11 @@
 .dokumentai-page .vbar span {
   opacity: 0.85;
 }
-.dokumentai-page .vpage {
-  background: #fff;
-  margin: 22px auto;
-  width: 78%;
-  aspect-ratio: 210 / 297;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-  background-size: cover;
-  background-position: center;
-  position: relative;
-}
 .dokumentai-page .vlock {
-  position: relative;
-  margin: 0 auto 22px;
+  margin: 22px auto;
   width: 78%;
   background: #fff;
   border-radius: 4px;
-  min-height: 420px;
-  overflow: hidden;
 }
 .dokumentai-page .vframe {
   width: 78%;
@@ -413,23 +424,21 @@
   border-radius: 4px;
 }
 .dokumentai-page .regbox {
-  position: absolute;
-  inset: 18px;
-  background: #fff;
-  border: 1.5px solid var(--lime);
-  border-radius: 14px;
-  padding: 18px;
-  box-shadow: 0 10px 30px rgba(15, 26, 46, 0.18);
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  gap: 14px;
+  padding: 28px 32px 32px;
+  background: #fff;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
 }
 .dokumentai-page .regbox .rh {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-weight: 700;
-  font-size: 15px;
+  font-weight: 500;
+  font-size: 16px;
   color: var(--navy);
 }
 .dokumentai-page .regbox p {
@@ -523,7 +532,7 @@
 }
 .dokumentai-page .priv {
   color: var(--lime-ink);
-  font-weight: 700;
+  font-weight: 500;
 }
 
 @media (max-width: 900px) {
@@ -554,7 +563,6 @@
   .dokumentai-page .toc {
     display: none;
   }
-  .dokumentai-page .vpage,
   .dokumentai-page .vlock,
   .dokumentai-page .vframe {
     width: 92%;
@@ -565,6 +573,8 @@
   .dokumentai-page .dhead {
     flex-direction: column;
     align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
   }
   .dokumentai-page .dhead h2 {
     font-size: 24px;
@@ -579,8 +589,7 @@
   .dokumentai-page .fg {
     grid-template-columns: 1fr;
   }
-  .dokumentai-page .vlock .regbox {
-    position: relative;
-    inset: auto;
+  .dokumentai-page .regbox {
+    padding: 20px 16px 24px;
   }
 }

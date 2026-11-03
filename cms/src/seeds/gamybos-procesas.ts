@@ -9,6 +9,6 @@ export const GAMYBOS_PROCESAS_SEED = {
   videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
   posterUrl:
     'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&q=80&w=1200',
-  certificatesCtaLabel: 'Atsisiųsti Gamybos Sertifikatus (CE / ISO)',
+  certificatesCtaLabel: 'Atsisiųsti gamybos sertifikatus (CE / ISO)',
   certificates: 'EN 14992 (Sienos)\nEN 13747 (Perdangos)\nISO 9001 / ISO 14001',
 };

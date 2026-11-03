@@ -116,10 +116,9 @@ export const CalculatorView: React.FC<Props> = ({ calculator, onClose }) => {
         type="button"
         onClick={onClose}
         aria-label="Uždaryti skaičiuoklę"
-        className="fixed top-4 right-4 z-[230] inline-flex items-center gap-2 h-10 px-3 max-sm:top-3 max-sm:right-3 max-sm:h-9 max-sm:w-9 max-sm:px-0 max-sm:justify-center rounded-lg bg-white text-[#262B33] text-[13px] font-semibold border border-[#C9CED6] shadow-sm hover:bg-[#F6F7F9] hover:border-[#262B33] print:hidden"
+        className="fixed top-4 right-4 z-[230] inline-flex items-center justify-center h-10 w-10 max-sm:top-3 max-sm:right-3 max-sm:h-9 max-sm:w-9 rounded-sm bg-white text-[#262B33] border border-[#C9CED6] hover:bg-[#F6F7F9] hover:border-[#262B33] print:hidden"
       >
         <X className="w-4 h-4" strokeWidth={2} />
-        <span className="max-sm:sr-only">Uždaryti</span>
       </button>
       <div ref={hostRef} className="calc-fs h-full overflow-auto" />
     </div>,

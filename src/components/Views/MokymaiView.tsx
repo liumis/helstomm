@@ -1,27 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { submitTrainingForm } from '../../api/contact';
-import { fetchMokymaiBlock } from '../../api/mokymai';
+import React, { useEffect, useState } from "react";
+import { submitTrainingForm } from "../../api/contact";
+import { fetchMokymaiBlock } from "../../api/mokymai";
 import {
   AKADEMIJA_CALENDAR,
   AKADEMIJA_CALENDAR_NOTE,
   AKADEMIJA_PROGRAMS,
   type AkademijaCalendarEvent,
   type AkademijaProgram,
-} from '../../data/akademija';
-import '../../mokymai.css';
+} from "../../data/akademija";
+import "../../mokymai.css";
 
 interface Props {
   onOpenTrainingModal: () => void;
 }
 
 const ICONS: Record<string, string[]> = {
-  cap: ['M2 9l10-5 10 5-10 5z', 'M6 11v5c0 1 3 3 6 3s6-2 6-3v-5', 'M22 9v6'],
-  shield: ['M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z', 'M9 12l2 2 4-4'],
-  chat: ['M4 5h16v11H9l-5 4z', 'M8 9h8M8 12h5'],
-  map: ['M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11z'],
-  hand: ['M7 11l3-3a2 2 0 0 1 3 0l4 4', 'M3 13l4 4 3-1 4 3 6-6-4-4'],
-  helmet: ['M4 16a8 8 0 0 1 16 0', 'M2 16h20v2H2zM12 8V5M9 9V6M15 9V6'],
-  star: ['M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z'],
+  cap: ["M2 9l10-5 10 5-10 5z", "M6 11v5c0 1 3 3 6 3s6-2 6-3v-5", "M22 9v6"],
+  shield: ["M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z", "M9 12l2 2 4-4"],
+  chat: ["M4 5h16v11H9l-5 4z", "M8 9h8M8 12h5"],
+  map: ["M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11z"],
+  hand: ["M7 11l3-3a2 2 0 0 1 3 0l4 4", "M3 13l4 4 3-1 4 3 6-6-4-4"],
+  helmet: ["M4 16a8 8 0 0 1 16 0", "M2 16h20v2H2zM12 8V5M9 9V6M15 9V6"],
+  star: [
+    "M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z",
+  ],
 };
 
 function Icon({ name }: { name: keyof typeof ICONS }) {
@@ -30,34 +32,106 @@ function Icon({ name }: { name: keyof typeof ICONS }) {
       {ICONS[name].map((d) => (
         <path key={d} d={d} />
       ))}
-      {name === 'map' && <circle cx="12" cy="10" r="2.5" />}
+      {name === "map" && <circle cx="12" cy="10" r="2.5" />}
     </svg>
   );
 }
 
 const M1 = [
-  ['1', 'Sistema ir gaminiai', 'Dviguba siena, termo siena, perdanga, balkonai. Kaip veikia surenkama-monolitinė konstrukcija.', '1 val.'],
-  ['2', 'Darbo brėžiniai ir montavimo planas', 'Kaip skaityti gaminių brėžinius, žymėjimus ir montavimo eiliškumą.', '1 val.'],
-  ['3', 'Pristatymas, kėlimas ir sandėliavimas', 'Kėlimo taškai, kranų parinkimas, sauga, elementų laikymas aikštelėje.', '1,5 val.'],
-  ['4', 'Montavimas ir ramsčiai', 'Sienų ir perdangų montavimas, laikinas tvirtinimas, išramstymas.', '1,5 val.'],
-  ['5', 'Sandūros ir armatūra', 'Jungčių armatūra, sandūrų sandarinimas, angos ir įdėtinės detalės.', '1 val.'],
-  ['6', 'Betonavimas ir kokybės kontrolė', 'Betonavimo greitis ir sluoksniai, vibravimas, dažniausios klaidos.', '1 val.'],
+  [
+    "1",
+    "Sistema ir gaminiai",
+    "Dviguba siena, termo siena, perdanga, balkonai. Kaip veikia surenkama-monolitinė konstrukcija.",
+    "1 val.",
+  ],
+  [
+    "2",
+    "Darbo brėžiniai ir montavimo planas",
+    "Kaip skaityti gaminių brėžinius, žymėjimus ir montavimo eiliškumą.",
+    "1 val.",
+  ],
+  [
+    "3",
+    "Pristatymas, kėlimas ir sandėliavimas",
+    "Kėlimo taškai, kranų parinkimas, sauga, elementų laikymas aikštelėje.",
+    "1,5 val.",
+  ],
+  [
+    "4",
+    "Montavimas ir ramsčiai",
+    "Sienų ir perdangų montavimas, laikinas tvirtinimas, išramstymas.",
+    "1,5 val.",
+  ],
+  [
+    "5",
+    "Sandūros ir armatūra",
+    "Jungčių armatūra, sandūrų sandarinimas, angos ir įdėtinės detalės.",
+    "1 val.",
+  ],
+  [
+    "6",
+    "Betonavimas ir kokybės kontrolė",
+    "Betonavimo greitis ir sluoksniai, vibravimas, dažniausios klaidos.",
+    "1 val.",
+  ],
 ];
 const M2 = [
-  ['7', 'Sienų montavimas mokomajame stende', 'Brigada montuoja dvigubas sienas, įrengia ramsčius ir sandūras.', '3 val.'],
-  ['8', 'Perdangų montavimas ir išramstymas', 'Plokščių klojimas, ramsčių eilės, viršutinė armatūra.', '2 val.'],
-  ['9', 'Klaidų atpažinimas', 'Tikri defektų pavyzdžiai ir kaip jų išvengti.', '1 val.'],
+  [
+    "7",
+    "Sienų montavimas mokomajame stende",
+    "Brigada montuoja dvigubas sienas, įrengia ramsčius ir sandūras.",
+    "3 val.",
+  ],
+  [
+    "8",
+    "Perdangų montavimas ir išramstymas",
+    "Plokščių klojimas, ramsčių eilės, viršutinė armatūra.",
+    "2 val.",
+  ],
+  [
+    "9",
+    "Klaidų atpažinimas",
+    "Tikri defektų pavyzdžiai ir kaip jų išvengti.",
+    "1 val.",
+  ],
 ];
 const K = [
-  ['1', 'Kaip veikia sistema', 'Gamyklinis ir monolitinis betonas, girderiai, tipiniai storiai ir matmenys.', '20 min.'],
-  ['2', 'Skaičiavimas pagal EN 1992', 'Apsauginis sluoksnis, šlyties jungtis tarp betonų, montavimo stadija.', '40 min.'],
-  ['3', 'Mazgai ir sandūros', 'Siena–pamatas, siena–perdanga, kampai, angos, balkonai.', '25 min.'],
-  ['4', 'Darbo brėžiniai ir BIM', 'Ką rengia konstruktorius, ką rengia Helstomm; BIM objektai.', '15 min.'],
-  ['5', 'Jūsų projektas', 'Aptariame jūsų objektą ir galimus sprendimus.', '20 min.'],
+  [
+    "1",
+    "Kaip veikia sistema",
+    "Gamyklinis ir monolitinis betonas, girderiai, tipiniai storiai ir matmenys.",
+    "20 min.",
+  ],
+  [
+    "2",
+    "Skaičiavimas pagal EN 1992",
+    "Apsauginis sluoksnis, šlyties jungtis tarp betonų, montavimo stadija.",
+    "40 min.",
+  ],
+  [
+    "3",
+    "Mazgai ir sandūros",
+    "Siena–pamatas, siena–perdanga, kampai, angos, balkonai.",
+    "25 min.",
+  ],
+  [
+    "4",
+    "Darbo brėžiniai ir BIM",
+    "Ką rengia konstruktorius, ką rengia Helstomm; BIM objektai.",
+    "15 min.",
+  ],
+  [
+    "5",
+    "Jūsų projektas",
+    "Aptariame jūsų objektą ir galimus sprendimus.",
+    "20 min.",
+  ],
 ];
 
 function scrollToId(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document
+    .getElementById(id)
+    ?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function asProgram(value: string): AkademijaProgram | undefined {
@@ -65,7 +139,7 @@ function asProgram(value: string): AkademijaProgram | undefined {
 }
 
 function seatsLabel(event: AkademijaCalendarEvent) {
-  if (event.seatsTotal <= 0) return 'Pagal susitarimą';
+  if (event.seatsTotal <= 0) return "Pagal susitarimą";
   if (event.seatsLeft <= 0) return `${event.seatsTotal} iš ${event.seatsTotal}`;
   return `${event.seatsLeft} iš ${event.seatsTotal}`;
 }
@@ -74,16 +148,17 @@ export const MokymaiView: React.FC<Props> = () => {
   const [topic, setTopic] = useState<AkademijaProgram>(AKADEMIJA_PROGRAMS[0]);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState('');
-  const [calendar, setCalendar] = useState<AkademijaCalendarEvent[]>(AKADEMIJA_CALENDAR);
+  const [error, setError] = useState("");
+  const [calendar, setCalendar] =
+    useState<AkademijaCalendarEvent[]>(AKADEMIJA_CALENDAR);
   const [calendarNote, setCalendarNote] = useState(AKADEMIJA_CALENDAR_NOTE);
   const [form, setForm] = useState({
-    name: '',
-    company: '',
-    email: '',
-    phone: '',
-    participantsCount: '1',
-    project: '',
+    name: "",
+    company: "",
+    email: "",
+    phone: "",
+    participantsCount: "1",
+    project: "",
   });
 
   useEffect(() => {
@@ -96,12 +171,12 @@ export const MokymaiView: React.FC<Props> = () => {
   const openForm = (program?: string) => {
     const next = program ? asProgram(program) : undefined;
     if (next) setTopic(next);
-    scrollToId('akademija-registracija');
+    scrollToId("akademija-registracija");
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    setError('');
+    setError("");
     setSubmitting(true);
     try {
       await submitTrainingForm({
@@ -114,7 +189,7 @@ export const MokymaiView: React.FC<Props> = () => {
       });
       setSubmitted(true);
     } catch {
-      setError('Nepavyko užregistruoti. Bandykite dar kartą.');
+      setError("Nepavyko užregistruoti. Bandykite dar kartą.");
     } finally {
       setSubmitting(false);
     }
@@ -128,14 +203,19 @@ export const MokymaiView: React.FC<Props> = () => {
           Išmokite dirbti<em>su Filigran sistema</em>
         </h1>
         <p>
-          Nemokami teoriniai ir praktiniai mokymai statybininkams ir konstruktoriams. Sužinokite, kaip
-          sistema veikia, išbandykite ją mokomajame stende ir gaukite Helstomm sertifikatą.
+          Nemokami teoriniai ir praktiniai mokymai statybininkams ir
+          konstruktoriams. Sužinokite, kaip sistema veikia, išbandykite ją
+          mokomajame stende ir gaukite Helstomm sertifikatą.
         </p>
         <div className="ctas">
           <button type="button" className="btn lime" onClick={() => openForm()}>
             Registruotis į mokymus →
           </button>
-          <button type="button" className="btn out" onClick={() => scrollToId('akademija-kalendorius')}>
+          <button
+            type="button"
+            className="btn out"
+            onClick={() => scrollToId("akademija-kalendorius")}
+          >
             Mokymų kalendorius
           </button>
         </div>
@@ -166,8 +246,8 @@ export const MokymaiView: React.FC<Props> = () => {
             Nauja sistema – <em>be rizikos</em>
           </h2>
           <p>
-            Filigran sistema Lietuvoje dar nauja. Kai žinote, kaip ji veikia ir ką daryti aikštelėje,
-            sprendimą priimti lengva.
+            Filigran sistema Lietuvoje dar nauja. Kai žinote, kaip ji veikia ir
+            ką daryti aikštelėje, sprendimą priimti lengva.
           </p>
         </div>
         <div className="why">
@@ -176,21 +256,30 @@ export const MokymaiView: React.FC<Props> = () => {
               <Icon name="shield" />
             </span>
             <h3>Mažiau klaidų aikštelėje</h3>
-            <p>Montuotojai žino, kaip kelti, remti, sujungti ir betonuoti elementus. Pirmas objektas vyksta be netikėtumų.</p>
+            <p>
+              Montuotojai žino, kaip kelti, remti, sujungti ir betonuoti
+              elementus. Pirmas objektas vyksta be netikėtumų.
+            </p>
           </div>
           <div>
             <span className="ic">
               <Icon name="chat" />
             </span>
             <h3>Tiesioginis ryšys su inžinieriais</h3>
-            <p>Po kurso turite kontaktą su Helstomm konstruktoriumi ir galite tartis dar prieš pradėdami projektuoti.</p>
+            <p>
+              Po kurso turite kontaktą su Helstomm konstruktoriumi ir galite
+              tartis dar prieš pradėdami projektuoti.
+            </p>
           </div>
           <div>
             <span className="ic">
               <Icon name="star" />
             </span>
             <h3>Pripažinta kvalifikacija</h3>
-            <p>Sertifikuoti montuotojai įrašomi į partnerių sąrašą svetainėje ir gauna užsakymų iš Helstomm klientų.</p>
+            <p>
+              Sertifikuoti montuotojai įrašomi į partnerių sąrašą svetainėje ir
+              gauna užsakymų iš Helstomm klientų.
+            </p>
           </div>
         </div>
       </section>
@@ -207,7 +296,10 @@ export const MokymaiView: React.FC<Props> = () => {
             <div className="top">
               <div className="k">STATYBININKAMS IR RANGOVAMS</div>
               <h3>Sertifikuotas montuotojas</h3>
-              <p>Statybos įmonėms ir brigadoms, kurios nori montuoti Filigran gaminius.</p>
+              <p>
+                Statybos įmonėms ir brigadoms, kurios nori montuoti Filigran
+                gaminius.
+              </p>
             </div>
             <div className="meta">
               <div>
@@ -225,10 +317,15 @@ export const MokymaiView: React.FC<Props> = () => {
               <li>Praktika mokomajame stende su tikrais elementais</li>
             </ul>
             <div className="res">
-              <b>REZULTATAS</b>Helstomm sertifikatas, įrašas į sertifikuotų montuotojų sąrašą, užsakymai iš Helstomm klientų.
+              <b>REZULTATAS</b>Helstomm sertifikatas, įrašas į sertifikuotų
+              montuotojų sąrašą, užsakymai iš Helstomm klientų.
             </div>
             <div className="go">
-              <button type="button" className="btn dark" onClick={() => openForm(AKADEMIJA_PROGRAMS[0])}>
+              <button
+                type="button"
+                className="btn dark"
+                onClick={() => openForm(AKADEMIJA_PROGRAMS[0])}
+              >
                 Registruotis →
               </button>
             </div>
@@ -256,10 +353,15 @@ export const MokymaiView: React.FC<Props> = () => {
               <li>Jūsų projekto aptarimas</li>
             </ul>
             <div className="res">
-              <b>REZULTATAS</b>Projektavimo vadovas, mazgų biblioteka ir tiesioginis kontaktas su Helstomm konstruktoriumi.
+              <b>REZULTATAS</b>Projektavimo vadovas, mazgų biblioteka ir
+              tiesioginis kontaktas su Helstomm konstruktoriumi.
             </div>
             <div className="go">
-              <button type="button" className="btn dark" onClick={() => openForm(AKADEMIJA_PROGRAMS[1])}>
+              <button
+                type="button"
+                className="btn dark"
+                onClick={() => openForm(AKADEMIJA_PROGRAMS[1])}
+              >
                 Registruotis →
               </button>
             </div>
@@ -269,7 +371,9 @@ export const MokymaiView: React.FC<Props> = () => {
             <div className="top">
               <div className="k">PAPILDOMA PASLAUGA</div>
               <h3>Montavimo specialistas jūsų objekte</h3>
-              <p>Helstomm specialistas dirba kartu su jūsų brigada aikštelėje.</p>
+              <p>
+                Helstomm specialistas dirba kartu su jūsų brigada aikštelėje.
+              </p>
             </div>
             <div className="meta">
               <div>
@@ -286,10 +390,15 @@ export const MokymaiView: React.FC<Props> = () => {
               <li>Tinka pirmam objektui arba sudėtingiems mazgams</li>
             </ul>
             <div className="res">
-              <b>REZULTATAS</b>Brigada išmoksta dirbdama savo objekte, o pirmas montavimas vyksta be klaidų.
+              <b>REZULTATAS</b>Brigada išmoksta dirbdama savo objekte, o pirmas
+              montavimas vyksta be klaidų.
             </div>
             <div className="go">
-              <button type="button" className="btn lime" onClick={() => openForm(AKADEMIJA_PROGRAMS[2])}>
+              <button
+                type="button"
+                className="btn lime"
+                onClick={() => openForm(AKADEMIJA_PROGRAMS[2])}
+              >
                 Užsakyti specialistą →
               </button>
             </div>
@@ -307,7 +416,9 @@ export const MokymaiView: React.FC<Props> = () => {
         <div className="twocol">
           <div className="mcard">
             <h3>Sertifikuotas montuotojas</h3>
-            <div className="sub">2 dienos · iki 12 dalyvių · nemokamai · teorija ir praktika</div>
+            <div className="sub">
+              2 dienos · iki 12 dalyvių · nemokamai · teorija ir praktika
+            </div>
             <div className="day">
               <div className="dh">
                 1 DIENA · TEORIJA<span>7 val.</span>
@@ -341,14 +452,18 @@ export const MokymaiView: React.FC<Props> = () => {
             <div className="exam">
               <Icon name="star" />
               <span>
-                <b>Egzaminas:</b> testas ir praktinė užduotis. Išlaikiusiems išduodamas Helstomm sertifikatas.
+                <b>Egzaminas:</b> testas ir praktinė užduotis. Išlaikiusiems
+                išduodamas Helstomm sertifikatas.
               </span>
             </div>
           </div>
 
           <div className="mcard">
             <h3>Projektavimas su Filigran</h3>
-            <div className="sub">2 val. · nemokamai · gamykloje arba nuotoliu · grupei arba individualiai</div>
+            <div className="sub">
+              2 val. · nemokamai · gamykloje arba nuotoliu · grupei arba
+              individualiai
+            </div>
             <div className="day">
               <div className="dh">
                 PROGRAMA<span>2 val.</span>
@@ -366,14 +481,16 @@ export const MokymaiView: React.FC<Props> = () => {
             </div>
             <div className="before">
               <b>Prieš pradedant projektą</b>
-              Pradedate projektuoti su Filigran? Užsiregistruokite į individualią sesiją: per 2 val. aptarsime
-              sistemą ir jūsų objektą, o po to dirbsite su mūsų konstruktoriumi tiesiogiai.
+              Pradedate projektuoti su Filigran? Užsiregistruokite į
+              individualią sesiją: per 2 val. aptarsime sistemą ir jūsų objektą,
+              o po to dirbsite su mūsų konstruktoriumi tiesiogiai.
             </div>
             <div className="exam">
               <Icon name="cap" />
               <span>
-                <b>Gausite:</b> projektavimo vadovą, mazgų biblioteką (DWG), prieigą prie skaičiuoklių ir
-                tiesioginį kontaktą su mūsų konstruktoriumi.
+                <b>Gausite:</b> projektavimo vadovą, mazgų biblioteką (DWG),
+                prieigą prie skaičiuoklių ir tiesioginį kontaktą su mūsų
+                konstruktoriumi.
               </span>
             </div>
           </div>
@@ -387,8 +504,8 @@ export const MokymaiView: React.FC<Props> = () => {
             Tapkite <em>Helstomm partneriu</em>
           </h2>
           <p>
-            Sertifikuota įmonė gali montuoti Helstomm gaminius bet kuriam klientui ir gauna užsakymų bei paramą
-            iš mūsų.
+            Sertifikuota įmonė gali montuoti Helstomm gaminius bet kuriam
+            klientui ir gauna užsakymų bei paramą iš mūsų.
           </p>
         </div>
         <div className="ben">
@@ -397,28 +514,40 @@ export const MokymaiView: React.FC<Props> = () => {
               <Icon name="map" />
             </span>
             <h3>Vieta partnerių žemėlapyje</h3>
-            <p>Jūsų įmonė rodoma svetainėje tarp sertifikuotų montuotojų pagal regioną.</p>
+            <p>
+              Jūsų įmonė rodoma svetainėje tarp sertifikuotų montuotojų pagal
+              regioną.
+            </p>
           </div>
           <div>
             <span className="ic">
               <Icon name="hand" />
             </span>
             <h3>Užsakymai iš mūsų klientų</h3>
-            <p>Klientams, kuriems reikia montavimo, rekomenduojame sertifikuotus partnerius.</p>
+            <p>
+              Klientams, kuriems reikia montavimo, rekomenduojame sertifikuotus
+              partnerius.
+            </p>
           </div>
           <div>
             <span className="ic">
               <Icon name="cap" />
             </span>
             <h3>Nemokami atnaujinimai</h3>
-            <p>Naujų gaminių ir mazgų mokymai sertifikuotiems partneriams – nemokamai.</p>
+            <p>
+              Naujų gaminių ir mazgų mokymai sertifikuotiems partneriams –
+              nemokamai.
+            </p>
           </div>
           <div>
             <span className="ic">
               <Icon name="helmet" />
             </span>
             <h3>Specialistas jūsų objekte</h3>
-            <p>Prireikus galite užsisakyti Helstomm montavimo specialistą 1–3 dienoms (valandinis įkainis).</p>
+            <p>
+              Prireikus galite užsisakyti Helstomm montavimo specialistą 1–3
+              dienoms (valandinis įkainis).
+            </p>
           </div>
           <div>
             <span className="ic">
@@ -432,7 +561,10 @@ export const MokymaiView: React.FC<Props> = () => {
               <Icon name="star" />
             </span>
             <h3>Partnerio ženklas</h3>
-            <p>Ženklas „Sertifikuotas Filigran montuotojas“ jūsų pasiūlymams ir svetainei.</p>
+            <p>
+              Ženklas „Sertifikuotas Filigran montuotojas“ jūsų pasiūlymams ir
+              svetainei.
+            </p>
           </div>
         </div>
         <div className="badge">
@@ -449,7 +581,10 @@ export const MokymaiView: React.FC<Props> = () => {
           </div>
           <div>
             <h3>Sertifikatas galioja 2 metus</h3>
-            <p>Jį pratęsia kvalifikacijos kėlimo mokymai ir kokybiškai įvykdyti objektai.</p>
+            <p>
+              Jį pratęsia kvalifikacijos kėlimo mokymai ir kokybiškai įvykdyti
+              objektai.
+            </p>
           </div>
         </div>
       </section>
@@ -495,7 +630,11 @@ export const MokymaiView: React.FC<Props> = () => {
         </div>
       </section>
 
-      <section className="sec w" id="akademija-kalendorius" style={{ paddingTop: 0 }}>
+      <section
+        className="sec w"
+        id="akademija-kalendorius"
+        style={{ paddingTop: 0 }}
+      >
         <div className="sh">
           <span className="tag l">KALENDORIUS</span>
           <h2>
@@ -520,10 +659,14 @@ export const MokymaiView: React.FC<Props> = () => {
                 </div>
                 <div>
                   {event.audience && (
-                    <span className={event.audienceTone === 'blue' ? 'pill b' : 'pill'}>
+                    <span
+                      className={
+                        event.audienceTone === "blue" ? "pill b" : "pill"
+                      }
+                    >
                       {event.audience}
                     </span>
-                  )}{' '}
+                  )}{" "}
                   {event.program}
                 </div>
                 <div>{event.place}</div>
@@ -534,7 +677,7 @@ export const MokymaiView: React.FC<Props> = () => {
                   disabled={full}
                   onClick={() => openForm(event.program)}
                 >
-                  {full ? 'Užpildyta' : 'Registruotis'}
+                  {full ? "Užpildyta" : "Registruotis"}
                 </button>
               </div>
             );
@@ -543,10 +686,14 @@ export const MokymaiView: React.FC<Props> = () => {
         <p className="note">{calendarNote}</p>
       </section>
 
-      <section className="sec w" id="akademija-registracija" style={{ paddingTop: 0 }}>
+      <section
+        className="sec w"
+        id="akademija-registracija"
+        style={{ paddingTop: 0 }}
+      >
         <div className="fq">
           <div>
-            <div className="sh" style={{ textAlign: 'left', margin: 0 }}>
+            <div className="sh" style={{ textAlign: "left", margin: 0 }}>
               <span className="tag l">DUK</span>
               <h2>
                 Dažni <em>klausimai</em>
@@ -555,23 +702,37 @@ export const MokymaiView: React.FC<Props> = () => {
             <div className="faq">
               <details>
                 <summary>Kiek kainuoja mokymai?</summary>
-                <p>Mokymai nemokami – tiek montuotojams, tiek konstruktoriams.</p>
+                <p>
+                  Mokymai nemokami – tiek montuotojams, tiek konstruktoriams.
+                </p>
               </details>
               <details>
                 <summary>Kam skirtas montuotojų kursas?</summary>
-                <p>Bet kurioms statybos įmonėms ir brigadoms, norinčioms montuoti Filigran gaminius.</p>
+                <p>
+                  Bet kurioms statybos įmonėms ir brigadoms, norinčioms montuoti
+                  Filigran gaminius.
+                </p>
               </details>
               <details>
                 <summary>Kur vyksta praktika?</summary>
-                <p>Gamykloje, mokomajame stende. Įmonės brigadai praktiką galime surengti ir jūsų objekte.</p>
+                <p>
+                  Gamykloje, mokomajame stende. Įmonės brigadai praktiką galime
+                  surengti ir jūsų objekte.
+                </p>
               </details>
               <details>
                 <summary>Ar galite atsiųsti specialistą į objektą?</summary>
-                <p>Taip. Helstomm montavimo specialistas gali dirbti su jūsų brigada 1–3 dienas. Paslauga mokama valandiniu įkainiu.</p>
+                <p>
+                  Taip. Helstomm montavimo specialistas gali dirbti su jūsų
+                  brigada 1–3 dienas. Paslauga mokama valandiniu įkainiu.
+                </p>
               </details>
               <details>
                 <summary>Ar sertifikatas galioja visoje Lietuvoje?</summary>
-                <p>Taip. Sertifikuotas montuotojas gali montuoti Helstomm gaminius bet kuriame objekte. Sertifikatas galioja 2 metus.</p>
+                <p>
+                  Taip. Sertifikuotas montuotojas gali montuoti Helstomm
+                  gaminius bet kuriame objekte. Sertifikatas galioja 2 metus.
+                </p>
               </details>
             </div>
           </div>
@@ -580,7 +741,9 @@ export const MokymaiView: React.FC<Props> = () => {
             <h3>Registracija</h3>
             <p>Susisieksime per 1 darbo dieną ir patvirtinsime datą.</p>
             {submitted ? (
-              <p className="ok">Registracija išsiųsta. Helstomm susisieks adresu {form.email}.</p>
+              <p className="ok">
+                Registracija išsiųsta. Helstomm susisieks adresu {form.email}.
+              </p>
             ) : (
               <>
                 <div className="g2">
@@ -590,7 +753,9 @@ export const MokymaiView: React.FC<Props> = () => {
                       id="ak-name"
                       required
                       value={form.name}
-                      onChange={(event) => setForm({ ...form, name: event.target.value })}
+                      onChange={(event) =>
+                        setForm({ ...form, name: event.target.value })
+                      }
                       placeholder="Jonas Jonaitis"
                     />
                   </div>
@@ -600,7 +765,9 @@ export const MokymaiView: React.FC<Props> = () => {
                       id="ak-company"
                       required
                       value={form.company}
-                      onChange={(event) => setForm({ ...form, company: event.target.value })}
+                      onChange={(event) =>
+                        setForm({ ...form, company: event.target.value })
+                      }
                       placeholder="UAB Statyba"
                     />
                   </div>
@@ -611,7 +778,9 @@ export const MokymaiView: React.FC<Props> = () => {
                       type="email"
                       required
                       value={form.email}
-                      onChange={(event) => setForm({ ...form, email: event.target.value })}
+                      onChange={(event) =>
+                        setForm({ ...form, email: event.target.value })
+                      }
                       placeholder="jonas@statyba.lt"
                     />
                   </div>
@@ -622,7 +791,9 @@ export const MokymaiView: React.FC<Props> = () => {
                       type="tel"
                       required
                       value={form.phone}
-                      onChange={(event) => setForm({ ...form, phone: event.target.value })}
+                      onChange={(event) =>
+                        setForm({ ...form, phone: event.target.value })
+                      }
                       placeholder="+370 600 00000"
                     />
                   </div>
@@ -631,7 +802,9 @@ export const MokymaiView: React.FC<Props> = () => {
                     <select
                       id="ak-topic"
                       value={topic}
-                      onChange={(event) => setTopic(event.target.value as AkademijaProgram)}
+                      onChange={(event) =>
+                        setTopic(event.target.value as AkademijaProgram)
+                      }
                     >
                       {AKADEMIJA_PROGRAMS.map((item) => (
                         <option key={item} value={item}>
@@ -645,23 +818,36 @@ export const MokymaiView: React.FC<Props> = () => {
                     <input
                       id="ak-count"
                       value={form.participantsCount}
-                      onChange={(event) => setForm({ ...form, participantsCount: event.target.value })}
+                      onChange={(event) =>
+                        setForm({
+                          ...form,
+                          participantsCount: event.target.value,
+                        })
+                      }
                       placeholder="4"
                     />
                   </div>
                   <div className="fl full">
-                    <label htmlFor="ak-project">Planuojamas objektas (nebūtina)</label>
+                    <label htmlFor="ak-project">
+                      Planuojamas objektas (nebūtina)
+                    </label>
                     <input
                       id="ak-project"
                       value={form.project}
-                      onChange={(event) => setForm({ ...form, project: event.target.value })}
+                      onChange={(event) =>
+                        setForm({ ...form, project: event.target.value })
+                      }
                       placeholder="Daugiabutis, Vilnius, 2027 m. pavasaris"
                     />
                   </div>
                 </div>
                 {error && <p className="err">{error}</p>}
-                <button className="btn lime" type="submit" disabled={submitting}>
-                  {submitting ? 'Siunčiama…' : 'Registruotis →'}
+                <button
+                  className="btn lime"
+                  type="submit"
+                  disabled={submitting}
+                >
+                  {submitting ? "Siunčiama…" : "Registruotis →"}
                 </button>
               </>
             )}
