@@ -1,5 +1,6 @@
 import type { ContactSettings, SocialLinkItem, SocialPlatform, TeamMember } from '../types';
 import { TEAM_MEMBERS } from '../data/helstommData';
+import { attributionPayload } from '../lib/attribution';
 
 const STRAPI_URL = (import.meta.env.VITE_STRAPI_URL as string | undefined)?.replace(/\/$/, '') || '';
 
@@ -140,6 +141,19 @@ export async function fetchSocialLinks(): Promise<SocialLinkItem[]> {
   }
 }
 
+function appendTracking(form: FormData) {
+  if (typeof window === 'undefined') return;
+  form.append('pageUrl', window.location.href);
+  const attribution = attributionPayload();
+  form.append('utmSource', attribution.utmSource);
+  form.append('utmMedium', attribution.utmMedium);
+  form.append('utmCampaign', attribution.utmCampaign);
+  form.append('utmContent', attribution.utmContent);
+  form.append('utmTerm', attribution.utmTerm);
+  form.append('referrer', attribution.referrer);
+  form.append('landingPath', attribution.landingPath);
+}
+
 async function postForm(path: string, form: FormData) {
   const response = await fetch(`${STRAPI_URL}${path}`, {
     method: 'POST',
@@ -162,6 +176,7 @@ export async function submitContactForm(input: {
   if (input.file) {
     form.append('attachment', input.file);
   }
+  appendTracking(form);
   await postForm('/api/contact-form', form);
 }
 
@@ -182,6 +197,7 @@ export async function submitAnalysisForm(input: {
   for (const file of input.files || []) {
     form.append('attachment', file);
   }
+  appendTracking(form);
   await postForm('/api/analysis-form', form);
 }
 
@@ -200,5 +216,6 @@ export async function submitTrainingForm(input: {
   form.append('company', input.company || '');
   form.append('participantsCount', input.participantsCount || '');
   form.append('topic', input.topic || '');
+  appendTracking(form);
   await postForm('/api/training-form', form);
 }

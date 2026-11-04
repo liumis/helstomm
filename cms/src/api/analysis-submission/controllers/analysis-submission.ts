@@ -1,11 +1,13 @@
 import { factories } from '@strapi/strapi';
 import {
+  attributionFromBody,
   getClientMeta,
   getMailSettings,
   notifyEmailsFor,
   sendFormNotification,
   uploadFormFiles,
 } from '../../../utils/form-intake';
+import { syncWebsiteEventToNotion } from '../../../utils/notion-crm';
 
 export default factories.createCoreController(
   'api::analysis-submission.analysis-submission',
@@ -23,6 +25,8 @@ export default factories.createCoreController(
       }
 
       const meta = getClientMeta(ctx);
+      const attribution = attributionFromBody(body);
+      const pageUrl = String(body.pageUrl || '').trim().slice(0, 500);
       const mail = await getMailSettings(strapi);
       const recipients = notifyEmailsFor('analysis', mail);
       const uploadedFiles = await uploadFormFiles(
@@ -48,6 +52,31 @@ export default factories.createCoreController(
           ...(uploadedFiles.attachmentIds.length > 0 ? { attachment: uploadedFiles.attachmentIds } : {}),
         },
       });
+
+      void syncWebsiteEventToNotion(
+        {
+          action: 'analysis',
+          code: 'ANALIZE',
+          title: 'Projekto analizė',
+          name,
+          email,
+          company,
+          phone,
+          projectName: company,
+          pageUrl,
+          consent: true,
+          summary: [
+            details,
+            uploadedFiles.attachmentNames.length > 0
+              ? `Prisegti failai: ${uploadedFiles.attachmentNames.join(', ')}`
+              : '',
+          ]
+            .filter(Boolean)
+            .join('\n'),
+          ...attribution,
+        },
+        strapi.log
+      );
 
       try {
         await sendFormNotification(strapi, {

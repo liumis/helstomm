@@ -1,11 +1,13 @@
 import { factories } from '@strapi/strapi';
 import {
+  attributionFromBody,
   getClientMeta,
   getMailSettings,
   notifyEmailsFor,
   sendFormNotification,
   uploadFormFile,
 } from '../../../utils/form-intake';
+import { syncWebsiteEventToNotion } from '../../../utils/notion-crm';
 
 export default factories.createCoreController(
   'api::contact-submission.contact-submission',
@@ -20,6 +22,8 @@ export default factories.createCoreController(
       }
 
       const meta = getClientMeta(ctx);
+      const attribution = attributionFromBody(body);
+      const pageUrl = String(body.pageUrl || '').trim().slice(0, 500);
       const mail = await getMailSettings(strapi);
       const recipients = notifyEmailsFor('contact', mail);
       const uploadedFile = await uploadFormFile(
@@ -43,6 +47,23 @@ export default factories.createCoreController(
           ...(uploadedFile.attachmentId ? { attachment: uploadedFile.attachmentId } : {}),
         },
       });
+
+      void syncWebsiteEventToNotion(
+        {
+          action: 'contact',
+          code: 'KONTAKTAI',
+          title: 'Kontaktų užklausa',
+          name,
+          email,
+          pageUrl,
+          consent: true,
+          summary: uploadedFile.attachmentName
+            ? `Prisegtas failas: ${uploadedFile.attachmentName}`
+            : '',
+          ...attribution,
+        },
+        strapi.log
+      );
 
       try {
         await sendFormNotification(strapi, {

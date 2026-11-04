@@ -1,10 +1,12 @@
 import { factories } from '@strapi/strapi';
 import {
+  attributionFromBody,
   getClientMeta,
   getMailSettings,
   notifyEmailsFor,
   sendFormNotification,
 } from '../../../utils/form-intake';
+import { syncWebsiteEventToNotion } from '../../../utils/notion-crm';
 
 export default factories.createCoreController(
   'api::training-submission.training-submission',
@@ -23,6 +25,8 @@ export default factories.createCoreController(
       }
 
       const meta = getClientMeta(ctx);
+      const attribution = attributionFromBody(body);
+      const pageUrl = String(body.pageUrl || '').trim().slice(0, 500);
       const mail = await getMailSettings(strapi);
       const recipients = notifyEmailsFor('training', mail);
 
@@ -41,6 +45,30 @@ export default factories.createCoreController(
           submittedAt: meta.submittedAt,
         },
       });
+
+      void syncWebsiteEventToNotion(
+        {
+          action: 'training',
+          code: 'MOKYMAI',
+          title: topic || 'Mokymų registracija',
+          name,
+          email,
+          company,
+          phone,
+          role: topic,
+          projectName: topic,
+          pageUrl,
+          consent: true,
+          summary: [
+            topic && `Programa: ${topic}`,
+            participantsCount && `Dalyvių skaičius: ${participantsCount}`,
+          ]
+            .filter(Boolean)
+            .join('. '),
+          ...attribution,
+        },
+        strapi.log
+      );
 
       try {
         await sendFormNotification(strapi, {

@@ -8,7 +8,16 @@ const DEFAULT_DS = {
 };
 
 export type NotionCrmEvent = {
-  action: 'calculation' | 'ask' | 'notify' | 'register' | 'view' | 'download';
+  action:
+    | 'calculation'
+    | 'ask'
+    | 'notify'
+    | 'register'
+    | 'view'
+    | 'download'
+    | 'training'
+    | 'contact'
+    | 'analysis';
   code?: string;
   title?: string;
   name?: string;
@@ -88,9 +97,18 @@ function displayName(event: NotionCrmEvent) {
 function actionLabel(action: NotionCrmEvent['action']) {
   if (action === 'ask') return 'Klausti konstruktoriaus';
   if (action === 'download') return 'Parsisiustas PDF';
+  if (action === 'training') return 'Mokymu registracija';
+  if (action === 'contact') return 'Kontaktu uzklausa';
+  if (action === 'analysis') return 'Projekto analize';
   if (action === 'view' || action === 'notify') return 'Perziura';
   if (action === 'register') return 'Perziura';
   return 'Atrakinti rezultatai';
+}
+
+function peopleSource(action: NotionCrmEvent['action']) {
+  if (action === 'training') return ['Mokymai', 'Skaiciuokle'];
+  if (action === 'contact' || action === 'analysis') return ['Svetaine', 'Skaiciuokle'];
+  return ['Skaiciuokle'];
 }
 
 function activitySource(event: NotionCrmEvent) {
@@ -117,7 +135,7 @@ const CATALOG_ALIASES: Record<string, string> = {
 
 function roleMaps(role?: string) {
   const folded = fold(role);
-  if (folded.startsWith('vyst')) {
+  if (folded.startsWith('vyst') || /\bvyst/.test(folded)) {
     return {
       peopleActivity: 'vystytojas',
       companyActivity: 'vystytojas',
@@ -125,7 +143,7 @@ function roleMaps(role?: string) {
       audience: 'vystytojai',
     };
   }
-  if (folded.startsWith('statyb')) {
+  if (folded.startsWith('statyb') || /\b(statyb|montuot)/.test(folded)) {
     return {
       peopleActivity: 'montuotojas',
       companyActivity: 'montuotojas',
@@ -133,7 +151,7 @@ function roleMaps(role?: string) {
       audience: 'statybininkai',
     };
   }
-  if (folded.startsWith('projekt')) {
+  if (folded.startsWith('projekt') || /\b(projekt|konstruktor|architekt)/.test(folded)) {
     return {
       peopleActivity: 'konstruktorius',
       companyActivity: 'projektuotojas',
@@ -238,6 +256,21 @@ function setSelect(properties: Record<string, unknown>, schema: SourceSchema, al
   if (prop.type === 'status') properties[prop.name] = { status: { name } };
   else if (prop.type === 'multi_select') properties[prop.name] = { multi_select: [{ name }] };
   else properties[prop.name] = { select: { name } };
+}
+
+function setSelectFirst(
+  properties: Record<string, unknown>,
+  schema: SourceSchema,
+  aliases: string[],
+  wanted: string[],
+) {
+  for (const value of wanted) {
+    const prop = findProp(schema, ...aliases);
+    if (matchOption(prop, value)) {
+      setSelect(properties, schema, aliases, value);
+      return;
+    }
+  }
 }
 
 function setCheckbox(properties: Record<string, unknown>, schema: SourceSchema, aliases: string[], value: boolean) {
@@ -399,7 +432,7 @@ export async function syncWebsiteEventToNotion(event: NotionCrmEvent, log?: Logg
       setText(properties, peopleSchema, ['El. pastas', 'El. paštas'], email);
       setText(properties, peopleSchema, ['Telefonas'], event.phone);
       setText(properties, peopleSchema, ['Pareigos'], event.role);
-      setSelect(properties, peopleSchema, ['Saltinis', 'Šaltinis'], 'Skaiciuokle');
+      setSelectFirst(properties, peopleSchema, ['Saltinis', 'Šaltinis'], peopleSource(event.action));
       setSelect(properties, peopleSchema, ['Sutikimas'], event.consent ? 'Sutiko gauti' : 'Nezinoma');
       setSelect(properties, peopleSchema, ['Veiklos pobudis', 'Veiklos pobūdis'], roles.peopleActivity);
       setSelect(properties, peopleSchema, ['Role', 'Rolė'], roles.peopleRole);
@@ -422,13 +455,27 @@ export async function syncWebsiteEventToNotion(event: NotionCrmEvent, log?: Logg
     const usageProps: Record<string, unknown> = {};
     setText(usageProps, usageSchema, ['Irasas', 'Įrašas'], usageTitle);
     setSelect(usageProps, usageSchema, ['Saltinis', 'Šaltinis'], 'Svetaine API');
-    setSelect(usageProps, usageSchema, ['Veiksmas'], actionLabel(event.action));
-    setSelect(usageProps, usageSchema, ['Atejo is', 'Atėjo iš'], activitySource(event));
+    setSelectFirst(usageProps, usageSchema, ['Veiksmas'], [
+      actionLabel(event.action),
+      'Perziura',
+    ]);
+    setSelect(
+      usageProps,
+      usageSchema,
+      ['Atejo is', 'Atėjo iš'],
+      event.action === 'training' ? 'mokymai / renginys' : activitySource(event),
+    );
     if (roles.audience) setSelect(usageProps, usageSchema, ['Auditorija'], roles.audience);
     setText(usageProps, usageSchema, ['El. pastas', 'El. paštas'], email);
     setText(usageProps, usageSchema, ['Vardas pavarde', 'Vardas pavardė'], name);
     setText(usageProps, usageSchema, ['Imone', 'Įmonė'], companyName);
     setText(usageProps, usageSchema, ['Projektas'], event.projectName);
+    setText(
+      usageProps,
+      usageSchema,
+      ['Santrauka', 'Pastabos', 'Komentaras', 'Aprasymas', 'Aprašymas', 'Notes'],
+      event.summary,
+    );
     setText(usageProps, usageSchema, ['UTM kampanija'], campaign);
     setText(usageProps, usageSchema, ['Nuoroda (referrer)'], httpUrl(event.referrer) || httpUrl(event.pageUrl));
     setText(usageProps, usageSchema, ['Data'], new Date().toISOString());
