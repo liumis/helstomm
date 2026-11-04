@@ -39,6 +39,13 @@ function mediaUrl(file?: StrapiMedia | StrapiMedia[] | null) {
   if (url.startsWith("http://") || url.startsWith("https://")) return url;
   return `${STRAPI_URL}${url}`;
 }
+
+function heroBackground(url?: string) {
+  if (!url || url.includes("construction_steel_site")) {
+    return FALLBACK_HERO_BLOCK.backgroundUrl;
+  }
+  return url;
+}
 function asAction(value?: string): HeroCardAction {
   if (value === "analysis" || value === "roi" || value === "view") return value;
   return "view";
@@ -110,10 +117,9 @@ export async function fetchHeroBlock(): Promise<HeroBlock> {
           : settings.primaryCtaLabel || FALLBACK_HERO_BLOCK.primaryCtaLabel,
       secondaryCtaLabel:
         settings.secondaryCtaLabel || FALLBACK_HERO_BLOCK.secondaryCtaLabel,
-      backgroundUrl:
-        mediaUrl(settings.background) ||
-        settings.backgroundUrl ||
-        FALLBACK_HERO_BLOCK.backgroundUrl,
+      backgroundUrl: heroBackground(
+        settings.backgroundUrl || mediaUrl(settings.background)
+      ),
       cards,
     };
   } catch (error) {

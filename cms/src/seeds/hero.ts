@@ -7,7 +7,7 @@ export const HERO_SETTING_SEED = {
     'Nuo sprendimo iki įgyvendinimo – 4 žingsniai, vienas partneris ir viena atsakomybė už visas konstrukcijas.',
   primaryCtaLabel: 'Gauti projektų analizę',
   secondaryCtaLabel: 'Palyginti kainą',
-  backgroundUrl: '/construction_steel_site.jpg',
+  backgroundUrl: '/filigran_construction_site.jpg',
 };
 
 export const HERO_CARD_SEEDS = [
