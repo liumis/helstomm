@@ -581,7 +581,7 @@ export interface ApiCalculatorSubmissionCalculatorSubmission
     firstName: Schema.Attribute.String;
     inputs: Schema.Attribute.JSON;
     ipAddress: Schema.Attribute.String;
-    kind: Schema.Attribute.Enumeration<['calculation', 'ask', 'notify']> &
+    kind: Schema.Attribute.Enumeration<['calculation', 'ask', 'notify', 'download']> &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'calculation'>;
     lastName: Schema.Attribute.String;
@@ -592,6 +592,7 @@ export interface ApiCalculatorSubmissionCalculatorSubmission
     > &
       Schema.Attribute.Private;
     name: Schema.Attribute.String & Schema.Attribute.Required;
+    newsConsent: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     notifyEmails: Schema.Attribute.Text;
     pageUrl: Schema.Attribute.String;
     projectName: Schema.Attribute.String;
@@ -776,6 +777,44 @@ export interface ApiContactSubmissionContactSubmission
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     userAgent: Schema.Attribute.Text;
+  };
+}
+
+export interface ApiNotionSyncJobNotionSyncJob
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'notion_sync_jobs';
+  info: {
+    description: 'Nepavyk\u0119 Notion CRM \u012Fra\u0161ai pakartojimui';
+    displayName: 'Notion eil\u0117';
+    pluralName: 'notion-sync-jobs';
+    singularName: 'notion-sync-job';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    action: Schema.Attribute.String;
+    alertedAt: Schema.Attribute.DateTime;
+    attempts: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    lastError: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::notion-sync-job.notion-sync-job'
+    > &
+      Schema.Attribute.Private;
+    nextAttemptAt: Schema.Attribute.DateTime;
+    payload: Schema.Attribute.JSON;
+    publishedAt: Schema.Attribute.DateTime;
+    status: Schema.Attribute.Enumeration<['pending', 'done', 'failed']> &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'pending'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -1721,13 +1760,32 @@ export interface ApiTrainingSubmissionTrainingSubmission
       'api::training-submission.training-submission'
     > &
       Schema.Attribute.Private;
+    daysCount: Schema.Attribute.String;
+    firstName: Schema.Attribute.String;
+    groupDate: Schema.Attribute.String;
+    landingPath: Schema.Attribute.String;
+    lastName: Schema.Attribute.String;
+    location: Schema.Attribute.String;
     name: Schema.Attribute.String & Schema.Attribute.Required;
+    newsConsent: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     notifyEmails: Schema.Attribute.Text;
+    objectAddress: Schema.Attribute.String;
+    pageUrl: Schema.Attribute.String;
     participantsCount: Schema.Attribute.String;
     phone: Schema.Attribute.String & Schema.Attribute.Required;
+    position: Schema.Attribute.String;
+    preferredDate: Schema.Attribute.String;
+    program: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    question: Schema.Attribute.Text;
+    referrer: Schema.Attribute.String;
     submittedAt: Schema.Attribute.DateTime;
     topic: Schema.Attribute.String;
+    utmCampaign: Schema.Attribute.String;
+    utmContent: Schema.Attribute.String;
+    utmMedium: Schema.Attribute.String;
+    utmSource: Schema.Attribute.String;
+    utmTerm: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -2334,6 +2392,7 @@ declare module '@strapi/strapi' {
       'api::homepage-setting.homepage-setting': ApiHomepageSettingHomepageSetting;
       'api::inzinerine-pagalba.inzinerine-pagalba': ApiInzinerinePagalbaInzinerinePagalba;
       'api::mokymai-setting.mokymai-setting': ApiMokymaiSettingMokymaiSetting;
+      'api::notion-sync-job.notion-sync-job': ApiNotionSyncJobNotionSyncJob;
       'api::product.product': ApiProductProduct;
       'api::project.project': ApiProjectProject;
       'api::projektai-setting.projektai-setting': ApiProjektaiSettingProjektaiSetting;

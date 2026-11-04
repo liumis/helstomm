@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "notion_sync_jobs",
+  "info": {
+    "singularName": "notion-sync-job",
+    "pluralName": "notion-sync-jobs",
+    "displayName": "Notion eilė",
+    "description": "Nepavykę Notion CRM įrašai pakartojimui"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "action": {
+      "type": "string"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["pending", "done", "failed"],
+      "default": "pending",
+      "required": true
+    },
+    "attempts": {
+      "type": "integer",
+      "default": 0
+    },
+    "lastError": {
+      "type": "text"
+    },
+    "payload": {
+      "type": "json"
+    },
+    "nextAttemptAt": {
+      "type": "datetime"
+    },
+    "alertedAt": {
+      "type": "datetime"
+    }
+  }
+}

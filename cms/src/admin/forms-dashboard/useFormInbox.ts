@@ -76,7 +76,13 @@ function asString(value: unknown) {
 
 function calculatorDetail(row: Record<string, unknown>) {
   const kindLabel =
-    row.kind === 'ask' ? 'Klausimas' : row.kind === 'notify' ? 'Pranešimas' : 'Skaičiavimas';
+    row.kind === 'ask'
+      ? 'Klausimas'
+      : row.kind === 'notify'
+        ? 'Pranešimas'
+        : row.kind === 'download'
+          ? 'PDF'
+          : 'Skaičiavimas';
   const code = asString(row.code);
   const title = asString(row.title) || asString(row.projectName);
   return [kindLabel, code, title].filter(Boolean).join(' · ');

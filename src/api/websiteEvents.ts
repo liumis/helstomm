@@ -32,6 +32,7 @@ export async function postDocumentActivity(input: {
     role: input.role || stored.role || '',
     phone: input.phone || stored.phone || '',
     pageUrl: window.location.href,
+    kontaktoId: stored.kontaktoId || '',
     ...attributionPayload(),
   };
   if (!payload.email) return false;

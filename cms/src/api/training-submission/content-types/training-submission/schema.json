@@ -33,6 +33,25 @@
     "topic": {
       "type": "string"
     },
+    "firstName": { "type": "string" },
+    "lastName": { "type": "string" },
+    "position": { "type": "string" },
+    "program": { "type": "string" },
+    "groupDate": { "type": "string" },
+    "preferredDate": { "type": "string" },
+    "location": { "type": "string" },
+    "objectAddress": { "type": "string" },
+    "daysCount": { "type": "string" },
+    "question": { "type": "text" },
+    "newsConsent": { "type": "boolean", "default": false },
+    "utmSource": { "type": "string" },
+    "utmMedium": { "type": "string" },
+    "utmCampaign": { "type": "string" },
+    "utmContent": { "type": "string" },
+    "utmTerm": { "type": "string" },
+    "referrer": { "type": "string" },
+    "landingPath": { "type": "string" },
+    "pageUrl": { "type": "string" },
     "notifyEmails": {
       "type": "text"
     },

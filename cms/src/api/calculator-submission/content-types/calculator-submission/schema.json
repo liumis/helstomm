@@ -14,7 +14,7 @@
   "attributes": {
     "kind": {
       "type": "enumeration",
-      "enum": ["calculation", "ask", "notify"],
+      "enum": ["calculation", "ask", "notify", "download"],
       "default": "calculation",
       "required": true
     },
@@ -45,6 +45,10 @@
     },
     "projectName": {
       "type": "string"
+    },
+    "newsConsent": {
+      "type": "boolean",
+      "default": false
     },
     "question": {
       "type": "text"

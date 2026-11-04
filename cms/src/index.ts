@@ -18,6 +18,7 @@ import {
   seedPageChrome,
   seedSeoPages,
 } from './bootstrap/cms-setup';
+import { processNotionQueue } from './utils/notion-queue';
 
 export default {
   register(/* { strapi }: { strapi: Core.Strapi } */) {},
@@ -40,7 +41,13 @@ export default {
     await seedMokymai(strapi);
     await seedPageChrome(strapi);
     await seedSeoPages(strapi);
+    const runQueue = () => {
+      processNotionQueue(strapi).catch((error) => {
+        strapi.log.error(`Notion queue: ${String(error).slice(0, 200)}`);
+      });
+    };
+    setTimeout(runQueue, 20_000);
+    setInterval(runQueue, 15 * 60 * 1000);
     strapi.log.info('CMS bootstrap complete.');
-
   },
 };

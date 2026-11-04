@@ -1,6 +1,6 @@
 import { factories } from '@strapi/strapi';
 import { attributionFromBody, getClientMeta } from '../../../utils/form-intake';
-import { syncWebsiteEventToNotion } from '../../../utils/notion-crm';
+import { syncWebsiteEventOrQueue } from '../../../utils/notion-queue';
 
 function firstFile(files: unknown) {
   if (!files) return null;
@@ -53,21 +53,18 @@ export default factories.createCoreController(
       });
 
       const meta = getClientMeta(ctx);
-      void syncWebsiteEventToNotion(
-        {
-          action: 'contact',
-          code: 'KONTAKTAI',
-          title: 'Kontaktų užklausa',
-          name,
-          email,
-          pageUrl: String(body.pageUrl || '').trim().slice(0, 500),
-          consent: true,
-          summary: attachmentName ? `Prisegtas failas: ${attachmentName}` : '',
-          ...attributionFromBody(body),
-        },
-        strapi.log
-      );
-      strapi.log.info(`Contact form saved for ${email} → ${targetEmail} (${meta.ipAddress})`);
+      void syncWebsiteEventOrQueue(strapi, {
+        action: 'contact',
+        code: 'KONTAKTAI',
+        title: 'Kontaktų užklausa',
+        name,
+        email,
+        pageUrl: String(body.pageUrl || '').trim().slice(0, 500),
+        consent: false,
+        summary: attachmentName ? `Prisegtas failas: ${attachmentName}` : '',
+        ...attributionFromBody(body),
+      });
+      strapi.log.info(`Contact form saved (${meta.ipAddress})`);
 
       return {
         data: {

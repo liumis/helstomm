@@ -10,7 +10,7 @@ import {
   Award,
 } from "lucide-react";
 import { fetchMokymaiBlock } from "../../api/mokymai";
-import { submitTrainingForm } from "../../api/contact";
+import { fetchAcademyGroups, submitTrainingForm } from "../../api/contact";
 import { FALLBACK_MOKYMAI } from "../../data/mokymai";
 import { isOpenableFile } from "../../lib/files";
 import type { MokymaiBlock } from "../../types";
@@ -20,21 +20,40 @@ interface Props {
   onClose: () => void;
 }
 
+function programFromTopic(topic: string) {
+  const value = topic.toLowerCase();
+  if (value.includes("specialist") || value.includes("objekte")) return "SPECIALISTAS";
+  if (value.includes("projekt")) return "PROJEKTAVIMAS";
+  if (value.includes("montuot") || value.includes("sertifik")) return "MONTUOTOJAS";
+  return "";
+}
+
 export const TrainingRegisterModal: React.FC<Props> = ({ isOpen, onClose }) => {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [block, setBlock] = useState<MokymaiBlock>(FALLBACK_MOKYMAI);
+  const [groups, setGroups] = useState<Array<{ id: string; dateLabel: string; place: string; seatsLeft: number }>>([]);
   const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
     name: "",
     company: "",
     email: "",
     phone: "",
+    position: "",
     participantsCount: "1",
     topic:
       FALLBACK_MOKYMAI.formTopics?.[0]?.title ||
       FALLBACK_MOKYMAI.topics?.[0]?.title ||
       "",
+    groupDate: "",
+    preferredDate: "",
+    location: "",
+    objectAddress: "",
+    daysCount: "",
+    question: "",
+    newsConsent: false,
   });
 
   useEffect(() => {
@@ -51,6 +70,16 @@ export const TrainingRegisterModal: React.FC<Props> = ({ isOpen, onClose }) => {
     });
   }, [isOpen]);
 
+  const program = programFromTopic(formData.topic);
+
+  useEffect(() => {
+    if (!isOpen || !program) {
+      setGroups([]);
+      return;
+    }
+    fetchAcademyGroups(program).then(setGroups);
+  }, [isOpen, program]);
+
   if (!isOpen) return null;
 
   const formTopics = block.formTopics?.length
@@ -62,7 +91,11 @@ export const TrainingRegisterModal: React.FC<Props> = ({ isOpen, onClose }) => {
     setSubmitError("");
     setSubmitting(true);
     try {
-      await submitTrainingForm(formData);
+      await submitTrainingForm({
+        ...formData,
+        name: [formData.firstName, formData.lastName].filter(Boolean).join(" ") || formData.name,
+        program,
+      });
       setSubmitted(true);
     } catch {
       setSubmitError("Nepavyko užregistruoti. Bandykite dar kartą.");
@@ -158,16 +191,31 @@ export const TrainingRegisterModal: React.FC<Props> = ({ isOpen, onClose }) => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-medium text-slate-700 mb-1">
-                    Vardas, Pavardė *
+                    Vardas *
                   </label>
                   <input
                     type="text"
                     required
-                    value={formData.name}
+                    value={formData.firstName}
                     onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
+                      setFormData({ ...formData, firstName: e.target.value })
                     }
-                    placeholder="PVZ.: Jonas Jonaitis"
+                    placeholder="Jonas"
+                    className="w-full p-2.5 border border-slate-300 rounded-sm text-sm text-slate-900 focus:ring-2 focus:ring-[#b8cd33] outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-slate-700 mb-1">
+                    Pavardė *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.lastName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, lastName: e.target.value })
+                    }
+                    placeholder="Jonaitis"
                     className="w-full p-2.5 border border-slate-300 rounded-sm text-sm text-slate-900 focus:ring-2 focus:ring-[#b8cd33] outline-none"
                   />
                 </div>
@@ -182,6 +230,20 @@ export const TrainingRegisterModal: React.FC<Props> = ({ isOpen, onClose }) => {
                       setFormData({ ...formData, company: e.target.value })
                     }
                     placeholder="UAB Statybų Valdymas"
+                    className="w-full p-2.5 border border-slate-300 rounded-sm text-sm text-slate-900 focus:ring-2 focus:ring-[#b8cd33] outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-slate-700 mb-1">
+                    Pareigos
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.position}
+                    onChange={(e) =>
+                      setFormData({ ...formData, position: e.target.value })
+                    }
+                    placeholder="Projektuotojas"
                     className="w-full p-2.5 border border-slate-300 rounded-sm text-sm text-slate-900 focus:ring-2 focus:ring-[#b8cd33] outline-none"
                   />
                 </div>
@@ -221,6 +283,7 @@ export const TrainingRegisterModal: React.FC<Props> = ({ isOpen, onClose }) => {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {(program === "MONTUOTOJAS" || program === "SPECIALISTAS") && (
                 <div>
                   <label className="block text-xs font-medium text-slate-700 mb-1">
                     Dalyvių Skaičius
@@ -241,6 +304,7 @@ export const TrainingRegisterModal: React.FC<Props> = ({ isOpen, onClose }) => {
                     <option value="15+">Daugiau nei 15 (Visas objektas)</option>
                   </select>
                 </div>
+                )}
                 <div>
                   <label className="block text-xs font-medium text-slate-700 mb-1">
                     Mokymų Tema
@@ -248,7 +312,7 @@ export const TrainingRegisterModal: React.FC<Props> = ({ isOpen, onClose }) => {
                   <select
                     value={formData.topic}
                     onChange={(e) =>
-                      setFormData({ ...formData, topic: e.target.value })
+                      setFormData({ ...formData, topic: e.target.value, groupDate: "" })
                     }
                     className="w-full p-2.5 border border-slate-300 rounded-sm text-sm text-slate-900 focus:ring-2 focus:ring-[#b8cd33] outline-none"
                   >
@@ -260,6 +324,119 @@ export const TrainingRegisterModal: React.FC<Props> = ({ isOpen, onClose }) => {
                   </select>
                 </div>
               </div>
+
+              {(program === "MONTUOTOJAS" || program === "PROJEKTAVIMAS") && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">
+                      {groups.length > 0 ? "Grupė (data)" : "Pageidaujama data"}
+                    </label>
+                    {groups.length > 0 ? (
+                      <select
+                        value={formData.groupDate}
+                        onChange={(e) =>
+                          setFormData({ ...formData, groupDate: e.target.value })
+                        }
+                        className="w-full p-2.5 border border-slate-300 rounded-sm text-sm text-slate-900 focus:ring-2 focus:ring-[#b8cd33] outline-none"
+                      >
+                        <option value="">Pasirinkite datą</option>
+                        {groups.map((item) => (
+                          <option key={item.id} value={item.dateLabel}>
+                            {item.dateLabel}
+                            {item.place ? ` · ${item.place}` : ""}
+                            {` · liko ${item.seatsLeft}`}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input
+                        type="text"
+                        value={formData.preferredDate}
+                        onChange={(e) =>
+                          setFormData({ ...formData, preferredDate: e.target.value })
+                        }
+                        placeholder="Pvz. 2026-11-20"
+                        className="w-full p-2.5 border border-slate-300 rounded-sm text-sm text-slate-900 focus:ring-2 focus:ring-[#b8cd33] outline-none"
+                      />
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">
+                      Pageidaujama vieta
+                    </label>
+                    <select
+                      value={formData.location}
+                      onChange={(e) =>
+                        setFormData({ ...formData, location: e.target.value })
+                      }
+                      className="w-full p-2.5 border border-slate-300 rounded-sm text-sm text-slate-900 focus:ring-2 focus:ring-[#b8cd33] outline-none"
+                    >
+                      <option value="">Pasirinkite</option>
+                      <option value="Gamykla">Gamykla</option>
+                      <option value="Mūsų objektas">Mūsų objektas</option>
+                      <option value="Nuotoliu">Nuotoliu</option>
+                    </select>
+                  </div>
+                </div>
+              )}
+
+              {program === "SPECIALISTAS" && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">
+                      Objekto adresas
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.objectAddress}
+                      onChange={(e) =>
+                        setFormData({ ...formData, objectAddress: e.target.value })
+                      }
+                      className="w-full p-2.5 border border-slate-300 rounded-sm text-sm text-slate-900 focus:ring-2 focus:ring-[#b8cd33] outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">
+                      Dienų skaičius
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.daysCount}
+                      onChange={(e) =>
+                        setFormData({ ...formData, daysCount: e.target.value })
+                      }
+                      placeholder="Pvz. 2"
+                      className="w-full p-2.5 border border-slate-300 rounded-sm text-sm text-slate-900 focus:ring-2 focus:ring-[#b8cd33] outline-none"
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div>
+                <label className="block text-xs font-medium text-slate-700 mb-1">
+                  Klausimas / komentaras
+                </label>
+                <textarea
+                  value={formData.question}
+                  onChange={(e) =>
+                    setFormData({ ...formData, question: e.target.value })
+                  }
+                  rows={3}
+                  className="w-full p-2.5 border border-slate-300 rounded-sm text-sm text-slate-900 focus:ring-2 focus:ring-[#b8cd33] outline-none"
+                />
+              </div>
+
+              <label className="flex items-start gap-2 text-xs text-slate-600">
+                <input
+                  type="checkbox"
+                  checked={formData.newsConsent}
+                  onChange={(e) =>
+                    setFormData({ ...formData, newsConsent: e.target.checked })
+                  }
+                  className="mt-0.5"
+                />
+                Sutinku gauti Helstomm naujienas
+              </label>
 
               {submitError && (
                 <p className="text-xs font-semibold text-red-600">

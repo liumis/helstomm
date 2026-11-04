@@ -6,7 +6,8 @@ import {
   notifyEmailsFor,
   sendFormNotification,
 } from '../../../utils/form-intake';
-import { syncWebsiteEventToNotion } from '../../../utils/notion-crm';
+import { rejectIfGuarded } from '../../../utils/form-guard';
+import { syncWebsiteEventOrQueue } from '../../../utils/notion-queue';
 
 const ALLOWED_CODES = new Set([
   'P1',
@@ -53,6 +54,10 @@ function asText(value: unknown) {
   return String(value || '').trim();
 }
 
+function asBool(value: unknown) {
+  return value === true || value === 'true' || value === '1' || value === 'on';
+}
+
 function parseJsonField(value: unknown) {
   if (value == null || value === '') return null;
   if (typeof value === 'string') {
@@ -69,6 +74,8 @@ export default factories.createCoreController(
   'api::calculator-submission.calculator-submission',
   ({ strapi }) => ({
     async submit(ctx) {
+      if (await rejectIfGuarded(ctx)) return;
+
       const raw = (ctx.request.body || {}) as Record<string, unknown>;
       const body = asRecord(raw.data ?? raw);
       const code = asText(body.code).toUpperCase();
@@ -79,7 +86,16 @@ export default factories.createCoreController(
       const projectName = asText(body.projectName);
       const title = asText(body.title);
       const rawKind = asText(body.kind);
-      const kind = rawKind === 'ask' ? 'ask' : rawKind === 'notify' ? 'notify' : 'calculation';
+      const kind =
+        rawKind === 'ask'
+          ? 'ask'
+          : rawKind === 'notify'
+            ? 'notify'
+            : rawKind === 'download'
+              ? 'download'
+              : rawKind === 'veiksmas'
+                ? 'calculation'
+                : 'calculation';
       const question = asText(body.question).slice(0, 4000);
       const pageUrl = asText(body.pageUrl).slice(0, 500);
       const name =
@@ -89,6 +105,7 @@ export default factories.createCoreController(
       const summary = asText(body.summary).slice(0, 2000);
       const inputs = parseJsonField(body.inputs);
       const results = parseJsonField(body.results);
+      const newsConsent = asBool(body.newsConsent ?? body.consent ?? body.naujienos);
 
       if (!ALLOWED_CODES.has(code)) {
         return ctx.badRequest('Neteisingas skaičiuoklės kodas.');
@@ -106,8 +123,8 @@ export default factories.createCoreController(
 
       const meta = getClientMeta(ctx);
       const attribution = attributionFromBody(body);
-      const mail = await getMailSettings(strapi);
-      const recipients = notifyEmailsFor('calculator', mail);
+      const mail = kind === 'download' ? null : await getMailSettings(strapi);
+      const recipients = mail ? notifyEmailsFor('calculator', mail) : [];
 
       const entry = await strapi.documents('api::calculator-submission.calculator-submission').create({
         data: {
@@ -120,9 +137,10 @@ export default factories.createCoreController(
           email,
           company,
           projectName,
+          newsConsent,
           question,
           pageUrl,
-          summary,
+          summary: kind === 'download' ? 'Parsisiųstas PDF' : summary,
           inputs,
           results,
           ...attribution,
@@ -134,59 +152,66 @@ export default factories.createCoreController(
         } as any,
       });
 
-      void syncWebsiteEventToNotion(
-        {
-          action: kind === 'ask' ? 'ask' : kind === 'notify' ? 'notify' : 'calculation',
-          code,
-          title: title || code,
-          name,
-          firstName,
-          lastName,
-          email,
-          company,
-          projectName,
-          pageUrl,
-          consent: kind !== 'notify',
-          summary,
-          ...attribution,
-        },
-        strapi.log
-      );
+      const notionAction =
+        kind === 'ask' ? 'ask' : kind === 'notify' ? 'notify' : kind === 'download' ? 'download' : 'calculation';
 
-      try {
-        await sendFormNotification(strapi, {
-          kind: 'calculator',
-          replyTo: email,
-          recipients,
-          fromName: mail.fromName,
-          fromEmail: mail.fromEmail,
-          meta,
-          fields: [
-            {
-              label:
-                kind === 'ask'
-                  ? 'Klausti konstruktoriaus'
-                  : kind === 'notify'
-                    ? 'Praneškite man'
-                    : 'Skaičiuoklė',
-              value: `${code}${title ? ` · ${title}` : ''}`,
-            },
-            { label: 'Vardas', value: name },
-            { label: 'El. paštas', value: email },
-            { label: 'Įmonė', value: company },
-            { label: 'Projektas', value: projectName },
-            { label: 'Klausimas', value: question },
-            { label: 'Nuoroda', value: pageUrl },
-            { label: 'Santrauka', value: summary || 'Įvestys ir rezultatai – CMS sąraše „Skaičiuoklių pateikimai“.' },
-          ],
-        });
-      } catch (error) {
-        strapi.log.error(`Calculator form email failed: ${error}`);
+      const notion = await syncWebsiteEventOrQueue(strapi, {
+        action: notionAction,
+        code,
+        title: title || code,
+        name,
+        firstName,
+        lastName,
+        email,
+        company,
+        projectName,
+        pageUrl,
+        personId: asText(body.kontaktoId || body.personId),
+        consent: newsConsent,
+        summary: kind === 'download' ? 'Parsisiųstas PDF' : summary,
+        ...attribution,
+      });
+
+      if (kind !== 'download' && mail) {
+        try {
+          await sendFormNotification(strapi, {
+            kind: 'calculator',
+            replyTo: email,
+            recipients,
+            fromName: mail.fromName,
+            fromEmail: mail.fromEmail,
+            meta,
+            fields: [
+              {
+                label:
+                  kind === 'ask'
+                    ? 'Klausti konstruktoriaus'
+                    : kind === 'notify'
+                      ? 'Praneškite man'
+                      : 'Skaičiuoklė',
+                value: `${code}${title ? ` · ${title}` : ''}`,
+              },
+              { label: 'Vardas', value: name },
+              { label: 'El. paštas', value: email },
+              { label: 'Įmonė', value: company },
+              { label: 'Projektas', value: projectName },
+              { label: 'Klausimas', value: question },
+              { label: 'Nuoroda', value: pageUrl },
+              { label: 'Santrauka', value: summary || 'Įvestys ir rezultatai – CMS sąraše „Skaičiuoklių pateikimai“.' },
+            ],
+          });
+        } catch (error) {
+          strapi.log.error(`Calculator form email failed: ${error}`);
+        }
       }
 
+      const kontaktoId = (notion && 'personId' in notion && notion.personId) || '';
       ctx.body = {
+        ok: true,
+        kontaktoId,
         data: {
           id: entry.documentId || entry.id,
+          kontaktoId,
         },
       };
     },

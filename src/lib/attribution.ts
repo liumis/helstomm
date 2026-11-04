@@ -31,7 +31,7 @@ function readParams() {
 export function captureAttribution(): Attribution {
   if (typeof window === 'undefined') return EMPTY;
   try {
-    const stored = sessionStorage.getItem(KEY);
+    const stored = localStorage.getItem(KEY) || sessionStorage.getItem(KEY);
     if (stored) return { ...EMPTY, ...JSON.parse(stored) };
   } catch {
     /* ignore */
@@ -47,6 +47,7 @@ export function captureAttribution(): Attribution {
     landingPath: `${window.location.pathname}${window.location.search}`,
   };
   try {
+    localStorage.setItem(KEY, JSON.stringify(data));
     sessionStorage.setItem(KEY, JSON.stringify(data));
   } catch {
     /* ignore */

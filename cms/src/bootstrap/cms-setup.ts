@@ -60,6 +60,7 @@ const PUBLIC_CONTENT_ACTIONS = [
   'api::contact-submission.contact-submission.submit',
   'api::analysis-submission.analysis-submission.submit',
   'api::training-submission.training-submission.submit',
+  'api::training-submission.training-submission.groups',
   'api::calculator-submission.calculator-submission.submit',
   'api::document-activity.document-activity.submit',
   'api::seo-page.seo-page.find',

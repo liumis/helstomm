@@ -8,6 +8,8 @@ export type HelstommReg = {
   phone?: string;
   role?: string;
   projectName?: string;
+  kontaktoId?: string;
+  newsConsent?: boolean;
 };
 
 export function readHelstommReg(): HelstommReg {

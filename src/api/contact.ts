@@ -203,19 +203,52 @@ export async function submitAnalysisForm(input: {
 
 export async function submitTrainingForm(input: {
   name: string;
+  firstName?: string;
+  lastName?: string;
   email: string;
   phone: string;
   company?: string;
   participantsCount?: string;
   topic?: string;
+  program?: string;
+  position?: string;
+  groupDate?: string;
+  preferredDate?: string;
+  location?: string;
+  objectAddress?: string;
+  daysCount?: string;
+  question?: string;
+  newsConsent?: boolean;
 }): Promise<void> {
   const form = new FormData();
   form.append('name', input.name);
+  form.append('firstName', input.firstName || '');
+  form.append('lastName', input.lastName || '');
   form.append('email', input.email);
   form.append('phone', input.phone);
   form.append('company', input.company || '');
   form.append('participantsCount', input.participantsCount || '');
   form.append('topic', input.topic || '');
+  form.append('program', input.program || '');
+  form.append('position', input.position || '');
+  form.append('groupDate', input.groupDate || '');
+  form.append('preferredDate', input.preferredDate || '');
+  form.append('location', input.location || '');
+  form.append('objectAddress', input.objectAddress || '');
+  form.append('daysCount', input.daysCount || '');
+  form.append('question', input.question || '');
+  form.append('newsConsent', input.newsConsent ? 'true' : 'false');
   appendTracking(form);
   await postForm('/api/training-form', form);
+}
+
+export async function fetchAcademyGroups(program: string): Promise<Array<{ id: string; dateLabel: string; place: string; seatsLeft: number }>> {
+  try {
+    const response = await fetch(`${STRAPI_URL}/api/mokymai-grupes?programa=${encodeURIComponent(program)}`);
+    if (!response.ok) return [];
+    const payload = await response.json();
+    return Array.isArray(payload.data) ? payload.data : [];
+  } catch {
+    return [];
+  }
 }

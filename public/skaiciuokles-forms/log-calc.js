@@ -49,6 +49,24 @@
       document.head.appendChild(style);
     }
     linkPrivacy(gate.querySelector('label.cb'));
+    if (!$('#r-news')) {
+      var privacy = gate.querySelector('label.cb');
+      if (privacy && privacy.parentNode) {
+        var news = document.createElement('label');
+        news.className = 'cb';
+        news.innerHTML = '<input type="checkbox" id="r-news"> Sutinku gauti Helstomm naujienas';
+        privacy.parentNode.insertBefore(news, privacy.nextSibling);
+      }
+    }
+    var ok = $('#r-ok');
+    var btn = gate.querySelector('button[type="submit"]');
+    if (ok && btn) {
+      var syncBtn = function () {
+        btn.disabled = !ok.checked;
+      };
+      ok.addEventListener('change', syncBtn);
+      syncBtn();
+    }
     if (!hasReturningReg()) return;
     var stored = readReg();
     [
@@ -63,8 +81,13 @@
       var wrap = el.closest('.fl');
       if (wrap) wrap.hidden = true;
     });
-    var ok = $('#r-ok');
-    if (ok) ok.checked = true;
+    var returningOk = $('#r-ok');
+    if (returningOk) returningOk.checked = true;
+    var newsBox = $('#r-news');
+    if (newsBox && newsBox.closest) {
+      var newsWrap = newsBox.closest('label');
+      if (newsWrap) newsWrap.hidden = true;
+    }
     var heading = gate.querySelector('h3');
     var intro = gate.querySelector('p');
     if (heading) {
@@ -146,7 +169,7 @@
   function attribution() {
     var KEY = 'helstomm-utm';
     try {
-      var stored = sessionStorage.getItem(KEY);
+      var stored = localStorage.getItem(KEY) || sessionStorage.getItem(KEY);
       if (stored) return JSON.parse(stored);
     } catch (e) {}
     var search = '';
@@ -172,6 +195,7 @@
       landingPath: path,
     };
     try {
+      localStorage.setItem(KEY, JSON.stringify(data));
       sessionStorage.setItem(KEY, JSON.stringify(data));
     } catch (e3) {}
     return data;
@@ -194,6 +218,8 @@
       email: text('r-em') || stored.email || '',
       company: text('r-co') || stored.company || '',
       projectName: text('r-pr') || stored.projectName || '',
+      kontaktoId: stored.kontaktoId || '',
+      newsConsent: Boolean(($('#r-news') && $('#r-news').checked) || stored.newsConsent),
     };
   }
 
@@ -216,11 +242,21 @@
         email: contact.email,
         company: contact.company,
         projectName: contact.projectName,
+        newsConsent: contact.newsConsent,
+        kontaktoId: contact.kontaktoId,
         summary: summaryFrom(results),
         inputs: collectInputs(),
         results: results,
         pageUrl: pageUrl(),
-      }).catch(function () {});
+      })
+        .then(function (res) {
+          return res.json();
+        })
+        .then(function (data) {
+          var id = (data && data.kontaktoId) || (data && data.data && data.data.kontaktoId);
+          if (id) saveReg(Object.assign({}, contact, { kontaktoId: id, newsConsent: contact.newsConsent }));
+        })
+        .catch(function () {});
     };
   }
 
@@ -346,6 +382,8 @@
       email: email,
       company: company,
       projectName: projectName,
+      newsConsent: Boolean(($('#r-news') && $('#r-news').checked) || readReg().newsConsent),
+      kontaktoId: readReg().kontaktoId || '',
       question: question,
       summary: summaryFrom(results),
       inputs: collectInputs(),
@@ -377,7 +415,43 @@
     } catch (err) {}
   }
 
-  document.addEventListener('click', function (e) {
+  var lastPdfAt = 0;
+
+  function trackPdf() {
+    var lock = $('#lockwrap');
+    if (lock && lock.classList.contains('locked')) return;
+    var contact = contactFromForm();
+    if (!contact.email || !/\S+@\S+\.\S+/.test(contact.email)) return;
+    var now = Date.now();
+    if (now - lastPdfAt < 2000) return;
+    lastPdfAt = now;
+    var stampPr = $('#s-pr');
+    contact.projectName =
+      contact.projectName ||
+      (stampPr && stampPr.textContent && stampPr.textContent !== '–' ? stampPr.textContent : '');
+    var meta = calcMeta();
+    postPayload({
+      kind: 'download',
+      code: meta.code,
+      title: meta.title,
+      firstName: contact.firstName,
+      lastName: contact.lastName,
+      name: [contact.firstName, contact.lastName].filter(Boolean).join(' '),
+      email: contact.email,
+      company: contact.company,
+      projectName: contact.projectName,
+      newsConsent: contact.newsConsent,
+      kontaktoId: contact.kontaktoId,
+      summary: 'Parsisiųstas PDF',
+      pageUrl: pageUrl(),
+    }).catch(function () {});
+  }
+
+  if (!window.__helstommCalcClicks) {
+    window.__helstommCalcClicks = true;
+    document.addEventListener('click', function (e) {
+    var pdf = e.target.closest && e.target.closest('#a-pdf, a[href="#pdf"]');
+    if (pdf) trackPdf();
     var link = e.target.closest && e.target.closest('a[href="#klausti"]');
     if (link) openAsk(e);
     var analysis = e.target.closest && e.target.closest('a[href="#analize"]');
@@ -409,7 +483,8 @@
     }
     var guide = e.target.closest && e.target.closest('a[href="#vadovas"]');
     if (guide) e.preventDefault();
-  });
+    });
+  }
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', prepareGate);

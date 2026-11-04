@@ -7,12 +7,14 @@ import {
   sendFormNotification,
   uploadFormFiles,
 } from '../../../utils/form-intake';
-import { syncWebsiteEventToNotion } from '../../../utils/notion-crm';
+import { rejectIfGuarded } from '../../../utils/form-guard';
+import { syncWebsiteEventOrQueue } from '../../../utils/notion-queue';
 
 export default factories.createCoreController(
   'api::analysis-submission.analysis-submission',
   ({ strapi }) => ({
     async submit(ctx) {
+      if (await rejectIfGuarded(ctx)) return;
       const body = (ctx.request.body || {}) as Record<string, string>;
       const name = String(body.name || '').trim();
       const email = String(body.email || '').trim();
@@ -53,30 +55,27 @@ export default factories.createCoreController(
         },
       });
 
-      void syncWebsiteEventToNotion(
-        {
-          action: 'analysis',
-          code: 'ANALIZE',
-          title: 'Projekto analizė',
-          name,
-          email,
-          company,
-          phone,
-          projectName: company,
-          pageUrl,
-          consent: true,
-          summary: [
-            details,
-            uploadedFiles.attachmentNames.length > 0
-              ? `Prisegti failai: ${uploadedFiles.attachmentNames.join(', ')}`
-              : '',
-          ]
-            .filter(Boolean)
-            .join('\n'),
-          ...attribution,
-        },
-        strapi.log
-      );
+      const notion = await syncWebsiteEventOrQueue(strapi, {
+        action: 'analysis',
+        code: 'ANALIZE',
+        title: 'Projekto analizė',
+        name,
+        email,
+        company,
+        phone,
+        projectName: company,
+        pageUrl,
+        consent: false,
+        summary: [
+          details,
+          uploadedFiles.attachmentNames.length > 0
+            ? `Prisegti failai: ${uploadedFiles.attachmentNames.join(', ')}`
+            : '',
+        ]
+          .filter(Boolean)
+          .join('\n'),
+        ...attribution,
+      });
 
       try {
         await sendFormNotification(strapi, {
@@ -101,8 +100,11 @@ export default factories.createCoreController(
       }
 
       ctx.body = {
+        ok: true,
+        kontaktoId: (notion && 'personId' in notion && notion.personId) || '',
         data: {
           id: entry.documentId || entry.id,
+          kontaktoId: (notion && 'personId' in notion && notion.personId) || '',
         },
       };
     },

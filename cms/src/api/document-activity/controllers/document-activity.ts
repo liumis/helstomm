@@ -1,6 +1,7 @@
 import { factories } from '@strapi/strapi';
 import { attributionFromBody, getClientMeta } from '../../../utils/form-intake';
-import { syncWebsiteEventToNotion } from '../../../utils/notion-crm';
+import { rejectIfGuarded } from '../../../utils/form-guard';
+import { syncWebsiteEventOrQueue } from '../../../utils/notion-queue';
 
 function asRecord(value: unknown): Record<string, unknown> {
   if (value && typeof value === 'object' && !Array.isArray(value)) {
@@ -17,6 +18,7 @@ export default factories.createCoreController(
   'api::document-activity.document-activity',
   ({ strapi }) => ({
     async submit(ctx) {
+      if (await rejectIfGuarded(ctx)) return;
       const raw = (ctx.request.body || {}) as Record<string, unknown>;
       const body = asRecord(raw.data ?? raw);
       const actionRaw = asText(body.action, 20);
@@ -67,28 +69,29 @@ export default factories.createCoreController(
         } as any,
       });
 
-      void syncWebsiteEventToNotion(
-        {
-          action,
-          code: code || slug,
-          title,
-          name,
-          firstName,
-          lastName,
-          email,
-          company,
-          role,
-          phone,
-          pageUrl,
-          consent: true,
-          ...attribution,
-        },
-        strapi.log
-      );
+      const notion = await syncWebsiteEventOrQueue(strapi, {
+        action,
+        code: code || slug,
+        title,
+        name,
+        firstName,
+        lastName,
+        email,
+        company,
+        role,
+        phone,
+        pageUrl,
+        personId: asText(body.kontaktoId || body.personId, 80),
+        consent: false,
+        ...attribution,
+      });
 
       ctx.body = {
+        ok: true,
+        kontaktoId: (notion && 'personId' in notion && notion.personId) || '',
         data: {
           id: entry.documentId || entry.id,
+          kontaktoId: (notion && 'personId' in notion && notion.personId) || '',
         },
       };
     },

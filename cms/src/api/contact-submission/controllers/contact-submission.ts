@@ -7,12 +7,14 @@ import {
   sendFormNotification,
   uploadFormFile,
 } from '../../../utils/form-intake';
-import { syncWebsiteEventToNotion } from '../../../utils/notion-crm';
+import { rejectIfGuarded } from '../../../utils/form-guard';
+import { syncWebsiteEventOrQueue } from '../../../utils/notion-queue';
 
 export default factories.createCoreController(
   'api::contact-submission.contact-submission',
   ({ strapi }) => ({
     async submit(ctx) {
+      if (await rejectIfGuarded(ctx)) return;
       const body = (ctx.request.body || {}) as Record<string, string>;
       const name = String(body.name || '').trim();
       const email = String(body.email || '').trim();
@@ -48,22 +50,19 @@ export default factories.createCoreController(
         },
       });
 
-      void syncWebsiteEventToNotion(
-        {
-          action: 'contact',
-          code: 'KONTAKTAI',
-          title: 'Kontaktų užklausa',
-          name,
-          email,
-          pageUrl,
-          consent: true,
-          summary: uploadedFile.attachmentName
-            ? `Prisegtas failas: ${uploadedFile.attachmentName}`
-            : '',
-          ...attribution,
-        },
-        strapi.log
-      );
+      const notion = await syncWebsiteEventOrQueue(strapi, {
+        action: 'contact',
+        code: 'KONTAKTAI',
+        title: 'Kontaktų užklausa',
+        name,
+        email,
+        pageUrl,
+        consent: false,
+        summary: uploadedFile.attachmentName
+          ? `Prisegtas failas: ${uploadedFile.attachmentName}`
+          : '',
+        ...attribution,
+      });
 
       try {
         await sendFormNotification(strapi, {
@@ -85,9 +84,12 @@ export default factories.createCoreController(
       }
 
       ctx.body = {
+        ok: true,
+        kontaktoId: (notion && 'personId' in notion && notion.personId) || '',
         data: {
           id: entry.documentId || entry.id,
           targetEmail: recipients[0],
+          kontaktoId: (notion && 'personId' in notion && notion.personId) || '',
         },
       };
     },
