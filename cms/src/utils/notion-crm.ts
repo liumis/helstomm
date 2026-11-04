@@ -63,7 +63,7 @@ function ds() {
   };
 }
 
-export function fold(value: string) {
+export function fold(value?: unknown) {
   return String(value || '')
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')

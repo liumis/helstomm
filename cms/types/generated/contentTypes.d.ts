@@ -779,6 +779,59 @@ export interface ApiContactSubmissionContactSubmission
   };
 }
 
+export interface ApiDocumentActivityDocumentActivity
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'document_activities';
+  info: {
+    description: 'Dokument\u0173 registracijos, per\u017ei\u016bros ir PDF atsisiuntimai';
+    displayName: 'Dokument\u0173 veiksmai';
+    pluralName: 'document-activities';
+    singularName: 'document-activity';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    action: Schema.Attribute.Enumeration<['register', 'view', 'download']> &
+      Schema.Attribute.Required;
+    code: Schema.Attribute.String;
+    company: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    deviceType: Schema.Attribute.Enumeration<['desktop', 'mobile']>;
+    email: Schema.Attribute.Email & Schema.Attribute.Required;
+    firstName: Schema.Attribute.String;
+    ipAddress: Schema.Attribute.String;
+    landingPath: Schema.Attribute.String;
+    lastName: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::document-activity.document-activity'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    pageUrl: Schema.Attribute.String;
+    phone: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    referrer: Schema.Attribute.String;
+    role: Schema.Attribute.String;
+    slug: Schema.Attribute.String;
+    submittedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    userAgent: Schema.Attribute.Text;
+    utmCampaign: Schema.Attribute.String;
+    utmContent: Schema.Attribute.String;
+    utmMedium: Schema.Attribute.String;
+    utmSource: Schema.Attribute.String;
+    utmTerm: Schema.Attribute.String;
+  };
+}
+
 export interface ApiDokumentaiSettingDokumentaiSetting
   extends Struct.SingleTypeSchema {
   collectionName: 'dokumentai_settings';
@@ -2269,6 +2322,7 @@ declare module '@strapi/strapi' {
       'api::contact-person.contact-person': ApiContactPersonContactPerson;
       'api::contact-setting.contact-setting': ApiContactSettingContactSetting;
       'api::contact-submission.contact-submission': ApiContactSubmissionContactSubmission;
+      'api::document-activity.document-activity': ApiDocumentActivityDocumentActivity;
       'api::dokumentai-setting.dokumentai-setting': ApiDokumentaiSettingDokumentaiSetting;
       'api::dokumentas.dokumentas': ApiDokumentasDokumentas;
       'api::form-mail-setting.form-mail-setting': ApiFormMailSettingFormMailSetting;
